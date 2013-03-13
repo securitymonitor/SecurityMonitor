@@ -12,8 +12,8 @@ def Main():
     
     print "Starting program..."
     config.configure()
-    dirConfig = 'Config.txt'
-    dirLog = 'Log.txt'
+    dirConfig = config.rule
+    dirLog = config.filename
     startAt = 0
     print "loading File Manager..."
     print "Monitoring Started!"
