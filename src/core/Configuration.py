@@ -17,7 +17,7 @@ class Configuration:
         '''
     
     def configure(self):
-        print "Configuring..."
+        print"Configuring..."
         #configuration example code here
         rule1 = Rule()
         rule1.test()

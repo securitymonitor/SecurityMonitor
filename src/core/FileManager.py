@@ -14,5 +14,5 @@ class FileManager:
         '''
         Constructor
         '''
-    def read(self):
-        print "log files loaded."
+    #def read(self):
+        #print "The log file still hasn't changed."

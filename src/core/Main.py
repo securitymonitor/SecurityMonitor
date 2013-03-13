@@ -12,8 +12,13 @@ def Main():
     
     print "Starting program..."
     config.configure()
-    monitor.startMonitoring()
-    monitor.endMonitoring()
+    dirConfig = 'Config.txt'
+    dirLog = 'Log.txt'
+    startAt = 0
+    print "loading File Manager..."
+    print "Monitoring Started!"
+    monitor.startMonitoring(dirConfig,dirLog,startAt)
+    #monitor.endMonitoring()
     
 
 if __name__ == '__main__':
