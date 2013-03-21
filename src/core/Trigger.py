@@ -7,7 +7,7 @@ class Trigger:
         
     #This function sends an e-mail with the given message.
     def Notify(self,mailBody):
-        import smtplib  
+        import smtplib
 
         fromaddr = 'hvaminorfis@gmail.com'  
         toaddrs  = 'hvaminorfis@gmail.com'  
