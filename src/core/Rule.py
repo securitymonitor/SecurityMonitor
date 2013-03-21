@@ -11,6 +11,9 @@ class Rule:
 
 
     def __init__(self):
+        import FileManager
+        fileManager = FileManager()
+        regex = fileManager.read()
         '''
         Constructor
         '''
@@ -18,3 +21,4 @@ class Rule:
     def test(self):
         print "Rule created."
         
+    
