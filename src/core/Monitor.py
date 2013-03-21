@@ -4,13 +4,13 @@ Created on Mar 6, 2013
 @author: vinesh
 '''
 from core.FileManager import FileManager
+from mimify import File
 
 class Monitor:
     '''
     classdocs
     '''
     def __init__(self):
-        fileManager = FileManager()
         #fileManager.read()
         '''
         Constructor
@@ -19,10 +19,9 @@ class Monitor:
             #Recursive function in order to keep the process going infinitely.    
     def keepMonitoring(self,oldMaxLines,dirConfig,dirLog):
         import time
-        
+        fileManager = FileManager()
         monitorObj = Monitor()
-        logFile = open(dirLog)
-        logLines = logFile.readlines()
+        logLines = fileManager.read(dirLog)
         
         if(oldMaxLines == len(logLines)):
             print "The log file still hasn't changed."
@@ -37,16 +36,15 @@ class Monitor:
     def startMonitoring(self,dirConfig,dirLog,startAt):
         from Trigger import Trigger
         import sys
-       
+        
         sys.setrecursionlimit(10000)
        
         monitorObj = Monitor()
         triggerObj = Trigger()
-        ruleSets = open(dirConfig)
-        logFile = open(dirLog)
+        fileManager = FileManager()
         
-        ruleLines = ruleSets.readlines()
-        logLines = logFile.readlines()
+        ruleLines = fileManager.read(dirConfig)
+        logLines = fileManager.read(dirLog)
         
         for i in range(startAt,len(logLines)):
             for j in range(0,len(ruleLines)):
@@ -61,9 +59,6 @@ class Monitor:
                     triggerObj.executeTrigger(errorType,errorMsg)          
                     
         monitorObj.keepMonitoring(len(logLines),dirConfig,dirLog)
-        
-        logFile.close()
-        ruleSets.close()
         
     def stopMonitoring(self):
         import time

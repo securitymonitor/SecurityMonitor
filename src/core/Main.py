@@ -5,6 +5,7 @@ Created on Mar 6, 2013
 '''
 from core.Configuration import Configuration
 from core.Monitor import Monitor
+from core.Rule import Rule
 
 def Main():
     config = Configuration()
@@ -12,8 +13,8 @@ def Main():
     
     print "Starting program..."
     config.configure()
-    dirConfig = 'Config.txt'
-    dirLog = 'Log.txt'
+    dirConfig = config.rule
+    dirLog = config.filename
     startAt = 0
     print "loading File Manager..."
     print "Monitoring Started!"
