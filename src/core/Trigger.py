@@ -28,7 +28,6 @@ class Trigger:
         server.login(username,password) 
         server.sendmail(fromaddr,toaddrs,headers+"\r\n\r\n"+mailBody)  
         server.quit() 
-        
                 
     #This executes the appropriate trigger regarding the error.
     def executeTrigger(self,errorType,errorMsg):     

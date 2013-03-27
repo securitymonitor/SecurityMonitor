@@ -10,17 +10,19 @@ from core.Rule import Rule
 def Main():
     config = Configuration()
     monitor = Monitor()
+    rule = Rule()
     
     print "Starting program..."
     config.configure()
-    dirConfig = config.rule
+    dirConfig = "Rules.txt"
+    #config.rule
     dirLog = config.filename
     startAt = 0
     print "loading File Manager..."
     print "Monitoring Started!"
+
     monitor.startMonitoring(dirConfig,dirLog,startAt)
     #monitor.endMonitoring()
-    
 
 if __name__ == '__main__':
     Main()

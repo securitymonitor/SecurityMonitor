@@ -1,7 +1,7 @@
 '''
 Created on Mar 6, 2013
 
-@author: vinesh
+@author: Sujen
 '''
 
 class FileManager:
@@ -21,8 +21,14 @@ class FileManager:
     def write(self, dirFile, textData):
         file = open(dirFile, "r+")
         existingText = file.read()
-        file.seek(0)
-        file.write(existingText + "\n" + textData)   
+        #file.seek(0)
+        file.truncate()
+        file.write(existingText + "\n" + textData) 
+    
+    def overwrite(self, regexList, file):
+        file.truncate()
+        for i in range(0, len(regexList)):
+            file.write(regexList[i])  
         
     def exception(self, msg):
         dirError = "errorLog.txt"

@@ -1,7 +1,7 @@
 '''
 Created on Mar 6, 2013
 
-@author: vinesh
+@author: Sujen
 '''
 from core.FileManager import FileManager
 from mimify import File
@@ -14,9 +14,8 @@ class Monitor:
         #fileManager.read()
         '''
         Constructor
-        '''
-                
-            #Recursive function in order to keep the process going infinitely.    
+        '''            
+    #Recursive function in order to keep the process going infinitely.    
     def keepMonitoring(self,oldMaxLines,dirConfig,dirLog):
         import time
         fileManager = FileManager()

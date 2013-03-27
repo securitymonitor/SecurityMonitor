@@ -1,7 +1,7 @@
 '''
 Created on Mar 6, 2013
 
-@author: vinesh
+@author: Sujen
 '''
 from core.FileManager import FileManager
 
@@ -14,23 +14,31 @@ class Rule:
         '''
         Constructor
         '''
-        
-    def delete(self,dirConfig,ruleId):
+    def addRule(self,dirConfig,newRule):
         fileManager = FileManager()
         regexList = fileManager.read(dirConfig)
         file = open(dirConfig,"r+")
-        
+        regexList.append(newRule+"\n")
+        fileManager.overwrite(regexList, file)
+
+    def editRule(self,dirConfig,ruleId,newRule):
+        fileManager = FileManager()
+        regexList = fileManager.read(dirConfig)
+        file = open(dirConfig,"r+")
+        ruleId = ruleId - 1
+        regexList[ruleId] = newRule+"\n"  
+        fileManager.overwrite(regexList, file)
+    
+    def deleteRule(self,dirConfig,ruleId):
+        fileManager = FileManager()
+        regexList = fileManager.read(dirConfig)
+        file = open(dirConfig,"r+")
+        ruleId = ruleId - 1
         del regexList[ruleId]
-        
-        #regexList = [word.strip() for word in regexList]
-        
-        file.truncate()
-        for i in range(0,len(regexList)):
-            file.write(regexList[i])
-            
-        print regexList
-            
-        
+        fileManager.overwrite(regexList, file)
+    
+    
+    
     def test(self):
         print "Rule created."
         
