@@ -15,22 +15,24 @@ class Rule:
         Constructor
         '''
         
-    def delete(self,dirConfig,ruleId):
-        fileManager = FileManager()
-        regexList = fileManager.read(dirConfig)
-        file = open(dirConfig,"r+")
-        
-        del regexList[ruleId]
-        
-        #regexList = [word.strip() for word in regexList]
-        
-        file.truncate()
-        for i in range(0,len(regexList)):
-            file.write(regexList[i])
+    def checkEntry(self, regexFile):
+        print "##Method checkEntry##"
+        import re
+        from Action import Action
+
+        actionObj = Action()
+
+        for entry in regexFile.readlines():
+            print "##entryLine: ", entry
+            lnsplit = entry.split(" ")
             
-        print regexList
-            
-        
-    def test(self):
-        print "Rule created."
-        
+            if entry.__contains__('-t') == 1:
+                print '##Condition = True (-t)##' 
+            if entry.__contains__('-c') == 1:
+                print '##Condition = True (-c)##'
+                connection = lnsplit[0]
+                print "##Method call Action.checkEntryFrequency()##"
+                actionObj.checkEntryFrequency(connection)
+                
+    regexFile = open("Rules.txt")
+    var1 = checkEntry('',regexFile)
