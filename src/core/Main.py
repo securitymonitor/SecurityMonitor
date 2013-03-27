@@ -21,7 +21,7 @@ def Main():
     print "loading File Manager..."
     print "Monitoring Started!"
 
-    monitor.startMonitoring(dirConfig,dirLog,startAt)
+    #monitor.startMonitoring(dirConfig,dirLog,startAt)
     #monitor.endMonitoring()
 
 if __name__ == '__main__':

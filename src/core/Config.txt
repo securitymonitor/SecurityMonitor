@@ -2,3 +2,14 @@ Regex1
 Regex2
 Error
 Regex4
+
+//directories of the Files
+LogDir = " "
+RuleDir = " "
+
+//Notification adress
+fromaddr = hvaminorfis@gmail.com
+toaddrs  = hvaminorfis@gmail.com
+username = hvaminorfis@gmail.com
+password = security1234
+server   = smtp.gmail.com:587
