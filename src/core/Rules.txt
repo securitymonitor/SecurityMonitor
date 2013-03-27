@@ -1,4 +1,1 @@
-Regex1
-Regex2
-Error
-Regex4
+SRC=([\d.]+) -t -c
