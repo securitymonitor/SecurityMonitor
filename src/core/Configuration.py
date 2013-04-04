@@ -39,27 +39,33 @@ class Configuration:
             if 'server' in data:
                 # put data into string
                 server = str(data[1])
-         
-                print password
-    try:
+            if 'LogDir' in data:
+                LogDir = str(data[1])
+            if 'RuleDir' in data:
+                RuleDir = str(data[1])
+                    
+       
+        try:
+            filename = LogDir
+            
         #Set the filename and open the file
-        filename = 'log.txt' #nog aangepast worden naar formulier input
-        
+        #filename = 'log.txt' #nog aangepast worden naar formulier input
+            fm.read(filename)
 
 #does the file exists
-    except IOError as e:
-        print "Log " + filename + " bestaat niet".format(e.errno, e.strerror)
+        except IOError as e:
+            print "Log " + filename + " bestaat niet".format(e.errno, e.strerror)
 
 
-    else:
-        print " Log " + filename + " geselecteerd"
+        else:
+            print " Log " + filename + " geselecteerd "
         #find end of file
    
         
     #rule definieren     Werkt wel   
         try:
         #Set the rule to use
-            rule = 'rule1.py' #nog aangepast worden naar formulier input
+            rule = RuleDir #nog aangepast worden naar formulier input
             file = execfile(rule)
             
             
