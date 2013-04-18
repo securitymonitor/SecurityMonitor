@@ -1,1 +1,24 @@
-SRC=([\d.]+) -t -c
+SSH-attack
+{ 
+SOURCEIP=...SRC=
+SOURCEPORT=...SPT=
+TARGETIP=[!145.92.203.* &]...DST=
+TARGETPORT=![22|80|443]...DPT=
+COUNT=10
+TIME=5
+DATA=[]
+ACTION=['email.py','sms.py','shutdownvm.pl','owasp.py']
+}
+
+SSH-schnitzel
+{ 
+SOURCEIP=...SRC=
+SOURCEPORT=...SPT=
+TARGETIP=[!145.92.203.* &]...DST=
+TARGETPORT=![22|80|443]...DPT=
+COUNT=10
+TIME=5
+DATA=[]
+ACTION=['email.py','sms.py','shutdownvm.pl','owasp.py']
+}
+SRC=^(\d.)

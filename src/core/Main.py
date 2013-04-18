@@ -16,12 +16,13 @@ def Main():
     config.configure()
     dirConfig = "Rules.txt"
     #config.rule
-    dirLog = config.filename
+    dirLog = "Config.txt"
+    #config.filename
     startAt = 0
     print "loading File Manager..."
     print "Monitoring Started!"
 
-    #monitor.startMonitoring(dirConfig,dirLog,startAt)
+    monitor.startMonitoring(dirConfig,dirLog,startAt)
     #monitor.endMonitoring()
 
 if __name__ == '__main__':

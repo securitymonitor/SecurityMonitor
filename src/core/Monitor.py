@@ -66,3 +66,5 @@ class Monitor:
         print "Monitoring Ended!"
         time.sleep(10)
         sys.exit(0)
+        
+    #TODO// Check Timestamps between a certain period for a IP and count connections, IDS should execute an action according to the number of connections

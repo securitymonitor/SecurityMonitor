@@ -59,5 +59,5 @@ class Rule:
                 print "##Method call Action.checkEntryFrequency()##"
                 actionObj.checkEntryFrequency(connection)
                 
-    regexFile = open("Rules.txt")
-    var1 = checkEntry('',regexFile)
+    #regexFile = open("Rules.txt")
+    #var1 = checkEntry('',regexFile)
