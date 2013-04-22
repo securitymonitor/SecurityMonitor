@@ -14,9 +14,9 @@ def Main():
     
     print "Starting program..."
     config.configure()
-    dirConfig = "Rules.txt"
+    dirConfig = "TestRules.txt"
     #config.rule
-    dirLog = "Config.txt"
+    dirLog = "firewall.log"
     #config.filename
     startAt = 0
     print "loading File Manager..."

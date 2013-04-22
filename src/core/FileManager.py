@@ -30,6 +30,15 @@ class FileManager:
         for i in range(0, len(regexList)):
             file.write(regexList[i])  
         
+    def stripNewLine(self, List):
+        strippedList = []
+        
+        i=0
+        for i in range(0, len(List)):
+            strippedList.append(List[i].strip())
+        
+        return strippedList
+        
     def exception(self, msg):
         dirError = "errorLog.txt"
 

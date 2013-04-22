@@ -6,7 +6,7 @@ Created on 4 apr. 2013
 class Email:
     
     #This function sends an e-mail with the given message.
-    def sendMail(self,mailBody):
+    def SendMail(self,mailBody):
         import smtplib  
 
         fromaddr = 'hvaminorfis@gmail.com'  
