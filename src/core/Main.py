@@ -16,7 +16,7 @@ def Main():
     config.configure()
     dirConfig = "TestRules.txt"
     #config.rule
-    dirLog = "firewall.log"
+    dirLog = "TestFirewall.log"
     #config.filename
     startAt = 0
     print "loading File Manager..."
