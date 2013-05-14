@@ -25,7 +25,8 @@ class FileManager:
         file.truncate()
         file.write(existingText + "\n" + textData) 
     
-    def overwrite(self, regexList, file):
+    def overwrite(self, regexList, dirFile):
+        file = open(dirFile, "r+")
         file.truncate()
         for i in range(0, len(regexList)):
             file.write(regexList[i])  
