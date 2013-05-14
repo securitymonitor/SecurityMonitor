@@ -3,19 +3,26 @@ Created on Mar 6, 2013
 
 @author: Dave
 '''
-from core.Rule import Rule
+#from core.Rule import Rule
 from core.FileManager import FileManager
 
 class Configuration:
     '''
     classdocs
     '''
-    
+    fromaddrs = ""
+    toaddrs = ""
+    username = ""
+    password = ""
+    server = ""
+    LogDir = ""
+    RuleDir = ""
     
     def __init__(self):
         '''
         Constructor
         '''
+        self.configure()
     
     def configure(self):
         print"Configuring..."
@@ -26,27 +33,27 @@ class Configuration:
         for line in allLines:
             data = [x.strip() for x in line.split('= ')]
             if 'fromaddr' in data:
-                fromaddr = str(data[1])
+                self.fromaddr = str(data[1])
             if 'toaddrs' in data:
                 # put data into string
-                toaddrs = str(data[1])
+                self.toaddrs = str(data[1])
             if 'username' in data:
                 # put data into string
-                username = str(data[1])
+                self.username = str(data[1])
             if 'password' in data:
                 # put data into string
-                password = str(data[1])
+                self.password = str(data[1])
             if 'server' in data:
                 # put data into string
-                server = str(data[1])
+                self.server = str(data[1])
             if 'LogDir' in data:
-                LogDir = str(data[1])
+                self.LogDir = str(data[1])
             if 'RuleDir' in data:
-                RuleDir = str(data[1])
+                self.RuleDir = str(data[1])
                     
        
         try:
-            filename = LogDir
+            filename = self.LogDir
             
         #Set the filename and open the file
         #filename = 'log.txt' #nog aangepast worden naar formulier input
@@ -65,7 +72,7 @@ class Configuration:
     #rule definieren     Werkt wel   
         try:
         #Set the rule to use
-            rule = RuleDir #nog aangepast worden naar formulier input
+            rule = self.RuleDir #nog aangepast worden naar formulier input
             file = execfile(rule)
             
             
@@ -78,3 +85,4 @@ class Configuration:
             print " Ruleset " + rule + " is ingeladen"
         
         print "Configuration completed."
+        
