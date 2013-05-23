@@ -1,8 +1,3 @@
-Regex1
-Regex2
-Error
-Regex4
-
 //directories of the Files
 LogDir = /path/to/log
 RuleDir = /path/to/rule

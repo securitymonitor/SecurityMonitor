@@ -6,6 +6,7 @@ Created on Mar 6, 2013
 from core.Configuration import Configuration
 from core.Monitor import Monitor
 from core.Rule import Rule
+import threading
 
 def Main():
     config = Configuration()
@@ -22,7 +23,11 @@ def Main():
     print "loading File Manager..."
     print "Monitoring Started!"
 
-    monitor.startMonitoring(dirConfig,dirLog,startAt)
+    
+    t = threading.Thread(target=monitor.startMonitoring(dirConfig,dirLog,startAt))
+    t.setDaemon(True)
+    t.start()
+    
     #monitor.endMonitoring()
 
 if __name__ == '__main__':
