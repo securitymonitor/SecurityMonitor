@@ -7,7 +7,7 @@ class Trigger:
                 
     #This executes the appropriate trigger regarding the error.
     def ExecuteTrigger(self,errorType,errorMsg):     
-        from Email import Email
+        from custom.actions.Email import Email
              
         triggerObj = Trigger()
         emailObj = Email()

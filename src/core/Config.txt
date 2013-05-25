@@ -3,7 +3,7 @@ LogDir = /path/to/log
 RuleDir = /path/to/rule
 
 fromaddr = hvaminorfis@gmail.com
-toaddrs  = vineshx@gmail.com
+toaddrs  = hvaminorfis@gmail.com
 username = hvaminorfis@gmail.com
 password = security1234
 server   = smtp.gmail.com:587
