@@ -80,7 +80,7 @@ class QueryManager:
         else:
             regex = regex + query.split("=")[1].strip() #gedefineerde IP's
             
-        return self.executeRegex(regex, mainResult)
+        return self.executeRegex(regex, mainResult, 0)
     
     
     def getTargetIP(self, query, mainResult):
