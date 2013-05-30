@@ -1,7 +1,0 @@
-ACTION = ''
-DATA = ''
-SOURCEIP = 'SRC=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
-SOURCEPT = ''
-TARGETIP = ''
-TARGETPT = ''
-TIME = '\w+\s\d+\s\d+:\d+:\d+'

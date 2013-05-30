@@ -1,0 +1,7 @@
+DATA = ''
+MAC = 'MAC='
+SOURCEIP = 'SRC='
+SOURCEPT = 'SPT='
+TARGETIP = 'DST='
+TARGETPT = 'DPT='
+TIME = '\w+\s\d+\s\d+:\d+:\d+'

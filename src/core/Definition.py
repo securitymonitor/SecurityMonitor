@@ -9,7 +9,7 @@ class Definitions:
                 return k        
     @classmethod
     def readConfigFile(self):
-        configFile = open("Rules.txt")
+        configFile = open("RuleDefinitionTable.txt")
         configFileRead = configFile.readlines()
         valueAssignment = "="
         valDict = {}
@@ -30,7 +30,7 @@ class Definitions:
         tempDict = Definitions.readConfigFile()
         b = ''
         if tempDict.has_key(str):
-            b = tempDict.get(str)
+            b = tempDict.get(str).replace("'", "")
 
         return b
 

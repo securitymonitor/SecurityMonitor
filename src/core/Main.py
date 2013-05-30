@@ -24,7 +24,7 @@ def Main():
     print "Monitoring Started!"
 
     
-    t = threading.Thread(target=monitor.startMonitoring(dirConfig,dirLog,startAt))
+    t = threading.Thread(target=monitor.testMonitoring(dirConfig,dirLog,startAt))
     t.setDaemon(True)
     t.start()
     

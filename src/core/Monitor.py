@@ -4,7 +4,9 @@ Created on Mar 6, 2013
 @author: Sujen
 '''
 from core.FileManager import FileManager
+from core.Rule import Rule
 from mimify import File
+from core.QueryManager import QueryManager
 
 class Monitor:
     '''
@@ -108,5 +110,15 @@ class Monitor:
         print "Monitoring Ended!"
         time.sleep(10)
         sys.exit(0)
+        
+    def testMonitoring(self,dirConfig,dirLog,startAt):
+        ruleManager = Rule()
+        queryManager = QueryManager()
+        ruleManager.readRules(dirConfig)
+        print "Monitoring using the rule " + ruleManager.name + "...\n"
+        print ruleManager.query
+        regex = queryManager.execute(ruleManager.query)
+        
+        
         
     #TODO// Check Timestamps between a certain period for a IP and count connections, IDS should execute an action according to the number of connections

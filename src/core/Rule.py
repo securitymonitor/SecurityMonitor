@@ -4,8 +4,13 @@ Created on Mar 6, 2013
 @author: Sujen
 '''
 from core.FileManager import FileManager
+from core.Definition import Definitions
 
 class Rule:
+    name = ""
+    description = ""
+    action = ""
+    query = ""
 
     fileManager = FileManager()
     regex = fileManager.read("Rules.txt")
@@ -61,3 +66,40 @@ class Rule:
                 
     #regexFile = open("Rules.txt")
     #var1 = checkEntry('',regexFile)
+    
+    #Gets the definition value
+    def getValue(self, entry, definition):
+        split = entry.split(definition)
+        value = split[1].replace("'", "").replace("=", "").strip()
+        return value
+    
+    def readRules(self, rules):
+        fileManager = FileManager()
+        rulesList = fileManager.read(rules)
+        query = ""
+        inRule = 0
+        
+        for entry in rulesList:
+            if inRule == 0:
+                if entry.__contains__('{') == 1: #Start of a rule.
+                    inRule = 1
+
+            else:
+                if entry.__contains__('}') == 1: #End of a rule.
+                    inRule = 0
+                    break
+                
+                #Get the name, description and action from the rule, build query
+                if entry.__contains__('NAME') == 1:
+                    value = self.getValue(entry, 'NAME')
+                    self.name = value
+                elif entry.__contains__('DESCRIPTION') == 1:
+                    value = self.getValue(entry, 'DESCRIPTION')
+                    self.description = value
+                elif entry.__contains__('ACTION') == 1:
+                    value = self.getValue(entry, 'ACTION')
+                    self.action = value
+                else:
+                    query = query + entry
+                    
+        self.query = query
