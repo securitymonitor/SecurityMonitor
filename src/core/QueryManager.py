@@ -13,7 +13,7 @@ class QueryManager:
     '''
     
     
-    def execute(self, query):
+    def execute(self, query, startAt):
         result = []
         
         #Looping until all query lines are executed and removed
@@ -22,37 +22,37 @@ class QueryManager:
             print "current = " + current
             
             if current.__contains__("COUNT"):   
-                self.getCount(current, result)
+                self.getCount(current, result, startAt)
                 print str(len(result))
                 query = ""
             
             if current.__contains__("MAC ="):  
-                result = self.getSourceIP(current, result)
+                result = self.getMAC(current, result, startAt)
                 print str(len(result))
                 query = query.replace(current, "")
             
             if current.__contains__("SOURCEIP ="):  
-                result = self.getSourceIP(current, result)
+                result = self.getSourceIP(current, result, startAt)
                 print str(len(result))
                 query = query.replace(current, "")
                 
             if current.__contains__("SOURCEPT ="):  
-                result = self.getSourcePT(current, result)
+                result = self.getSourcePT(current, result, startAt)
                 print str(len(result))
                 query = query.replace(current, "")
                 
             if current.__contains__("TARGETIP ="):  
-                result = self.getTargetIP(current, result)
+                result = self.getTargetIP(current, result, startAt)
                 print str(len(result))
                 query = query.replace(current, "")
                 
             if current.__contains__("TARGETPT ="):  
-                result = self.getTargetPT(current, result)
+                result = self.getTargetPT(current, result, startAt)
                 print str(len(result))
                 query = query.replace(current, "")
-                
-            if current.__contains__("TIME"):   
-                result = self.getTime(current, result)
+               
+            if current.__contains__("TIME"):  
+                result = self.getTime(current, result, startAt)
                 print str(len(result))
                 query = query.replace(current, "")
                 
@@ -61,7 +61,7 @@ class QueryManager:
         return result
     
     
-    def getMAC(self, query, mainResult):
+    def getMAC(self, query, mainResult, startAt):
         regex = Definitions.getValueDefinition("MAC")
         
         if query.__contains__("*"):
@@ -69,10 +69,10 @@ class QueryManager:
         else:
             regex = regex + query.split("=")[1].strip() #gedefineerde MAC's
             
-        return self.executeRegex(regex, mainResult)
+        return self.executeRegex(regex, mainResult, 0, startAt)
     
         
-    def getSourceIP(self, query, mainResult):
+    def getSourceIP(self, query, mainResult, startAt):
         regex = Definitions.getValueDefinition("SOURCEIP")
         
         if query.__contains__("*"):
@@ -80,10 +80,10 @@ class QueryManager:
         else:
             regex = regex + query.split("=")[1].strip() #gedefineerde IP's
             
-        return self.executeRegex(regex, mainResult, 0)
+        return self.executeRegex(regex, mainResult, 0, startAt)
     
     
-    def getTargetIP(self, query, mainResult):
+    def getTargetIP(self, query, mainResult, startAt):
         regex = Definitions.getValueDefinition("TARGETIP")
         
         if query.__contains__("*"):
@@ -91,10 +91,10 @@ class QueryManager:
         else:
             regex = regex + query.split("=")[1].strip() #gedefineerde IP's
             
-        return self.executeRegex(regex, mainResult)
+        return self.executeRegex(regex, mainResult, 0, startAt)
     
     
-    def getSourcePT(self, query, mainResult):
+    def getSourcePT(self, query, mainResult, startAt):
         regex = Definitions.getValueDefinition("SOURCEPT")
         
         if query.__contains__("*"):
@@ -102,10 +102,10 @@ class QueryManager:
         else:
             regex = regex + query.split("=")[1].strip() #gedefineerde poort
             
-        return self.executeRegex(regex, mainResult)
+        return self.executeRegex(regex, mainResult, 0, startAt)
     
     
-    def getTargetPT(self, query, mainResult):
+    def getTargetPT(self, query, mainResult, startAt):
         regex = Definitions.getValueDefinition("TARGETPT")
         
         if query.__contains__("*"):
@@ -113,10 +113,10 @@ class QueryManager:
         else:
             regex = regex + query.split("=")[1].strip() #gedefineerde poort
             
-        return self.executeRegex(regex, mainResult)
+        return self.executeRegex(regex, mainResult, 0, startAt)
     
         
-    def getCount(self, query, mainResult):
+    def getCount(self, query, mainResult, startAt):
         if query.__contains__("SOURCEIP"):
                         
             if query.__contains__(">"):
@@ -126,12 +126,12 @@ class QueryManager:
             if query.__contains__("<"):    
                 count = query.split("<")[1].strip()
                 
-                self.executeRegex(Definitions.getValueDefinition("SOURCEIP"), mainResult, count)
+                self.executeRegex(Definitions.getValueDefinition("SOURCEIP"), mainResult, count, startAt)
                 
         print "result = " + str(count)
         
         
-    def getTime(self, query, mainResult):
+    def getTime(self, query, mainResult, startAt):
         if query.__contains__("TIME"):
                         
             if query.__contains__(">"):
@@ -141,13 +141,12 @@ class QueryManager:
             if query.__contains__("<"):    
                 count = query.split("<")[1].strip()
                 
-                self.executeRegex(Definitions.getValueDefinition("TIME"), mainResult, count)
+                self.executeRegex(Definitions.getValueDefinition("TIME"), mainResult, count, startAt)
                 
         print "result = " + str(count)
-                
+
             
-            
-    def executeRegex(self, regex, mainResult, count):
+    def executeRegex(self, regex, mainResult, count, startAt):
         if (len(mainResult) == 0):
             fm = FileManager()
             allLines = fm.read("TestFirewall.log")
@@ -156,7 +155,7 @@ class QueryManager:
         
         result = []
         
-        for i in range(0,len(allLines)):
+        for i in range(startAt,len(allLines)):
             if(re.search(regex, str(allLines[i]))):
                 result.append(allLines[i])
             
