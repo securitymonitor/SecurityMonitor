@@ -1,3 +1,5 @@
+from core.Configuration import Configuration
+
 class Definitions:
 
     ACTION,COUNT,DATA,DESCRIPTION,NAME,SOURCEIP,SOURCEPT,TARGETIP,TARGETPT,TIME = range(10)
@@ -9,7 +11,8 @@ class Definitions:
                 return k        
     @classmethod
     def readConfigFile(self):
-        configFile = open("RuleDefinitionTable.txt")
+        config = Configuration
+        configFile = open(config.RuleDefinitionTable)
         configFileRead = configFile.readlines()
         valueAssignment = "="
         valDict = {}

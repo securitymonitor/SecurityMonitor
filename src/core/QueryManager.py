@@ -149,7 +149,10 @@ class QueryManager:
     def executeRegex(self, regex, mainResult, count, startAt):
         if (len(mainResult) == 0):
             fm = FileManager()
-            allLines = fm.read("TestFirewall.log")
+            from Configuration import Configuration
+            
+            config = Configuration()
+            allLines = fm.read(config.FirewallLog)
         else:
             allLines = mainResult
         

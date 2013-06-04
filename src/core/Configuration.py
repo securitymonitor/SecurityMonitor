@@ -10,6 +10,10 @@ class Configuration:
     '''
     classdocs
     '''
+    configFile = "Config.txt"
+    FirewallLog = "TestFirewall.log"
+    RuleDefinitionTable = "RuleDefinitionTable.txt"
+    exceptionFile = "errorLog.txt"
     fromaddrs = ""
     toaddrs = ""
     username = ""

@@ -13,7 +13,7 @@ class Rule:
     query = ""
 
     fileManager = FileManager()
-    regex = fileManager.read("Rules.txt")
+    #regex = fileManager.read("Rules.txt")
     
     def __init__(self):
         '''

@@ -7,9 +7,11 @@ Created on 14 mei 2013
 import sys
 import re
 from FileManager import FileManager
+from core.Configuration import Configuration
 
 class SecMon:
-    dirConfig = "Config.txt"
+    configuration = Configuration()
+    dirConfig = configuration.configFile
     fileManager = FileManager()
     configLines = fileManager.read(dirConfig)
     listKeywords = ["fromaddr","toaddrs","username","password","server"]

@@ -41,7 +41,10 @@ class FileManager:
         return strippedList
         
     def exception(self, msg):
-        dirError = "errorLog.txt"
+        import Configuration
+        
+        config = Configuration()
+        dirError = config.exceptionFile
 
         if(msg == ""):
             msg = "This is a default error..."
