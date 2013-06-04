@@ -8,6 +8,9 @@ from core.Monitor import Monitor
 from core.Rule import Rule
 import threading
 
+#import sys
+#sys.path.append("//home//jasper//src//"
+
 def Main():
     config = Configuration()
     monitor = Monitor()
