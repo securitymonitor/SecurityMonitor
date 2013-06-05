@@ -175,6 +175,4 @@ class Monitor:
                 triggerObj.ExecuteTrigger(errorType,errorMsg)   
                 print "mail is triggered"
 
-        monitorObj.keepMonitoring(len(allLines),dirConfig,dirLog)    
-            
-    #TODO// Check Timestamps between a certain period for a IP and count connections, IDS should execute an action according to the number of connections
+        monitorObj.keepMonitoring(len(allLines),dirConfig,dirLog)

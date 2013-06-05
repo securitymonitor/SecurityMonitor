@@ -13,6 +13,7 @@ class Configuration:
     configFile = "Config.txt"
     FirewallLog = "TestFirewall.log"
     RuleDefinitionTable = "RuleDefinitionTable.txt"
+    ruleFile = "..\\custom\\rules\\Rules.txt"
     exceptionFile = "errorLog.txt"
     fromaddrs = ""
     toaddrs = ""
