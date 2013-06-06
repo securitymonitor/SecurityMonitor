@@ -2,7 +2,7 @@
 NAME = 'Example Attack'
 DESCRIPTION = 'This example checks if an IP connects more than 4 times within 10 seconds, if so an email will be sent.'
 SOURCEIP = 145.92.6.10
-COUNT(SOURCEIP) > 4
-TIME(SOURCEIP) < 10
+TIMER < 10
+COUNT > 4
 ACTION = 'Email.py'
 }

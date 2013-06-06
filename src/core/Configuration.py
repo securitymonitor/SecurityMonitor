@@ -63,11 +63,10 @@ class Configuration:
         #Set the filename and open the file
         #filename = 'log.txt' #nog aangepast worden naar formulier input
             fm.read(filename)
-
 #does the file exists
         except IOError as e:
-            print "Log " + filename + " bestaat niet".format(e.errno, e.strerror)
-
+            print ""
+            #print "Log " + filename + " bestaat niet".format(e.errno, e.strerror)
 
         else:
             print " Log " + filename + " geselecteerd "
@@ -84,7 +83,8 @@ class Configuration:
 
 #does the file exists
         except IOError as e:
-            print "Rule " + rule + " bestaat niet".format(e.errno, e.strerror)
+            #print "Rule " + rule + " bestaat niet".format(e.errno, e.strerror)
+            print ""
             
         else:
             print " Ruleset " + rule + " is ingeladen"
