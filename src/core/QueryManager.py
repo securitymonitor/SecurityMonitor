@@ -18,53 +18,53 @@ class QueryManager:
     timerValue = 0
     timerOperator = ""
     timerQuery = ""
+    result = []
     
     def execute(self, query, startAt):
-        result = []
-        
+
         #Looping until all query lines are executed and removed
         while (query != ""):
             current = query.split("\n")[0]
             #print "current = " + current
             
             if current.__contains__("COUNT"):   
-                self.getCount(current, result, startAt)
+                self.getCount(current, self.result, startAt)
                 #print str(len(result))
                 query = query.replace(current, "")
             
             if current.__contains__("MAC ="):  
-                result = self.getMAC(current, result, startAt)
+                result = self.getMAC(current, self.result, startAt)
                 #print str(len(result))
                 query = query.replace(current, "")
             
             if current.__contains__("SOURCEIP ="):  
-                result = self.getSourceIP(current, result, startAt)
+                result = self.getSourceIP(current, self.result, startAt)
                 #print str(len(result))
                 query = query.replace(current, "")
                 
             if current.__contains__("SOURCEPT ="):  
-                result = self.getSourcePT(current, result, startAt)
+                result = self.getSourcePT(current, self.result, startAt)
                 #print str(len(result))
                 query = query.replace(current, "")
                 
             if current.__contains__("TARGETIP ="):  
-                result = self.getTargetIP(current, result, startAt)
+                result = self.getTargetIP(current, self.result, startAt)
                 #print str(len(result))
                 query = query.replace(current, "")
                 
             if current.__contains__("TARGETPT ="):  
-                result = self.getTargetPT(current, result, startAt)
+                result = self.getTargetPT(current, self.result, startAt)
                 #print str(len(result))
                 query = query.replace(current, "")
                 
             if current.__contains__("TIMER"):  
-                result = self.getTimer(current, result, startAt)
+                result = self.getTimer(current, self.result, startAt)
                 #print str(len(result))
                 query = query.replace(current, "")
                 
             #Remove current from query to continue with next line    
             query = query.replace(current, "").replace("\n", "", 1)
-        return result
+        return self.result
     
     
     def getMAC(self, query, mainResult, startAt):
