@@ -45,7 +45,7 @@ class Monitor:
         time.sleep(10)
         sys.exit(0)
         
-    def testMonitoring(self,dirConfig,dirLog,startAt):
+    def testMonitoring(self,dirConfig,dirLog):
         ruleManager = Rule()
         queryManager = QueryManager()
         fm = FileManager()
@@ -57,14 +57,14 @@ class Monitor:
         
         self.endPoint = len(logfile)
         
-        regex = queryManager.execute(ruleManager.query,startAt)
+        queryManager.execute(ruleManager.query)
 
         while(True):
-            lenLog = len(logFile)
-            if(self.endPoint != lenLog):
+            if(self.endPoint != queryManager.startAt):
                 print "logfile has changed"
-                regex = queryManager.execute(ruleManager.query,startAt)
+                queryManager.execute(ruleManager.query)
                 self.endPoint = lenLog
+                trigger(rulemanager.action, )
             else:
                 print "logfile has not changed"
                 

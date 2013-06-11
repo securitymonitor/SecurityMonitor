@@ -23,12 +23,11 @@ def Main():
     #config.rule
     dirLog = "TestFirewall.log"
     #config.filename
-    startAt = 0
     print "loading File Manager..."
     print "Monitoring Started!"
 
     
-    t = threading.Thread(target=monitor.testMonitoring(dirConfig,dirLog,startAt))
+    t = threading.Thread(target=monitor.testMonitoring(dirConfig,dirLog))
     t.setDaemon(True)
     t.start()
     

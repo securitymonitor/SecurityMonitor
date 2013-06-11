@@ -12,7 +12,13 @@ class Trigger:
         triggerObj = Trigger()
         emailObj = Email()
         
-        if errorType == 1:
+        listModules = fm.Read(Config.txt)
+        
+        for i in range(0, len(listModules))
+            if(listModules[i] == rulemanager.action)
+                sendmail
+            
+        if "Email" == rulemanger.action:
             emailObj.SendMail(errorMsg)
         elif errorType == 5:
             pass
