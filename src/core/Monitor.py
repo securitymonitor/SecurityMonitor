@@ -13,6 +13,7 @@ import time
 import re
 import sys
 from cgi import logfile
+from core.Configuration import Configuration
 
 class Monitor:
     '''
@@ -45,29 +46,34 @@ class Monitor:
         time.sleep(10)
         sys.exit(0)
         
-    def testMonitoring(self,dirConfig,dirLog):
+    def testMonitoring(self):
+        configuration = Configuration()
         ruleManager = Rule()
         queryManager = QueryManager()
         fm = FileManager()
-        logFile = fm.read(dirLog)      
-        ruleManager.readRules(dirConfig)
+        logFile = fm.read(configuration.firewallLog)  
+        queryManager.mainResult = logFile 
+    
+        ruleManager.readRules(configuration.ruleFile)
+        self.endPoint = len(logFile)
         
         print "Monitoring using the rule " + ruleManager.name + "...\n"
         print ruleManager.query
         
-        self.endPoint = len(logfile)
-        
-        queryManager.execute(ruleManager.query)
+        #queryManager.execute(ruleManager.query)
 
         while(True):
-            if(self.endPoint != queryManager.startAt):
+            if(self.endPoint > queryManager.startAt):
                 print "logfile has changed"
-                queryManager.execute(ruleManager.query)
-                self.endPoint = lenLog
-                trigger(rulemanager.action, )
+                if(queryManager.execute(ruleManager.query)):
+                    print "WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    
+                queryManager.startAt = self.endPoint
+                #trigger(rulemanager.action, )
             else:
                 print "logfile has not changed"
                 
             time.sleep(10)
-            logFile = fm.read(dirLog) 
-        
+            logFile = fm.read(configuration.firewallLog)
+            queryManager.mainResult = logFile
+            self.endPoint = len(logFile)

@@ -11,8 +11,8 @@ class Configuration:
     classdocs
     '''
     configFile = "Config.txt"
-    FirewallLog = "TestFirewall.log"
-    RuleDefinitionTable = "RuleDefinitionTable.txt"
+    firewallLog = "TestFirewall.log"
+    ruleDefinitionTable = "..\\custom\\rules\\RuleDefinitionTable.txt"
     ruleFile = "..\\custom\\rules\\Rules.txt"
     exceptionFile = "errorLog.txt"
     fromaddrs = ""
@@ -20,8 +20,8 @@ class Configuration:
     username = ""
     password = ""
     server = ""
-    LogDir = ""
-    RuleDir = ""
+    logDir = ""
+    ruleDir = ""
     
     def __init__(self):
         '''
@@ -34,7 +34,7 @@ class Configuration:
         #configuration example code here
      
         fm = FileManager()
-        allLines = fm.read("Config.txt")
+        allLines = fm.read(self.configFile)
         for line in allLines:
             data = [x.strip() for x in line.split('= ')]
             if 'fromaddr' in data:
@@ -51,43 +51,40 @@ class Configuration:
             if 'server' in data:
                 # put data into string
                 self.server = str(data[1])
-            if 'LogDir' in data:
-                self.LogDir = str(data[1])
-            if 'RuleDir' in data:
-                self.RuleDir = str(data[1])
+            if 'logDir' in data:
+                self.logDir = str(data[1])
+            if 'ruleDir' in data:
+                self.ruleDir = str(data[1])
                     
        
         try:
-            filename = self.LogDir
+            filename = self.logDir
             
         #Set the filename and open the file
         #filename = 'log.txt' #nog aangepast worden naar formulier input
             fm.read(filename)
-#does the file exists
+        #does the file exists
         except IOError as e:
             print ""
-            #print "Log " + filename + " bestaat niet".format(e.errno, e.strerror)
+        #print "Log " + filename + " bestaat niet".format(e.errno, e.strerror)
 
         else:
             print " Log " + filename + " geselecteerd "
         #find end of file
-   
         
-    #rule definieren     Werkt wel   
+        #rule definieren     Werkt wel   
         try:
         #Set the rule to use
-            rule = self.RuleDir #nog aangepast worden naar formulier input
+            rule = self.ruleDir #nog aangepast worden naar formulier input
             file = execfile(rule)
-            
-            
 
-#does the file exists
+        #does the file exists
         except IOError as e:
-            #print "Rule " + rule + " bestaat niet".format(e.errno, e.strerror)
+        #print "Rule " + rule + " bestaat niet".format(e.errno, e.strerror)
             print ""
             
         else:
             print " Ruleset " + rule + " is ingeladen"
-        
+            
         print "Configuration completed."
         

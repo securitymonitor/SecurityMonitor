@@ -1,6 +1,7 @@
 //directories of the Files
-LogDir = /path/to/log
-RuleDir = /path/to/rule
+logDir = /path/to/log
+ruleDir = /path/to/rule
+
 
 fromaddr = hvaminorfis@gmail.com
 toaddrs  = hvaminorfis@gmail.com

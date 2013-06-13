@@ -2,7 +2,7 @@ from core.Configuration import Configuration
 
 class Definitions:
 
-    ACTION,COUNT,DATA,DESCRIPTION,NAME,SOURCEIP,SOURCEPT,TARGETIP,TARGETPT,TIMER = range(10)
+    ACTION,COUNT,DATA,DATETIME,DESCRIPTION,NAME,SOURCEIP,SOURCEPT,TARGETIP,TARGETPT,TIME = range(11)
     
     @classmethod
     def toString(self, val):
@@ -12,7 +12,7 @@ class Definitions:
     @classmethod
     def readConfigFile(self):
         config = Configuration
-        configFile = open(config.RuleDefinitionTable)
+        configFile = open(config.ruleDefinitionTable)
         configFileRead = configFile.readlines()
         valueAssignment = "="
         valDict = {}
@@ -40,13 +40,14 @@ class Definitions:
 Definitions.ACTION      = ''
 Definitions.COUNT       = ''
 Definitions.DATA        = ''
+Definitions.DATETIME    = ''
 Definitions.DESCRIPTION = ''
 Definitions.NAME        = ''
 Definitions.SOURCEIP    = ''
 Definitions.SOURCEPT    = ''
 Definitions.TARGETIP    = ''
 Definitions.TARGETPT    = ''
-Definitions.TIMER        = ''
+Definitions.TIME        = ''
 
 
 a = Definitions.getValueDefinition('SOURCEIP')
