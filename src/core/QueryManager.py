@@ -42,9 +42,17 @@ class QueryManager:
             if self.current.__contains__("COUNT"):   
                 self.getCount()
                 query = query.replace(self.current, "")
+                
+            if self.current.__contains__("DATA ="):  
+                self.getData()
+                query = query.replace(self.current, "")
             
             if self.current.__contains__("MAC ="):  
                 self.getMAC()
+                query = query.replace(self.current, "")
+            
+            if self.current.__contains__("PROTO ="):  
+                self.getProto()
                 query = query.replace(self.current, "")
             
             if self.current.__contains__("SOURCEIP ="):  
@@ -77,6 +85,7 @@ class QueryManager:
         else:
             return False
     
+    
     def getMAC(self):
         regex = Definitions.getValueDefinition("MAC")
         
@@ -87,7 +96,29 @@ class QueryManager:
             
         return self.executeRegex(regex)
     
+    
+    def getData(self):
+        regex = Definitions.getValueDefinition("DATA")
         
+        if self.current.__contains__("*"):
+            regex = regex + "" #Alle TCP flag(s)
+        else:
+            regex = regex + self.current.split("=")[1].strip() #gedefineerde TCP flag(s)
+            
+        return self.executeRegex(regex)
+        
+        
+    def getProto(self):
+        regex = Definitions.getValueDefinition("PROTO")
+        
+        if self.current.__contains__("*"):
+            regex = regex + "" #Alle Protocollen
+        else:
+            regex = regex + self.current.split("=")[1].strip() #gedefineerde Protocol
+                        
+        return self.executeRegex(regex)
+    
+    
     def getSourceIP(self):
         regex = Definitions.getValueDefinition("SOURCEIP")
         

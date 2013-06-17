@@ -1,8 +1,0 @@
-{
-NAME = 'Example Attack'
-DESCRIPTION = 'This example checks if an IP connects more than 4 times within 10 seconds, if so an email will be sent.'
-SOURCEIP = *
-COUNT > 4
-TIME < 10000
-ACTION = 'Email.py'
-}

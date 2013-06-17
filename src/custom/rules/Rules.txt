@@ -6,7 +6,6 @@ TIMER < 10
 COUNT > 4
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'DoS SYN flood attack'
 DESCRIPTION = 'Rule check for: (TCP SYN flood) - TCP SYN packets with a threshold of 400 or more that are targeted at a specific target IP.'
@@ -15,10 +14,9 @@ TARGETIP = 145.92.6.97
 PROTOCOL = TCP
 DATA = SYN
 COUNT > 400
-TIME < 2
+TIMER < 2
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'DoS UDP flood attack'
 DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 or more that are targeted at a specific target IP.'
@@ -26,10 +24,9 @@ SOURCEIP = *
 TARGETIP = 145.92.6.10
 PROTOCOL = UDP
 COUNT > 400
-TIME < 10
+TIMER < 10
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'Land Attack'
 DESCRIPTION = 'Rule check for: If the source and target IP are the same.'
@@ -39,7 +36,6 @@ PROTOCOL = TCP
 DATA = SYN
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'Undefined behavior Attack'
 DESCRIPTION = 'TCP Rule check for: NULL'
@@ -49,7 +45,6 @@ PROTOCOL = TCP
 DATA = ''
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'Undefined behavior Attack'
 DESCRIPTION = 'TCP Rule check for: SYN,FIN.'
@@ -59,7 +54,6 @@ PROTOCOL = TCP
 DATA = SYN,FIN
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'Undefined behavior Attack'
 DESCRIPTION = 'TCP Rule check for: SYN,FIN,PSH.'
@@ -69,7 +63,6 @@ PROTOCOL = TCP
 DATA = SYN,FIN,PSH
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'Undefined behavior Attack'
 DESCRIPTION = 'TCP Rule check for: SYN,FIN,RST.'
@@ -79,7 +72,6 @@ PROTOCOL = TCP
 DATA = SYN,FIN,RST
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'Undefined behavior Attack'
 DESCRIPTION = 'TCP Rule check for: SYN,FIN,RST,PSH.'
@@ -89,7 +81,6 @@ PROTOCOL = TCP
 DATA = SYN,FIN,RST,PSH
 ACTION = 'Email.py'
 }
-
 {
 NAME = 'Undefined behavior Attack'
 DESCRIPTION = 'TCP Rule check for: FIN.'
