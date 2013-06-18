@@ -76,4 +76,6 @@ class Monitor:
             time.sleep(10)
             logFile = fm.read(configuration.firewallLog)
             queryManager.mainResult = logFile
+            print str(len(logFile))
+            print str(len(queryManager.mainResult))
             self.endPoint = len(logFile)

@@ -1,9 +1,11 @@
 {
-NAME = 'Source check'
-DESCRIPTION = 'This example checks if an IP connects more than 4 times within 10 seconds, if so an email will be sent.'
-SOURCEIP = 145.92.6.10
-TIMER < 10
-COUNT > 4
+NAME = 'DoS UDP flood attack'
+DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 or more that are targeted at a specific target IP.'
+SOURCEIP = *
+TARGETIP = 145.92.6.10
+PROTOCOL = UDP
+COUNT > 350
+TIMER < 8
 ACTION = 'Email.py'
 }
 {
@@ -13,18 +15,16 @@ SOURCEIP = *
 TARGETIP = 145.92.6.97
 PROTOCOL = TCP
 DATA = SYN
-COUNT > 400
+COUNT > 350
 TIMER < 2
 ACTION = 'Email.py'
 }
 {
-NAME = 'DoS UDP flood attack'
-DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 or more that are targeted at a specific target IP.'
-SOURCEIP = *
-TARGETIP = 145.92.6.10
-PROTOCOL = UDP
-COUNT > 400
+NAME = 'Source check'
+DESCRIPTION = 'This example checks if an IP connects more than 4 times within 10 seconds, if so an email will be sent.'
+SOURCEIP = 145.92.6.10
 TIMER < 10
+COUNT > 4
 ACTION = 'Email.py'
 }
 {

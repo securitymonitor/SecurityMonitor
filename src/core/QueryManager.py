@@ -42,47 +42,60 @@ class QueryManager:
             if self.current.__contains__("COUNT"):   
                 self.getCount()
                 query = query.replace(self.current, "")
+                print "11"
                 
             if self.current.__contains__("DATA ="):  
                 self.getData()
                 query = query.replace(self.current, "")
+                print "22"
             
             if self.current.__contains__("MAC ="):  
                 self.getMAC()
                 query = query.replace(self.current, "")
+                print "33"
             
             if self.current.__contains__("PROTO ="):  
                 self.getProto()
                 query = query.replace(self.current, "")
+                print "44"
             
             if self.current.__contains__("SOURCEIP ="):  
                 self.getSourceIP()
                 query = query.replace(self.current, "")
+                print "55"
                 
             if self.current.__contains__("SOURCEPT ="):  
                 self.getSourcePT()
                 query = query.replace(self.current, "")
+                print "66"
                 
             if self.current.__contains__("TARGETIP ="):  
                 self.getTargetIP()
                 query = query.replace(self.current, "")
+                print "77"
                 
             if self.current.__contains__("TARGETPT ="):  
                 self.getTargetPT()
                 query = query.replace(self.current, "")
+                print "88"
                 
             if self.current.__contains__("TIMER"):  
                 self.getTimer()
                 query = query.replace(self.current, "")
+                print "99"
                 
             #Remove current from query to continue with next line    
             query = query.replace(self.current, "").replace("\n", "", 1)
         
         if(self.timeCountIsValid()):
+            print "1"
             return self.finalize()
         elif(len(self.mainResult) != 0):
+            print "5"
+            print str(self.mainResult)
             return True
         else:
+            print "6"
             return False
     
     
@@ -167,14 +180,12 @@ class QueryManager:
         countValue, countOperator = self.getValueByOperator()
         self.countValue = int(countValue)
         self.countOperator = countOperator
-        self.executeRegex(Definitions.getValueDefinition("COUNT"))
         
         
     def getTimer(self):
         timerValue, timerOperator = self.getValueByOperator()
         self.timerValue = int(timerValue)
         self.timerOperator = timerOperator
-        self.executeRegex(Definitions.getValueDefinition("TIMER"))
 
     def getValueByOperator(self):
             value = 0
@@ -197,35 +208,58 @@ class QueryManager:
         for i in range(self.startAt,len(self.mainResult)):
             if(re.search(regex, str(self.mainResult[i]))):
                 temp.append(self.mainResult[i])
-                
+        
+        print "before: "+str(len(self.mainResult)) 
+        
         del self.mainResult[:]
         
+        print "temp" + str(len(temp))
+        
         for i in range(0,len(temp)):
-            self.mainResult.append(temp[i])               
+            self.mainResult.append(temp[i]) 
+            
+        print "temp" + str(len(temp))
+        print "after: "+str(len(self.mainResult))
+        
+                          
 
     def timeCountIsValid(self):
         return self.countValue != 0 and self.countOperator != "" and self.timerValue != "" and self.timerOperator != ""
 
     def finalize(self):        
-        if(self.operators[self.countOperator](len(self.mainResult), self.countValue)):
-            regexTime = Definitions.getValueDefinition("TIME")
+        print "-------- "+str(self.countOperator)+" -------- "+str(len(self.mainResult))+" --------------- "+str(self.countValue)
         
-            startTime = re.findall(regexTime, self.mainResult[0]) 
-            endTime = re.findall(regexTime, self.mainResult[-1]) 
+        if(self.operators[self.countOperator](len(self.mainResult), self.countValue)):
+            print "2"
+            print "-------------"+str(self.countOperator)+"-------------"+str(self.countValue)+"-------------"+str(len(self.mainResult))
+            regexDateTime = Definitions.getValueDefinition("DATETIME")
+            regexTime = Definitions.getValueDefinition("TIME")
+            
+            startDateTime = re.findall(regexDateTime, self.mainResult[0])
+            endDateTime = re.findall(regexDateTime, self.mainResult[-1])
+            
+            startTime = re.findall(regexTime, startDateTime[0]) 
+            endTime = re.findall(regexTime, endDateTime[0]) 
             
             startTimeSplit = startTime[0].split(":")
             endTimeSplit = endTime[0].split(":")
             
+            print str(startTime)
+            print str(endTime)
+            
             if(int(endTimeSplit[1]) > int(startTimeSplit[1])):
+                print "3"
                 minutes = int(endTimeSplit[1]) - int(startTimeSplit[1])
-                endTimeSplit[2] = str(int(endTimeSplit[2]) + (60 * minutes))
+                endTimeSplit[2] = int(endTimeSplit[2]) + (60 * minutes)
                 
                 timeRange = int(endTimeSplit[2]) - int(startTimeSplit[2])  
-        
-                if(self.operators[self.timerOperator](int(timeRange), self.timerValue)):
-                    return True    
-                else:
-                    return False
+            else:
+                timeRange = int(endTimeSplit[2]) - int(startTimeSplit[2])  
+
+            if(self.operators[self.timerOperator](int(timeRange), self.timerValue)):
+                print "4"
+                print "-------------"+str(self.timerValue)+"-------------"+str(self.timerOperator)+"-------------"
+                return True    
             else:
                 return False  
         else:
