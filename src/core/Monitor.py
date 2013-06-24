@@ -3,17 +3,17 @@ Created on Mar 6, 2013
 
 @author: Sujen
 '''
-from core.FileManager import FileManager
-from core.Rule import Rule
+from FileManager import FileManager
+from Rule import Rule
 from mimify import File
-from core.QueryManager import QueryManager
-from core.Trigger import Trigger
+from QueryManager import QueryManager
+from Trigger import Trigger
 import operator
 import time
 import re
 import sys
 from cgi import logfile
-from core.Configuration import Configuration
+from Configuration import Configuration
 
 class Monitor:
     '''
@@ -47,6 +47,7 @@ class Monitor:
         sys.exit(0)
         
     def testMonitoring(self):
+        import threading
         configuration = Configuration()
         ruleManager = Rule()
         queryManager = QueryManager()
@@ -54,19 +55,23 @@ class Monitor:
         logFile = fm.read(configuration.firewallLog)  
         queryManager.mainResult = logFile 
     
-        ruleManager.readRules(configuration.ruleFile)
+        #ruleManager.readRules(configuration.ruleFile)
         self.endPoint = len(logFile)
-        
-        print "Monitoring using the rule " + ruleManager.name + "...\n"
-        print ruleManager.query
-        
-        #queryManager.execute(ruleManager.query)
 
         while(True):
             if(self.endPoint > queryManager.startAt):
                 print "logfile has changed"
-                if(queryManager.execute(ruleManager.query)):
-                    print "WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                
+                for ruleFile in range(len(configuration.ruleFiles)): 
+                    configuration.ruleFiles[ruleFile].strip("'")
+                    useRule = configuration.ruleDir + configuration.ruleFiles[ruleFile]
+                    ruleManager.readRules(useRule)
+                    print useRule
+                    print "Monitoring using the rule " + ruleManager.name + "...\n"
+                    print ruleManager.query
+                    
+                    if(queryManager.execute(ruleManager.query)):
+                        print "WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                     
                 queryManager.startAt = self.endPoint
                 #trigger(rulemanager.action, )

@@ -1,7 +1,6 @@
 //directories of the Files
-logDir = /path/to/log
-ruleDir = /path/to/rule
-
+logDir = D:\GitHub\SecurityMonitor\src\core\
+ruleDir = D:\GitHub\SecurityMonitor\src\custom\rules\
 
 fromaddr = hvaminorfis@gmail.com
 toaddrs  = hvaminorfis@gmail.com

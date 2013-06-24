@@ -1,0 +1,8 @@
+{
+NAME = 'Source check'
+DESCRIPTION = 'This example checks if an IP connects more than 4 times within 10 seconds, if so an email will be sent.'
+SOURCEIP = 145.92.6.10
+COUNT > 4
+TIMER < 10
+ACTION = 'Email.py'
+}

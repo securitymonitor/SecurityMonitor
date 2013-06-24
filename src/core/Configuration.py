@@ -13,7 +13,7 @@ class Configuration:
     configFile = "Config.txt"
     firewallLog = "TestFirewall.log"
     ruleDefinitionTable = "..\\custom\\rules\\RuleDefinitionTable.txt"
-    ruleFile = "..\\custom\\rules\\Rules.txt"
+    ruleFiles = []
     exceptionFile = "errorLog.txt"
     fromaddrs = ""
     toaddrs = ""
@@ -29,6 +29,19 @@ class Configuration:
         '''
         self.configure()
     
+    @classmethod
+    def getRuleFiles(self, ruleDir):
+            print "Searching for rule files..."
+            from os import listdir
+            import re
+            del self.ruleFiles[:]
+            ruleFiles = listdir(ruleDir)
+            ruleFilePattern = re.compile('rule.+?.txt')
+            for file in ruleFiles:
+                fileMatch = re.match(ruleFilePattern, file)
+                if fileMatch:
+                    self.ruleFiles.append(file) 
+                    
     def configure(self):
         print"Configuring..."
         #configuration example code here
@@ -55,7 +68,7 @@ class Configuration:
                 self.logDir = str(data[1])
             if 'ruleDir' in data:
                 self.ruleDir = str(data[1])
-                    
+                Configuration.getRuleFiles(self.ruleDir)
        
         try:
             filename = self.logDir
