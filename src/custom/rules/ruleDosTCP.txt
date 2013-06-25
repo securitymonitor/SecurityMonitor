@@ -1,0 +1,11 @@
+{
+NAME = 'DoS SYN flood attack'
+DESCRIPTION = 'Rule check for: (TCP SYN flood) - TCP SYN packets with a threshold of 400 or more that are targeted at a specific target IP.'
+SOURCEIP = *
+TARGETIP = 145.92.6.97
+PROTOCOL = TCP
+DATA = SYN
+COUNT > 200
+TIMER < 2
+ACTION = 'Email.py'
+}

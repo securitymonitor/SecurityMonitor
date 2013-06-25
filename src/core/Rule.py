@@ -11,7 +11,7 @@ class Rule:
     description = ""
     action = ""
     query = ""
-
+    
     fileManager = FileManager()
     #regex = fileManager.read("Rules.txt")
     

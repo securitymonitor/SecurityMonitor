@@ -10,10 +10,12 @@ from core.Trigger import Trigger
 from core.FileManager import FileManager
 from core.Configuration import Configuration
 
+
 class QueryManager:
     '''
     The Security Monitoring Query Manager
     '''
+    trueFalse = False
     countValue = 0
     countOperator = ""
     timerValue = 0
@@ -21,6 +23,7 @@ class QueryManager:
     timerQuery = ""
     startAt = 0
     mainResult = []
+    tmpMainResult = []
     current = ""
     operators = {
         "==": operator.eq,
@@ -205,28 +208,32 @@ class QueryManager:
     def executeRegex(self, regex):
         temp = []
         
+        print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>" + str(self.startAt)
+        print "###################### "  + str(len(temp))
+        
         for i in range(self.startAt,len(self.mainResult)):
             if(re.search(regex, str(self.mainResult[i]))):
                 temp.append(self.mainResult[i])
         
-        print "before: "+str(len(self.mainResult)) 
+        print "before main: "+str(len(self.mainResult)) 
         
         del self.mainResult[:]
         
-        print "temp" + str(len(temp))
-        
+        print "before temp" + str(len(temp))
+
         for i in range(0,len(temp)):
-            self.mainResult.append(temp[i]) 
-            
-        print "temp" + str(len(temp))
-        print "after: "+str(len(self.mainResult))
+            self.mainResult.append(temp[i])
         
-                          
+        print "after temp" + str(len(temp))
+        print "after main: "+str(len(self.mainResult))
+        del temp
 
     def timeCountIsValid(self):
         return self.countValue != 0 and self.countOperator != "" and self.timerValue != "" and self.timerOperator != ""
 
-    def finalize(self):        
+    def finalize(self):
+        from Monitor import Monitor
+        monitor = Monitor()
         print "-------- "+str(self.countOperator)+" -------- "+str(len(self.mainResult))+" --------------- "+str(self.countValue)
         
         if(self.operators[self.countOperator](len(self.mainResult), self.countValue)):
@@ -255,12 +262,19 @@ class QueryManager:
                 timeRange = int(endTimeSplit[2]) - int(startTimeSplit[2])  
             else:
                 timeRange = int(endTimeSplit[2]) - int(startTimeSplit[2])  
-
+                
             if(self.operators[self.timerOperator](int(timeRange), self.timerValue)):
-                print "4"
+                print "True!!!!!!!!!!!!! 01"
                 print "-------------"+str(self.timerValue)+"-------------"+str(self.timerOperator)+"-------------"
-                return True    
+                self.trueFalse = True
+                monitor.threadQueue.put(self.trueFalse)
+                return True
+            
             else:
+                self.trueFalse = False
+                monitor.threadQueue.put(self.trueFalse)
                 return False  
         else:
+            self.trueFalse = False
+            monitor.threadQueue.put(self.trueFalse)
             return False
