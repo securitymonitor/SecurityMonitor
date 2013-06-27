@@ -36,8 +36,6 @@ class QueryManager:
     
     def execute(self, query):
         #Looping until all query lines are executed and removed
-        print str(len(self.mainResult)) + "jasper exception"
-        print query
         while (query != ""):
             
             self.current = query.split("\n")[0]
@@ -83,15 +81,11 @@ class QueryManager:
             query = query.replace(self.current, "").replace("\n", "", 1)
         
         if(self.timeCountIsValid()):
-            print "1"
             return self.finalize()
         elif(len(self.mainResult) != 0):
-            print "55555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555"
-            print "5"
             print str(self.mainResult)
             return True
         else:
-            print "66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666"
             return False
     
     
@@ -205,20 +199,16 @@ class QueryManager:
             return value, operator
         
     def executeRegex(self, regex):
-        print regex + "rex"
-        temp = []
-        
-        for i in range(self.startAt,len(self.mainResult)):
+        temp = []   
+        for i in range(0,len(self.mainResult)):
             if(re.search(regex, str(self.mainResult[i]))):
                 temp.append(self.mainResult[i])
-                
-        del self.mainResult[:]
-        self.mainResult = []
-        
+      
+        self.mainResult = None
+        self.mainResult = [] 
         for i in range(0,len(temp)):
-            self.mainResult.append(temp[i])
-        
-        print "na del mainres is " + str(len(self.mainResult))
+            self.mainResult.append(temp[i])  
+        temp = None
 
     def timeCountIsValid(self):
         return self.countValue != 0 and self.countOperator != "" and self.timerValue != "" and self.timerOperator != ""
@@ -226,11 +216,8 @@ class QueryManager:
     def finalize(self):
         from Monitor import Monitor
         monitor = Monitor()
-        print "-------- "+str(self.countOperator)+" -------- "+str(len(self.mainResult))+" --------------- "+str(self.countValue)
         
         if(self.operators[self.countOperator](len(self.mainResult), self.countValue)):
-            print "2"
-            print "-------------"+str(self.countOperator)+"-------------"+str(self.countValue)+"-------------"+str(len(self.mainResult))
             regexDateTime = Definitions.getValueDefinition("DATETIME")
             regexTime = Definitions.getValueDefinition("TIME")
             
@@ -247,7 +234,6 @@ class QueryManager:
             print str(endTime)
             
             if(int(endTimeSplit[1]) > int(startTimeSplit[1])):
-                print "3"
                 minutes = int(endTimeSplit[1]) - int(startTimeSplit[1])
                 endTimeSplit[2] = int(endTimeSplit[2]) + (60 * minutes)
                 
@@ -257,7 +243,6 @@ class QueryManager:
                 
             if(self.operators[self.timerOperator](int(timeRange), self.timerValue)):
                 print "True!!!!!!!!!!!!! 01"
-                print "-------------"+str(self.timerValue)+"-------------"+str(self.timerOperator)+"-------------"
                 return True
             
             else:

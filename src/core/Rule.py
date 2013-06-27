@@ -72,11 +72,6 @@ class Rule:
         split = entry.split(definition)
         value = split[1].replace("'", "").replace("=", "").strip()
         return value
-    
-    def my_range(self, start, end, step):
-        while start <= end:
-            yield start
-            start += step
                 
     def readRules(self, rules):
         fileManager = FileManager()
@@ -96,17 +91,7 @@ class Rule:
                         query = ""
 
                     #Get the name, description and action from the rule, build query
-                    if ((rulesList[entry].__contains__('NAME') == 1)) and (inRule):
-                        value = self.getValue(rulesList[entry], 'NAME')
-                        self.name = value
-                    elif (rulesList[entry].__contains__('DESCRIPTION')) and (inRule):
-                        value = self.getValue(rulesList[entry], 'DESCRIPTION')
-                        self.description = value
-                    elif (rulesList[entry].__contains__('ACTION')) and (inRule):
-                        value = self.getValue(rulesList[entry], 'ACTION')
-                        self.action = value
-                    else:
-                        if (inRule):
-                            query = query + rulesList[entry]
+                if (inRule):
+                    query = query + rulesList[entry]
             
                 self.query = query

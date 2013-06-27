@@ -14,6 +14,7 @@ class Configuration:
     firewallLog = "TestFirewall.log"
     ruleDefinitionTable = "..\\custom\\rules\\RuleDefinitionTable.txt"
     ruleFiles = []
+    actionFiles = []
     exceptionFile = "errorLog.txt"
     fromaddrs = ""
     toaddrs = ""
@@ -22,6 +23,7 @@ class Configuration:
     server = ""
     logDir = ""
     ruleDir = ""
+    actionDir = ""
     
     def __init__(self):
         '''
@@ -31,16 +33,29 @@ class Configuration:
     
     @classmethod
     def getRuleFiles(self, ruleDir):
-            print "Searching for rule files..."
-            from os import listdir
-            import re
-            del self.ruleFiles[:]
-            ruleFiles = listdir(ruleDir)
-            ruleFilePattern = re.compile('rule.+?.txt')
-            for file in ruleFiles:
-                fileMatch = re.match(ruleFilePattern, file)
-                if fileMatch:
-                    self.ruleFiles.append(file) 
+        print "Searching for rule files..."
+        from os import listdir
+        import re
+        del self.ruleFiles[:]
+        ruleFiles = listdir(ruleDir)
+        ruleFilePattern = re.compile('rule.+?.txt')
+        for file in ruleFiles:
+            fileMatch = re.match(ruleFilePattern, file)
+            if fileMatch:
+                self.ruleFiles.append(file) 
+    
+    @classmethod                
+    def getActionNames(self, actionDir):
+        from os import listdir
+        import re
+        del self.actionFiles[:]
+        actionFiles = listdir(actionDir)
+        actionFilePattern = re.compile('.+?.*')
+        for file in actionFiles:
+            fileMatch = re.match(actionFilePattern, file)
+            if fileMatch:
+                self.actionFiles.append(file) 
+                print str(file)     
                     
     def configure(self):
         print"Configuring..."
@@ -69,6 +84,9 @@ class Configuration:
             if 'ruleDir' in data:
                 self.ruleDir = str(data[1])
                 Configuration.getRuleFiles(self.ruleDir)
+            if 'actionDir' in data:
+                self.actionDir = str(data[1])
+                Configuration.getActionNames(self.actionDir)
        
         try:
             filename = self.logDir

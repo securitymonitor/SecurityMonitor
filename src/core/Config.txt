@@ -1,6 +1,7 @@
 //directories of the Files
 logDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\core\
 ruleDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\rules\
+actionDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\actions\
 
 fromaddr = hvaminorfis@gmail.com
 toaddrs  = hvaminorfis@gmail.com

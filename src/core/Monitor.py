@@ -7,8 +7,8 @@ from FileManager import FileManager
 from Rule import Rule
 from mimify import File
 from QueryManager import QueryManager
-from Trigger import Trigger
-import thread
+from core.Trigger import Trigger
+from threading import Thread
 import operator
 import time
 import re
@@ -54,28 +54,26 @@ class Monitor:
     def monitor(self, configuration, rule):
         fm = FileManager()
         queryManager = QueryManager()
+        triggerObj = Trigger()
         logFile = fm.read(configuration.firewallLog)
         queryManager.mainResult = logFile 
         endPoint = len(logFile)
         
         while (True):
-            print "----------------------------------------------------------------------------"
             print rule
             if (endPoint > queryManager.startAt):
-                print str(queryManager.startAt)+"BQQQQQQQQQQQQQQQQQQQQQ"
-                print "---------------------------------------------------------------------------+"
                 if(queryManager.execute(rule)):
+                    triggerObj.ExecuteTrigger(rule)
                     print "WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                    
                 else:
                     print "No trigger..."
-                
                   
             queryManager.startAt = endPoint
             time.sleep(10)
             
             logFile = fm.read(configuration.firewallLog)
             queryManager.mainResult = logFile 
-            print str(len(queryManager.mainResult))+"Vince\n"+str(queryManager.startAt)
             endPoint = len(logFile)
 
     def testMonitoring(self):
@@ -88,4 +86,6 @@ class Monitor:
             allRules = ruleManager.ruleList
             
         for i in range(0, len(ruleManager.ruleList)):
-            self.monitor(configuration, allRules[i])
+            a = Thread(target=self.monitor, args=(configuration, allRules[i]))
+            a.start()
+            print str(a)
