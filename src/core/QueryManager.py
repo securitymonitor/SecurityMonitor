@@ -15,7 +15,6 @@ class QueryManager:
     '''
     The Security Monitoring Query Manager
     '''
-    trueFalse = False
     countValue = 0
     countOperator = ""
     timerValue = 0
@@ -32,60 +31,53 @@ class QueryManager:
         "<": operator.lt,
         "<=": operator.le,
         ">": operator.gt,
-        ">": operator.ge
+        ">=": operator.ge
     }
     
     def execute(self, query):
-
         #Looping until all query lines are executed and removed
+        print str(len(self.mainResult)) + "jasper exception"
+        print query
         while (query != ""):
+            
             self.current = query.split("\n")[0]
             #print "current = self.currentrent
             
             if self.current.__contains__("COUNT"):   
                 self.getCount()
                 query = query.replace(self.current, "")
-                print "11"
                 
             if self.current.__contains__("DATA ="):  
                 self.getData()
                 query = query.replace(self.current, "")
-                print "22"
             
             if self.current.__contains__("MAC ="):  
                 self.getMAC()
                 query = query.replace(self.current, "")
-                print "33"
             
             if self.current.__contains__("PROTO ="):  
                 self.getProto()
                 query = query.replace(self.current, "")
-                print "44"
             
             if self.current.__contains__("SOURCEIP ="):  
                 self.getSourceIP()
                 query = query.replace(self.current, "")
-                print "55"
                 
             if self.current.__contains__("SOURCEPT ="):  
                 self.getSourcePT()
                 query = query.replace(self.current, "")
-                print "66"
                 
             if self.current.__contains__("TARGETIP ="):  
                 self.getTargetIP()
                 query = query.replace(self.current, "")
-                print "77"
                 
             if self.current.__contains__("TARGETPT ="):  
                 self.getTargetPT()
                 query = query.replace(self.current, "")
-                print "88"
                 
             if self.current.__contains__("TIMER"):  
                 self.getTimer()
                 query = query.replace(self.current, "")
-                print "99"
                 
             #Remove current from query to continue with next line    
             query = query.replace(self.current, "").replace("\n", "", 1)
@@ -94,11 +86,12 @@ class QueryManager:
             print "1"
             return self.finalize()
         elif(len(self.mainResult) != 0):
+            print "55555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555"
             print "5"
             print str(self.mainResult)
             return True
         else:
-            print "6"
+            print "66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666"
             return False
     
     
@@ -203,30 +196,29 @@ class QueryManager:
             if self.current.__contains__("<"):    
                 value = self.current.split("<")[1].strip()
                 operator = "<"
+            if self.current.__contains__("<="):    
+                value = self.current.split("<=")[1].strip()
+                operator = "<="
+            if self.current.__contains__(">="):    
+                value = self.current.split(">=")[1].strip()
+                operator = ">="
             return value, operator
         
     def executeRegex(self, regex):
+        print regex + "rex"
         temp = []
-        
-        print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~>>" + str(self.startAt)
-        print "###################### "  + str(len(temp))
         
         for i in range(self.startAt,len(self.mainResult)):
             if(re.search(regex, str(self.mainResult[i]))):
                 temp.append(self.mainResult[i])
-        
-        print "before main: "+str(len(self.mainResult)) 
-        
+                
         del self.mainResult[:]
+        self.mainResult = []
         
-        print "before temp" + str(len(temp))
-
         for i in range(0,len(temp)):
             self.mainResult.append(temp[i])
         
-        print "after temp" + str(len(temp))
-        print "after main: "+str(len(self.mainResult))
-        del temp
+        print "na del mainres is " + str(len(self.mainResult))
 
     def timeCountIsValid(self):
         return self.countValue != 0 and self.countOperator != "" and self.timerValue != "" and self.timerOperator != ""
@@ -266,15 +258,9 @@ class QueryManager:
             if(self.operators[self.timerOperator](int(timeRange), self.timerValue)):
                 print "True!!!!!!!!!!!!! 01"
                 print "-------------"+str(self.timerValue)+"-------------"+str(self.timerOperator)+"-------------"
-                self.trueFalse = True
-                monitor.threadQueue.put(self.trueFalse)
                 return True
             
             else:
-                self.trueFalse = False
-                monitor.threadQueue.put(self.trueFalse)
                 return False  
         else:
-            self.trueFalse = False
-            monitor.threadQueue.put(self.trueFalse)
             return False

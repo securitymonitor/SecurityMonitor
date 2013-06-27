@@ -5,12 +5,15 @@ Created on Mar 6, 2013
 '''
 from core.FileManager import FileManager
 from core.Definition import Definitions
+from robotparser import RuleLine
 
 class Rule:
     name = ""
     description = ""
     action = ""
     query = ""
+    startAt = 0
+    ruleList = []
     
     fileManager = FileManager()
     #regex = fileManager.read("Rules.txt")
@@ -63,9 +66,6 @@ class Rule:
                 connection = lnsplit[0]
                 print "##Method call Action.checkEntryFrequency()##"
                 actionObj.checkEntryFrequency(connection)
-                
-    #regexFile = open("Rules.txt")
-    #var1 = checkEntry('',regexFile)
     
     #Gets the definition value
     def getValue(self, entry, definition):
@@ -73,33 +73,40 @@ class Rule:
         value = split[1].replace("'", "").replace("=", "").strip()
         return value
     
+    def my_range(self, start, end, step):
+        while start <= end:
+            yield start
+            start += step
+                
     def readRules(self, rules):
         fileManager = FileManager()
         rulesList = fileManager.read(rules)
         query = ""
         inRule = 0
-        
-        for entry in rulesList:
-            if inRule == 0:
-                if entry.__contains__('{') == 1: #Start of a rule.
-                    inRule = 1
-
-            else:
-                if entry.__contains__('}') == 1: #End of a rule.
-                    inRule = 0
-                    break
-                
-                #Get the name, description and action from the rule, build query
-                if entry.__contains__('NAME') == 1:
-                    value = self.getValue(entry, 'NAME')
-                    self.name = value
-                elif entry.__contains__('DESCRIPTION') == 1:
-                    value = self.getValue(entry, 'DESCRIPTION')
-                    self.description = value
-                elif entry.__contains__('ACTION') == 1:
-                    value = self.getValue(entry, 'ACTION')
-                    self.action = value
+               
+        if(len(rulesList) > self.startAt): 
+            for entry in range(self.startAt, len(rulesList)):
+                if inRule == 0:
+                    if rulesList[entry].__contains__('{') == 1: #Start of a rule.
+                        inRule = 1
                 else:
-                    query = query + entry
-                    
-        self.query = query
+                    if rulesList[entry].__contains__('}') == 1: #End of a rule.
+                        inRule = 0
+                        self.ruleList.append(query)
+                        query = ""
+
+                    #Get the name, description and action from the rule, build query
+                    if ((rulesList[entry].__contains__('NAME') == 1)) and (inRule):
+                        value = self.getValue(rulesList[entry], 'NAME')
+                        self.name = value
+                    elif (rulesList[entry].__contains__('DESCRIPTION')) and (inRule):
+                        value = self.getValue(rulesList[entry], 'DESCRIPTION')
+                        self.description = value
+                    elif (rulesList[entry].__contains__('ACTION')) and (inRule):
+                        value = self.getValue(rulesList[entry], 'ACTION')
+                        self.action = value
+                    else:
+                        if (inRule):
+                            query = query + rulesList[entry]
+            
+                self.query = query

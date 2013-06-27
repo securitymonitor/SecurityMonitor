@@ -13,16 +13,16 @@ import operator
 import time
 import re
 import sys
-import Queue
 from cgi import logfile
 from Configuration import Configuration
+from core.Rule import Rule
+from robotparser import RuleLine
 
 class Monitor:
     '''
     classdocs
     '''
     endPoint = 0
-    threadQueue = Queue.Queue()
         
     def __init__(self):
         #fileManager.read()
@@ -50,64 +50,42 @@ class Monitor:
         time.sleep(10)
         sys.exit(0)
         
+
+    def monitor(self, configuration, rule):
+        fm = FileManager()
+        queryManager = QueryManager()
+        logFile = fm.read(configuration.firewallLog)
+        queryManager.mainResult = logFile 
+        endPoint = len(logFile)
+        
+        while (True):
+            print "----------------------------------------------------------------------------"
+            print rule
+            if (endPoint > queryManager.startAt):
+                print str(queryManager.startAt)+"BQQQQQQQQQQQQQQQQQQQQQ"
+                print "---------------------------------------------------------------------------+"
+                if(queryManager.execute(rule)):
+                    print "WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                else:
+                    print "No trigger..."
+                
+                  
+            queryManager.startAt = endPoint
+            time.sleep(10)
+            
+            logFile = fm.read(configuration.firewallLog)
+            queryManager.mainResult = logFile 
+            print str(len(queryManager.mainResult))+"Vince\n"+str(queryManager.startAt)
+            endPoint = len(logFile)
+
     def testMonitoring(self):
         configuration = Configuration()
         ruleManager = Rule()
-        queryManager = QueryManager()
-        fm = FileManager()
-        logFile = fm.read(configuration.firewallLog)  
-        queryManager.mainResult = logFile 
-        queryManager.tmpMainResult = list(queryManager.mainResult)
-        #ruleManager.readRules(configuration.ruleFile)
-        self.endPoint = len(logFile)
-        
-        print "-----> 01 " + str(len(queryManager.mainResult))
-        print "-----> 01 " + str(len(queryManager.tmpMainResult))
-        
-        while(True):
-            if(self.endPoint > queryManager.startAt):
-                print "startat 1 " + str(queryManager.startAt)
-                print "logfile has changed"
                 
-                for rulefile in configuration.ruleFiles:
-                        splitrule = rulefile.strip("'")
-                        useRule = configuration.ruleDir + splitrule
-                        ruleManager.readRules(useRule)
-                         
-                        #print "startat 2 " + str(queryManager.startAt)
-                        print "-----> 02 " + str(len(queryManager.mainResult))
-                        print "-----> 02 " + str(len(queryManager.tmpMainResult))
-                        print "Monitoring using the rule " + ruleManager.name + "...\n"
-                        print ruleManager.query
-                        
-                        queryManager.execute(ruleManager.query)
-                        #thread.start_new(queryManager.execute, (ruleManager.query,))
-                        #print str(queryManager.mainResult)
-                        trueFalse = self.threadQueue.get()
-                        print "------------------------------->" + str(trueFalse)
-                        if(trueFalse == True):
-                            print "WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                        if(trueFalse == False):
-                            print "No trigger..."
-                            
-                        del queryManager.mainResult
-                        queryManager.mainResult = list(queryManager.tmpMainResult)
-            else:
-                print "logfile has not changed"
+        for rulefile in configuration.ruleFiles:
+            useRule = configuration.ruleDir + rulefile
+            ruleManager.query = ruleManager.readRules(useRule)
+            allRules = ruleManager.ruleList
             
-            del queryManager.tmpMainResult
-            del queryManager.mainResult
-            queryManager.startAt = self.endPoint
-            print "startat 3 " + str(queryManager.startAt)
-            print "-----> 03 " + str(len(queryManager.mainResult))
-            print "-----> 03 " + str(len(queryManager.tmpMainResult))
-            time.sleep(10)
-            logFile = fm.read(configuration.firewallLog)
-            queryManager.mainResult = logFile
-            queryManager.tmpMainResult = list(queryManager.mainResult)
-            print "startat 4 " + str(queryManager.startAt)
-            print str(len(logFile))
-            print str(len(queryManager.mainResult))
-            self.endPoint = len(logFile)
-            print "-----> 04 " + str(len(queryManager.mainResult))
-            print "-----> 04 " + str(len(queryManager.tmpMainResult))
+        for i in range(0, len(ruleManager.ruleList)):
+            self.monitor(configuration, allRules[i])
