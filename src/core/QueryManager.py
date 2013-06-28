@@ -242,7 +242,6 @@ class QueryManager:
                 timeRange = int(endTimeSplit[2]) - int(startTimeSplit[2])  
                 
             if(self.operators[self.timerOperator](int(timeRange), self.timerValue)):
-                print "True!!!!!!!!!!!!! 01"
                 return True
             
             else:

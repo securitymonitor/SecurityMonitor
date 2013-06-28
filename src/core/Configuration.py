@@ -24,6 +24,7 @@ class Configuration:
     logDir = ""
     ruleDir = ""
     actionDir = ""
+    interval = 0
     
     def __init__(self):
         '''
@@ -87,6 +88,8 @@ class Configuration:
             if 'actionDir' in data:
                 self.actionDir = str(data[1])
                 Configuration.getActionNames(self.actionDir)
+            if 'interval' in data:
+                self.interval = int(str(data[1]))
        
         try:
             filename = self.logDir

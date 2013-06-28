@@ -2,6 +2,7 @@
 logDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\core\
 ruleDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\rules\
 actionDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\actions\
+interval = 10
 
 fromaddr = hvaminorfis@gmail.com
 toaddrs  = hvaminorfis@gmail.com

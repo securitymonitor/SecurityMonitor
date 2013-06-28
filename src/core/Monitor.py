@@ -64,13 +64,12 @@ class Monitor:
             if (endPoint > queryManager.startAt):
                 if(queryManager.execute(rule)):
                     triggerObj.ExecuteTrigger(rule)
-                    print "WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                    
+                    print "Attack detected!"                  
                 else:
-                    print "No trigger..."
+                    print "No attack detected..."
                   
             queryManager.startAt = endPoint
-            time.sleep(10)
+            time.sleep(configuration.interval)
             
             logFile = fm.read(configuration.firewallLog)
             del queryManager.mainResult[:] 
