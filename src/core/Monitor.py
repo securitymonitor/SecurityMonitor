@@ -73,7 +73,11 @@ class Monitor:
             time.sleep(10)
             
             logFile = fm.read(configuration.firewallLog)
-            queryManager.mainResult = logFile 
+            del queryManager.mainResult[:] 
+            
+            for i in range(queryManager.startAt, len(logFile)):
+                queryManager.mainResult.append(logFile[i])
+            
             endPoint = len(logFile)
 
     def testMonitoring(self):
