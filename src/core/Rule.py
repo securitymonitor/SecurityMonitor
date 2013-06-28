@@ -92,6 +92,7 @@ class Rule:
 
                     #Get the name, description and action from the rule, build query
                 if (inRule):
-                    query = query + rulesList[entry]
+                    if rulesList[entry].__contains__('{') == 0:
+                        query = query + rulesList[entry]
             
                 self.query = query
