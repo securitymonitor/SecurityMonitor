@@ -89,7 +89,32 @@ class Configuration:
                 self.actionDir = str(data[1])
                 Configuration.getActionNames(self.actionDir)
             if 'interval' in data:
-                self.interval = int(str(data[1]))
+                if(str(data[1]).__contains__(":")):
+                    timeInterval = str(data[1]).split(":")
+                    hoursExist = True
+                    minutesExist = True
+                    
+                    if(len(timeInterval) == 3): 
+                        hoursExist = True
+                    elif(len(timeInterval) == 2):
+                        hoursExist = False
+                        minutesExist = True
+                    else:
+                        hoursExist = False
+                        minutesExist = False
+                        
+                    if(hoursExist):
+                        hour = int(timeInterval[0])
+                        min = int(timeInterval[1])                       
+                        sec = int(timeInterval[2])
+                        self.interval = (int(hour)*60*60)+(int(min)*60)+int(sec)
+                    elif(minutesExist):
+                        min = int(timeInterval[0])
+                        sec = int(timeInterval[1])
+                        self.interval = (int(min)*60)+(int(sec))
+                                                                                                      
+                else:
+                    self.interval = int(str(data[1]))
        
         try:
             filename = self.logDir

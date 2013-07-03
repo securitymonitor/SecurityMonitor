@@ -1,8 +1,9 @@
 //directories of the Files
-logDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\core\
-ruleDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\rules\
-actionDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\actions\
-interval = 10
+logDir = D:\GitHub\SecurityMonitor\src\core\
+ruleDir = D:\GitHub\SecurityMonitor\src\custom\rules\
+actionDir = D:\GitHub\SecurityMonitor\src\custom\actions\
+//hh:mm:ss is de format van de waarde hieronder.
+interval = 1:1:10
 
 fromaddr = hvaminorfis@gmail.com
 toaddrs  = hvaminorfis@gmail.com

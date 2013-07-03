@@ -229,12 +229,16 @@ class QueryManager:
             
             startTimeSplit = startTime[0].split(":")
             endTimeSplit = endTime[0].split(":")
+
+            hoursToMinutes = 0
             
-            print str(startTime)
-            print str(endTime)
+            if(int(endTimeSplit[0]) > int(startTimeSplit[0])):
+                hours = int(endTimeSplit[0]) - int(startTimeSplit[0])
+                hoursToMinutes = int(hours)*60
             
             if(int(endTimeSplit[1]) > int(startTimeSplit[1])):
                 minutes = int(endTimeSplit[1]) - int(startTimeSplit[1])
+                minutes = minutes + hoursToMinutes
                 endTimeSplit[2] = int(endTimeSplit[2]) + (60 * minutes)
                 
                 timeRange = int(endTimeSplit[2]) - int(startTimeSplit[2])  
