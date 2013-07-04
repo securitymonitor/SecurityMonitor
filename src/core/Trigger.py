@@ -83,10 +83,21 @@ class Trigger:
             query = query.replace(self.current, "").replace("\n", "", 1)
         
         print str(len(config.actionFiles)) + "----" + self.action      
-        
-        for i in range(0,len(config.actionFiles)):
-            print str(config.actionFiles[i]) + "----" + self.action  
-            if(config.actionFiles[i] == self.action):
-                path = config.actionDir + self.action
-                print str(path)
-                subprocess.call([sys.executable, path, self.action, self.data, self.description, self.mac, self.name, self.protocol, self.sourceip, self.sourcept, self.targetip, self.targetpt])
+                
+        if not self.action.__contains__(","):
+            for i in range(0,len(config.actionFiles)):
+                print str(config.actionFiles[i]) + "----" + self.action  
+                if(config.actionFiles[i] == self.action):
+                    path = config.actionDir + self.action
+                    print str(path)
+                    subprocess.call([sys.executable, path, self.action, self.data, self.description, self.mac, self.name, self.protocol, self.sourceip, self.sourcept, self.targetip, self.targetpt])
+        else:
+            actionList = self.action.split(",") 
+          
+            for j in range(0, len(actionList)):       
+                for i in range(0,len(config.actionFiles)):
+                    print str(config.actionFiles[i]) + "----" + actionList[j].strip()   
+                    if(config.actionFiles[i] == actionList[j].strip()):
+                        path = config.actionDir + actionList[j].strip() 
+                        print str(path)
+                        subprocess.call([sys.executable, path, actionList[j].strip() , self.data, self.description, self.mac, self.name, self.protocol, self.sourceip, self.sourcept, self.targetip, self.targetpt])

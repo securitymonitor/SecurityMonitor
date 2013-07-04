@@ -4,5 +4,5 @@ DESCRIPTION = 'Rule check for: (TCP SYN flood) - TCP SYN packets with a threshol
 SOURCEIP = *
 TARGETIP = SOURCEIP
 INTERVAL = 10
-ACTION = 'Email.py'
+ACTION = 'Email.py,Email.py, Email.py'
 }
