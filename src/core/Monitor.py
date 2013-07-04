@@ -51,7 +51,8 @@ class Monitor:
         sys.exit(0)
         
 
-    def monitor(self, configuration, rule):
+    def monitor(self, rule, interval):
+        configuration = Configuration()
         fm = FileManager()
         queryManager = QueryManager()
         triggerObj = Trigger()
@@ -60,6 +61,7 @@ class Monitor:
         endPoint = len(logFile)
         
         while (True):
+            configuration = Configuration()
             print rule
             if (endPoint > queryManager.startAt):
                 if(queryManager.execute(rule)):
@@ -69,7 +71,7 @@ class Monitor:
                     print "No attack detected..."
                   
             queryManager.startAt = endPoint
-            time.sleep(configuration.interval)
+            time.sleep(interval)
             
             logFile = fm.read(configuration.firewallLog)
             del queryManager.mainResult[:] 
@@ -89,6 +91,6 @@ class Monitor:
             allRules = ruleManager.ruleList
             
         for i in range(0, len(ruleManager.ruleList)):
-            a = Thread(target=self.monitor, args=(configuration, allRules[i]))
+            a = Thread(target=self.monitor, args=(allRules[i], ruleManager.interval))
             a.start()
             print str(a)

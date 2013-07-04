@@ -2,7 +2,7 @@ from core.Configuration import Configuration
 
 class Definitions:
 
-    ACTION,COUNT,DATA,DATETIME,DESCRIPTION,MAC, NAME,PROTCOL,SOURCEIP,SOURCEPT,TARGETIP,TARGETPT,TIME = range(13)
+    ACTION,COUNT,DATA,DATETIME,DESCRIPTION,INTERVAL,MAC, NAME,PROTCOL,SOURCEIP,SOURCEPT,TARGETIP,TARGETPT,TIME = range(14)
     
     @classmethod
     def toString(self, val):
@@ -42,6 +42,7 @@ Definitions.COUNT       = ''
 Definitions.DATA        = ''
 Definitions.DATETIME    = ''
 Definitions.DESCRIPTION = ''
+Definitions.INTERVAL    = ''
 Definitions.MAC         = ''
 Definitions.NAME        = ''
 Definitions.SOURCEIP    = ''

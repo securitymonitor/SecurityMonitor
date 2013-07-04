@@ -6,11 +6,11 @@ Created on Mar 6, 2013
 from core.FileManager import FileManager
 from core.Definition import Definitions
 from robotparser import RuleLine
+from core.Configuration import Configuration
 
 class Rule:
-    name = ""
-    description = ""
-    action = ""
+    config = Configuration()
+    interval = config.interval
     query = ""
     startAt = 0
     ruleList = []
@@ -90,9 +90,40 @@ class Rule:
                         self.ruleList.append(query)
                         query = ""
 
-                    #Get the name, description and action from the rule, build query
+                #Get the name, description and action from the rule, build query
                 if (inRule):
                     if rulesList[entry].__contains__('{') == 0:
                         query = query + rulesList[entry]
-            
+
+                        if rulesList[entry].__contains__('INTERVAL'):
+                            strInterval = rulesList[entry].split("=")[1]
+                            
+                            if(strInterval.__contains__(":")):
+                                timeInterval = strInterval.split(":")
+                                hoursExist = True
+                                minutesExist = True
+                                
+                                if(len(timeInterval) == 3): 
+                                    hoursExist = True
+                                elif(len(timeInterval) == 2):
+                                    hoursExist = False
+                                    minutesExist = True
+                                else:
+                                    hoursExist = False
+                                    minutesExist = False
+                                    
+                                if(hoursExist):
+                                    hour = int(timeInterval[0])
+                                    min = int(timeInterval[1])                       
+                                    sec = int(timeInterval[2])
+                                    self.interval = (int(hour)*60*60)+(int(min)*60)+int(sec)
+                                elif(minutesExist):
+                                    min = int(timeInterval[0])
+                                    sec = int(timeInterval[1])
+                                    self.interval = (int(min)*60)+(int(sec))
+                                                                                                                  
+                            else:
+                                self.interval = int(strInterval)
+                             
+
                 self.query = query

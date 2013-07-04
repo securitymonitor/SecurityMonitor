@@ -18,6 +18,7 @@ class QueryManager:
     countValue = 0
     countOperator = ""
     timerValue = 0
+    isLandAttack = 0
     timerOperator = ""
     timerQuery = ""
     startAt = 0
@@ -65,7 +66,10 @@ class QueryManager:
                 self.getSourcePT()
                 query = query.replace(self.current, "")
                 
-            if self.current.__contains__("TARGETIP ="):  
+            if self.current.__contains__("TARGETIP ="): 
+                if self.current.__contains__("SOURCEIP"):
+                    self.isLandAttack = 1
+                    print self.isLandAttack
                 self.getTargetIP()
                 query = query.replace(self.current, "")
                 
@@ -136,7 +140,7 @@ class QueryManager:
     def getTargetIP(self):
         regex = Definitions.getValueDefinition("TARGETIP")
         
-        if self.current.__contains__("*"):
+        if self.current.__contains__("*") or self.current.__contains__("SOURCEIP"):
             regex = regex + "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" #Alle IP's
         else:
             regex = regex + self.current.split("=")[1].strip() #gedefineerde IP's
@@ -162,7 +166,7 @@ class QueryManager:
             regex = regex + "\d" #Alle poorten
         else:
             regex = regex + self.current.split("=")[1].strip() #gedefineerde poort
-            
+
         return self.executeRegex(regex)
     
         
@@ -199,10 +203,19 @@ class QueryManager:
             return value, operator
         
     def executeRegex(self, regex):
-        temp = []   
+        temp = []  
+         
         for i in range(0,len(self.mainResult)):
             if(re.search(regex, str(self.mainResult[i]))):
-                temp.append(self.mainResult[i])
+                if self.isLandAttack:
+                    tmpSourceIP = self.mainResult[i].split(Definitions.getValueDefinition("SOURCEIP"))[1].split(" ")[0]
+                    tmpTargetIP = self.mainResult[i].split(Definitions.getValueDefinition("TARGETIP"))[1].split(" ")[0]
+                    if(tmpSourceIP == tmpTargetIP):
+                        temp.append(self.mainResult[i])
+                else:
+                    temp.append(self.mainResult[i])
+                
+                    
       
         self.mainResult = None
         self.mainResult = [] 
