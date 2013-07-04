@@ -1,14 +1,24 @@
 from core.Configuration import Configuration
 
+'''
+Definition:
+
+
+'''
 class Definitions:
+    '''
+    Definitions:
+    This is a enumeration class and these enumeration are used as keywords.
+    '''
 
     ACTION,COUNT,DATA,DATETIME,DESCRIPTION,INTERVAL,MAC, NAME,PROTCOL,SOURCEIP,SOURCEPT,TARGETIP,TARGETPT,TIME = range(14)
-    
+
     @classmethod
     def toString(self, val):
         for k,v in vars(self).iteritems():
             if v==val:
-                return k        
+                return k   
+               
     @classmethod
     def readConfigFile(self):
         config = Configuration

@@ -6,8 +6,10 @@ Created on Mar 6, 2013
 
 class FileManager:
     '''
-    classdocs
+    FileManager:
+        This class defines basic file functions. 
     '''
+    
     def __init__(self):
         '''
         Constructor
@@ -39,19 +41,5 @@ class FileManager:
             strippedList.append(List[i].strip())
         
         return strippedList
-        
-    def exception(self, msg):
-        import Configuration
-        
-        config = Configuration()
-        dirError = config.exceptionFile
-
-        if(msg == ""):
-            msg = "This is a default error..."
-        
-        fileManager = FileManager();
-        fileManager.write(dirError, msg)        
-        print "Error occured, see \"" + str(dirError) + "\" for further details..."
-        
         
         

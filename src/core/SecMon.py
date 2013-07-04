@@ -10,6 +10,16 @@ from FileManager import FileManager
 from core.Configuration import Configuration
 
 class SecMon:
+    '''
+    SecMon:
+        This class can be called to edit a value for a keyword in a rule file using command lines.
+        
+        configuration         = Instance of the Configuration class.
+        dirConfig             = Directory of the config file.
+        fileManager           = Instance of the FileManager class.
+        configLines           = List of each line in a config file.
+        listKeywords          = Keywords defined in a config file.
+    '''
     configuration = Configuration()
     dirConfig = configuration.configFile
     fileManager = FileManager()

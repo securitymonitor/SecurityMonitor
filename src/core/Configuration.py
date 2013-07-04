@@ -3,13 +3,31 @@ Created on Mar 6, 2013
 
 @author: Dave
 '''
-#from core.Rule import Rule
+
 from core.FileManager import FileManager
 
 class Configuration:
     '''
-    classdocs
+    Configuration:
+    This class contains the general configuration values of the application.
+    
+        configFile             = Name of the configuration file.
+        firewallLog            = Name of the firewall file. 
+        ruleDefinitionTable    = Path to the rule definition table file.
+        ruleFiles              = List for all files in the rule directory.
+        actionFiles            = List for all files in the action directory.
+        exceptionFile          = Path to the exception file.
+        fromaddrs              = The email-adress of the sender.
+        toaddrs                = The email-adress of the receiver.  
+        username               = The username of the email-account. 
+        password               = The password of the email-account.  
+        server                 = The server name of the SMPT-server.
+        logDir                 = Directory of the log file.
+        ruleDir                = Directory of the rule file. 
+        actionDir              = Directory of the action file.   
+        interval               = The sleep time in the monitor for each rule.
     '''
+    
     configFile = "Config.txt"
     firewallLog = "TestFirewall.log"
     ruleDefinitionTable = "..\\custom\\rules\\RuleDefinitionTable.txt"
@@ -26,12 +44,19 @@ class Configuration:
     actionDir = ""
     interval = 0
     
+    '''
+    This is the initialization function.
+    This calls the configure function that initializes all variables.
+    '''
     def __init__(self):
         '''
         Constructor
         '''
         self.configure()
     
+    '''
+    This function gets all files in the rule directory.
+    '''
     @classmethod
     def getRuleFiles(self, ruleDir):
         print "Searching for rule files..."
@@ -45,6 +70,9 @@ class Configuration:
             if fileMatch:
                 self.ruleFiles.append(file) 
     
+    '''
+    This function gets all filenames in the action directory.
+    '''
     @classmethod                
     def getActionNames(self, actionDir):
         from os import listdir
@@ -57,7 +85,10 @@ class Configuration:
             if fileMatch:
                 self.actionFiles.append(file) 
                 print str(file)     
-                    
+     
+    '''
+    This function sets the variables to the values given in the config file.
+    '''               
     def configure(self):
         print"Configuring..."
         #configuration example code here
@@ -114,36 +145,4 @@ class Configuration:
                         self.interval = (int(min)*60)+(int(sec))
                                                                                                       
                 else:
-                    self.interval = int(str(data[1]))
-       
-        try:
-            filename = self.logDir
-            
-        #Set the filename and open the file
-        #filename = 'log.txt' #nog aangepast worden naar formulier input
-            fm.read(filename)
-        #does the file exists
-        except IOError as e:
-            print ""
-        #print "Log " + filename + " bestaat niet".format(e.errno, e.strerror)
-
-        else:
-            print " Log " + filename + " geselecteerd "
-        #find end of file
-        
-        #rule definieren     Werkt wel   
-        try:
-        #Set the rule to use
-            rule = self.ruleDir #nog aangepast worden naar formulier input
-            file = execfile(rule)
-
-        #does the file exists
-        except IOError as e:
-        #print "Rule " + rule + " bestaat niet".format(e.errno, e.strerror)
-            print ""
-            
-        else:
-            print " Ruleset " + rule + " is ingeladen"
-            
-        print "Configuration completed."
-        
+                    self.interval = int(str(data[1]))       

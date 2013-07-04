@@ -13,12 +13,9 @@ def Main():
     config = Configuration()
     monitor = Monitor()
 
-    print "Starting program..."
     config.configure()
-    print "loading File Manager..."
-    print "Monitoring Started!"
     
-    daemon = Thread(name='Main Daemon Thread', target=monitor.testMonitoring())
+    daemon = Thread(name='Main Daemon Thread', target=monitor.startMonitoring())
     daemon.setDaemon(True)
     daemon.start()
 

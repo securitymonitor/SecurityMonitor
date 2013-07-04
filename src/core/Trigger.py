@@ -9,6 +9,12 @@ import sys
 import subprocess
 
 class Trigger:
+    '''
+    Trigger:
+        The Trigger class performs actions such as executing modules.
+        After the check which action will be used in the list, a certain amount of parameters can be parsed.
+        These parameters are pre-defined. Which parameters are used can be defined in the module.
+    '''
     action = ""
     data = ""
     description = ""
@@ -27,10 +33,11 @@ class Trigger:
         config = Configuration()
         definition = Definitions()
         
+        #Looping until all query lines are executed and removed
         while (query != ""):
             
             self.current = query.split("\n")[0]
-            #print "current = self.currentrent  
+
             if self.current.__contains__("ACTION ="):  
                 self.action = self.current.split("=")[1].strip().replace("'", "").replace("=", "").strip()
                 query = query.replace(self.current, "")
@@ -83,18 +90,3 @@ class Trigger:
                 path = config.actionDir + self.action
                 print str(path)
                 subprocess.call([sys.executable, path, self.action, self.data, self.description, self.mac, self.name, self.protocol, self.sourceip, self.sourcept, self.targetip, self.targetpt])
-            else:
-                print "nee"
-        
-        #for i in range(0, len(listModules))
-        #    if(listModules[i] == rulemanager.action)
-        #        sendmail
-            
-        #if "Email" == rulemanger.action:
-        #    emailObj.SendMail(errorMsg)
-        #elif errorType == 5:
-        #    pass
-        #elif errorType == 10:
-        #    pass
-        
-   

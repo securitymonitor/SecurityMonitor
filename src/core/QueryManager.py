@@ -13,14 +13,28 @@ from core.Configuration import Configuration
 
 class QueryManager:
     '''
-    The Security Monitoring Query Manager
+    QueryManager:
+        This class is used to execute regex search function for each rule.
+        Using the keywords defined in definitions, a query filtering will be executed.
+        The results of the execution are added to the main result.
+        
+        countValue                    = Value of count given in the rule.
+        countOperator                 = Type operator for the count given in the rule.
+        timerValue                    = Value of time given in the rule.
+        isLandAttack                  = Defines if the there is a land attack.
+        timerOperator                 = Type operator for the time given in the rule.
+        startAt                       = Defines the starting line of the changed log file.
+        mainResult                    = Filtered data from the query on query search.
+        tmpMainResult                 = Temporary list before data is added to main result.
+        current                       = This is the rule, with a changing keyword each time it goes through the loop.
+        operators                     = This is a list that contains the used operators.
     '''
+    
     countValue = 0
     countOperator = ""
     timerValue = 0
     isLandAttack = 0
     timerOperator = ""
-    timerQuery = ""
     startAt = 0
     mainResult = []
     tmpMainResult = []
@@ -35,6 +49,9 @@ class QueryManager:
         ">=": operator.ge
     }
     
+    '''
+    This function performs the query on query filtering over the given data.
+    '''
     def execute(self, query):
         #Looping until all query lines are executed and removed
         while (query != ""):
@@ -180,7 +197,11 @@ class QueryManager:
         timerValue, timerOperator = self.getValueByOperator()
         self.timerValue = int(timerValue)
         self.timerOperator = timerOperator
-
+    
+    
+    '''
+    This function gets the value for the given operator.
+    '''
     def getValueByOperator(self):
             value = 0
             operator = 0
@@ -201,7 +222,10 @@ class QueryManager:
                 value = self.current.split(">=")[1].strip()
                 operator = ">="
             return value, operator
-        
+    
+    '''
+    This function executes regex and appends the results to the main result.
+    '''    
     def executeRegex(self, regex):
         temp = []  
          
@@ -222,10 +246,17 @@ class QueryManager:
         for i in range(0,len(temp)):
             self.mainResult.append(temp[i])  
         temp = None
-
+    
+    '''
+    This function check if there is any input for count and timer.
+    '''
     def timeCountIsValid(self):
         return self.countValue != 0 and self.countOperator != "" and self.timerValue != "" and self.timerOperator != ""
-
+    
+    '''
+    This function is performed if there are any values given for count and timer.
+    It checks whether the amount of connections is within a certain timespan.
+    '''
     def finalize(self):
         from Monitor import Monitor
         monitor = Monitor()

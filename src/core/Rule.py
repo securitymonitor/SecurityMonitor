@@ -9,6 +9,18 @@ from robotparser import RuleLine
 from core.Configuration import Configuration
 
 class Rule:
+    '''
+    Rule:
+        This class defines a rule by reading the data within the curly brackets.
+        
+        config                = Instance of the Configuration class.
+        interval              = Defines the interval per rule. If it isn't defined it will get a default value from the config.
+        query                 = The query contains keywords with a corresponding value.
+        startAt               = Defines the starting line of the changed log file.
+        ruleList              = List for all files in the rule directory.
+        fileManager           = Instance of the FileManager class.
+    '''
+    
     config = Configuration()
     interval = config.interval
     query = ""
@@ -22,50 +34,6 @@ class Rule:
         '''
         Constructor
         '''
-    def addRule(self,dirConfig,newRule):
-        fileManager = FileManager()
-        regexList = fileManager.read(dirConfig)
-        file = open(dirConfig,"r+")
-        regexList.append(newRule+"\n")
-        fileManager.overwrite(regexList, file)
-
-    def editRule(self,dirConfig,ruleId,newRule):
-        fileManager = FileManager()
-        regexList = fileManager.read(dirConfig)
-        file = open(dirConfig,"r+")
-        ruleId = ruleId - 1
-        regexList[ruleId] = newRule+"\n"  
-        fileManager.overwrite(regexList, file)
-    
-    def deleteRule(self,dirConfig,ruleId):
-        fileManager = FileManager()
-        regexList = fileManager.read(dirConfig)
-        file = open(dirConfig,"r+")
-        ruleId = ruleId - 1
-        del regexList[ruleId]
-        fileManager.overwrite(regexList, file)   
-    
-    def test(self):
-        print "Rule created."
-        
-    def checkEntry(self, regexFile):
-        print "##Method checkEntry##"
-        import re
-        from Action import Action
-
-        actionObj = Action()
-
-        for entry in regexFile.readlines():
-            print "##entryLine: ", entry
-            lnsplit = entry.split(" ")
-            
-            if entry.__contains__('-t') == 1:
-                print '##Condition = True (-t)##' 
-            if entry.__contains__('-c') == 1:
-                print '##Condition = True (-c)##'
-                connection = lnsplit[0]
-                print "##Method call Action.checkEntryFrequency()##"
-                actionObj.checkEntryFrequency(connection)
     
     #Gets the definition value
     def getValue(self, entry, definition):

@@ -20,37 +20,19 @@ from robotparser import RuleLine
 
 class Monitor:
     '''
-    classdocs
+    Monitor:
+        The Monitor class performs the monitoring actions of log files.
     '''
     endPoint = 0
         
     def __init__(self):
-        #fileManager.read()
         '''
         Constructor
-        '''            
-    #Recursive function in order to keep the process going infinitely.    
-    def keepMonitoring(self,oldMaxLines,dirConfig,dirLog):
-        import time
-        fileManager = FileManager()
-        monitorObj = Monitor()
-        logLines = fileManager.read(dirLog)
-        
-        if(oldMaxLines == len(logLines)):
-            print "The log file still hasn't changed."
-            time.sleep(10)
-            monitorObj.keepMonitoring(oldMaxLines,dirConfig,dirLog)
-        else:
-            print "The log file still has changed."
-            startAt = oldMaxLines
-            monitorObj.testMonitoring(dirConfig, dirLog, startAt)
-        
-    def stopMonitoring(self):        
-        print "Monitoring Ended!"
-        time.sleep(10)
-        sys.exit(0)
-        
+        '''                   
 
+    '''
+    This function is a parser for each time a change in the log file occurs.
+    '''
     def monitor(self, rule, interval):
         configuration = Configuration()
         fm = FileManager()
@@ -80,16 +62,22 @@ class Monitor:
                 queryManager.mainResult.append(logFile[i])
             
             endPoint = len(logFile)
-
-    def testMonitoring(self):
+    
+    
+    '''
+    This function starts the monitoring of the log file.
+    '''
+    def startMonitoring(self):
         configuration = Configuration()
         ruleManager = Rule()
-                
+         
+        #Iterates through every rule file in the given directory.      
         for rulefile in configuration.ruleFiles:
             useRule = configuration.ruleDir + rulefile
             ruleManager.query = ruleManager.readRules(useRule)
             allRules = ruleManager.ruleList
-            
+        
+        #Starts a monitoring thread for each defined rule. The parameters that are used to start a monitor are rule and interval.   
         for i in range(0, len(ruleManager.ruleList)):
             a = Thread(target=self.monitor, args=(allRules[i], ruleManager.interval))
             a.start()
