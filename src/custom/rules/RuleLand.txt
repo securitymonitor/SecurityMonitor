@@ -1,9 +1,8 @@
 {
 NAME = 'Land Attack'
 DESCRIPTION = 'Rule check for: If the source and target IP are the same.'
-SOURCEIP = 145.92.6.97
-TARGETIP = 145.92.6.97
-PROTOCOL = TCP
-DATA = SYN
-ACTION = 'Email.py'
+SOURCEIP = *
+TARGETIP = SOURCEIP
+INTERVAL = 10
+ACTION = 'Email.py,Email.py, Email.py'
 }

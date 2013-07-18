@@ -1,11 +1,11 @@
-//directories of the Files
-logDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\core\
-ruleDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\rules\
-actionDir = C:\Users\Sujen\Documents\Git\SecurityMonitor\src\custom\actions\
+// directories  of the Files
+logDir = [pad naar de firewall log] 
+ruleDir =  [pad naar de rulebestanden]
+actionDir = [pad naar actiebestanden]
 interval = 30
 
-fromaddr = hvaminorfis@gmail.com
-toaddrs  = hvaminorfis@gmail.com
-username = hvaminorfis@gmail.com
-password = security1234
-server   = smtp.gmail.com:587
+fromaddr = sendfrom@example.com
+toaddr  =  sendto@example.com
+username = [smtpserver username]
+password = [password]
+server   = smtp.server.com:[poort]

@@ -1,0 +1,12 @@
+Verbeteringen/uitbreiding:
+
+	@ ...
+		->
+		->
+		->
+
+	@ 17-07-2013 11:00-12:00 uur met Arnim Eijkhoudt:
+		-> Common log format(voor bijvoorbeeld trend analyse)
+		-> Aanmaken definities modulair maken i.p.v. nu in meerdere bestanden
+		-> Webinterface 
+		-> Handler van een rule(actiescript/bestand) threaded maken i.p.v. de rule zelf.

@@ -3,6 +3,12 @@ Created on Mar 6, 2013
 
 @author: vinesh
 '''
+import sys
+import os
+
+os.getcwd()
+os.chdir('..')
+sys.path.append(os.getcwd())
 
 from core.Configuration import Configuration
 from core.Monitor import Monitor

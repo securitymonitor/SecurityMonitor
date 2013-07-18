@@ -3,20 +3,26 @@ Created on 4 apr. 2013
 
 @author: Sujen
 '''
-from core.SMI import SMI
+import os
 import sys
+
+os.getcwd()
+os.chdir('..')
+sys.path.append(os.getcwd())
+from core.SMI import SMI
+
 
 class Email:
     smi = SMI()
     #This function sends an e-mail with the given message.
     import smtplib  
     fromaddr = smi.config.fromaddr 
-    toaddrs  = smi.config.toaddrs  
+    toaddr  = smi.config.toaddr  
     subject = 'WARNING: Error Detected!!'
     
     headers = ["From: " + fromaddr,
                "Subject: " + sys.argv[5],
-               "To: " + toaddrs,
+               "To: " + toaddr,
                "MIME-Version: 1.0",
                "Content-Type: text/html"]
     headers = "\r\n".join(headers)
@@ -27,5 +33,5 @@ class Email:
     server = smtplib.SMTP(smi.config.server)  
     server.starttls() 
     server.login(username,password) 
-    server.sendmail(fromaddr,toaddrs,headers+"\r\n\r\n"+sys.argv[3])  
+    server.sendmail(fromaddr,toaddr,headers+"\r\n\r\n"+sys.argv[3])  
     server.quit() 

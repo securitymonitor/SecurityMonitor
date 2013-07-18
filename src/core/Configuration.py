@@ -4,6 +4,9 @@ Created on Mar 6, 2013
 @author: Dave
 '''
 
+import os
+import sys
+os.chdir('core')
 from core.FileManager import FileManager
 
 class Configuration:
@@ -17,8 +20,8 @@ class Configuration:
         ruleFiles              = List for all files in the rule directory.
         actionFiles            = List for all files in the action directory.
         exceptionFile          = Path to the exception file.
-        fromaddrs              = The email-adress of the sender.
-        toaddrs                = The email-adress of the receiver.  
+        fromaddr              = The email-adress of the sender.
+        toaddr                = The email-adress of the receiver.  
         username               = The username of the email-account. 
         password               = The password of the email-account.  
         server                 = The server name of the SMPT-server.
@@ -30,12 +33,12 @@ class Configuration:
     
     configFile = "Config.txt"
     firewallLog = "TestFirewall.log"
-    ruleDefinitionTable = "..\\custom\\rules\\RuleDefinitionTable.txt"
+    ruleDefinitionTable = "..//custom//rules//RuleDefinitionTable.txt"
     ruleFiles = []
     actionFiles = []
     exceptionFile = "errorLog.txt"
-    fromaddrs = ""
-    toaddrs = ""
+    fromaddr = ""
+    toaddr = ""
     username = ""
     password = ""
     server = ""
@@ -99,9 +102,9 @@ class Configuration:
             data = [x.strip() for x in line.split('= ')]
             if 'fromaddr' in data:
                 self.fromaddr = str(data[1])
-            if 'toaddrs' in data:
+            if 'toaddr' in data:
                 # put data into string
-                self.toaddrs = str(data[1])
+                self.toaddr = str(data[1])
             if 'username' in data:
                 # put data into string
                 self.username = str(data[1])

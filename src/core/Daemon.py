@@ -2,25 +2,20 @@
 
 import sys, os, time, atexit
 from signal import SIGTERM
-sys.path.append ("//home//jasper//src//")
+
 class Daemon:
 	"""
 	A generic daemon class.
 	
 	Usage: subclass the Daemon class and override the run() method
 	"""
-	def __init__(self, pidfile, stdin='/home/jasper/logje.txt', stdout='/home/jasper/logje.txt', stderr='/home/jasper/logje.txt'):
+	def __init__(self, pidfile, stdin='_ErrorInputLog.log', stdout='_ErrorOutputLog.log', stderr='_ErrorLog.log'):
 		self.stdin = stdin
 		self.stdout = stdout
 		self.stderr = stderr
 		self.pidfile = pidfile
 	
 	def daemonize(self):
-		"""
-		do the UNIX double-fork magic, see Stevens' "Advanced 
-		Programming in the UNIX Environment" for details (ISBN 0201563177)
-		http://www.erlenstar.demon.co.uk/unix/faq_2.html#SEC16
-		"""
 		try: 
 			pid = os.fork() 
 			if pid > 0:
@@ -80,7 +75,7 @@ class Daemon:
 			pid = None
 	
 		if pid:
-			message = "pidfile %s already exist. Daemon already running?\n"
+			message = "pidfile %s already exist. Is the Daemon already running?\n"
 			sys.stderr.write(message % self.pidfile)
 			sys.exit(1)
 		
@@ -102,7 +97,7 @@ class Daemon:
 			pid = None
 	
 		if not pid:
-			message = "pidfile %s does not exist. Daemon not running?\n"
+			message = "pidfile %s does not exist. Is the Daemon not running?\n"
 			sys.stderr.write(message % self.pidfile)
 			return # not an error in a restart
 
@@ -132,7 +127,3 @@ class Daemon:
 		You should override this method when you subclass Daemon. It will be called after the process has been
 		daemonized by start() or restart().
 		"""
-		from Main import Main
-		main = Main()
-		while True:
-			main
