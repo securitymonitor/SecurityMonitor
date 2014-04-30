@@ -1,7 +1,7 @@
 // directories  of the Files
-logDir = [pad naar de firewall log] 
-ruleDir =  [pad naar de rulebestanden]
-actionDir = [pad naar actiebestanden]
+logDir = ../core/
+ruleDir =  ../custom/rules/
+actionDir = ../custom/actions/
 interval = 30
 
 fromaddr = sendfrom@example.com
