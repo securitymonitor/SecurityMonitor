@@ -122,6 +122,27 @@ class Daemon:
 		self.stop()
 		self.start()
 
+	def status(self):
+		"""
+		See the current status of the daemon
+		"""
+		try:
+			pf = file(self.pidfile,'r')
+			pid = int(pf.read().strip())
+			pf.close()
+		except IOError:
+			pid = None
+		
+		if pid:
+			message = "secmon is running...\n"
+			sys.stderr.write(message)
+		elif not pid:
+			message = "secmon is stopped\n"
+			sys.stderr.write(message)	
+		else:
+			message = "Error getting the status for secmon\n"
+			sys.stderr.write(message)
+
 	def run(self):
 		"""
 		You should override this method when you subclass Daemon. It will be called after the process has been
