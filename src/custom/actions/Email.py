@@ -29,9 +29,13 @@ class Email:
     
     username = smi.config.username
     password = smi.config.password  
-    
     server = smtplib.SMTP(smi.config.server)  
-    server.starttls() 
-    server.login(username,password) 
+    
+    if username != "" and password != "":
+        server.starttls() 
+        server.login(username,password)     
+    else:
+        pass
+    
     server.sendmail(fromaddr,toaddr,headers+"\r\n\r\n"+sys.argv[3])  
     server.quit() 
