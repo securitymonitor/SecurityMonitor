@@ -3,7 +3,7 @@
 
 class Installation:
     choice = raw_input("Do you want to configure SecMon? (y/n) ")
-    choice.lower()
+    choice = choice.lower()
     
     if choice == 'yes' or choice == 'y':
         print "Configuring the configuration file "
@@ -35,6 +35,7 @@ class Installation:
         server_input = raw_input("SMTP server: Example: smtp.server.com:25 :")
         server = 'server = ' + str(server_input)
         ask = raw_input ("Does the smtp server (" + str(server_input) + ") require a username and password? (y/n) ")
+        ask = ask.lower()
         
         if ask == 'yes' or ask == 'y':
             username_input = raw_input("Username: ")
