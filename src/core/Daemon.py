@@ -54,10 +54,13 @@ class Daemon:
 		atexit.register(self.delpid)
 		pid = str(os.getpid())
 		file(self.pidfile,'w+').write("%s\n" % pid)	
+		
 		from Main import Main
 		main = Main()
+		
 		while True:
 			main
+			time.sleep(main.sleeptimer.strip(""))	
 			
 	def delpid(self):
 		os.remove(self.pidfile)

@@ -20,7 +20,8 @@ def Main():
     monitor = Monitor()
 
     config.configure()
-    
+    sleeptimer = config.sleeptimer
+
     daemon = Thread(name='Main Daemon Thread', target=monitor.startMonitoring())
     daemon.setDaemon(True)
     daemon.start()

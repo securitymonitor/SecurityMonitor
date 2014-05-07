@@ -46,7 +46,8 @@ class Configuration:
     ruleDir = ""
     actionDir = ""
     interval = 0
-    
+    sleeptimer = ""
+        
     '''
     This is the initialization function.
     This calls the configure function that initializes all variables.
@@ -100,6 +101,8 @@ class Configuration:
         allLines = fm.read(self.configFile)
         for line in allLines:
             data = [x.strip() for x in line.split('= ')]
+            if 'sleeptimer' in data:
+                self.sleeptimer = str(data[1])
             if 'fromaddr' in data:
                 self.fromaddr = str(data[1])
             if 'toaddr' in data:

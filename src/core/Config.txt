@@ -9,3 +9,5 @@ toaddr  =  sendto@example.com
 username = [smtpserver username]
 password = [password]
 server   = smtp.server.com:[poort]
+
+sleeptimer = 0.01
