@@ -68,7 +68,7 @@ class Configuration:
         import re
         del self.ruleFiles[:]
         ruleFiles = listdir(ruleDir)
-        ruleFilePattern = re.compile('Rule.+?.txt')
+        ruleFilePattern = re.compile('.+?.*')
         for file in ruleFiles:
             fileMatch = re.match(ruleFilePattern, file)
             if fileMatch:
