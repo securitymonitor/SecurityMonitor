@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Security Monitoring</name>
+	<name>SecurityMonitor</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,8 +10,14 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>com.aptana.ide.core.unifiedBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>com.aptana.projects.webnature</nature>
 		<nature>org.python.pydev.pythonNature</nature>
 	</natures>
 </projectDescription>
