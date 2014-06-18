@@ -1,5 +1,7 @@
 import re
 
+
+
 def read_logfile():
     filename = 'log.txt'
     loglines = []
@@ -52,42 +54,20 @@ def asterisk_check():
 
     return matchlijst   
    
-def build_regex():
+   
+def match_log():
     matchlijst = asterisk_check()
-
+    log = read_logfile()
     
-    regex = ''
-    temp = []
-    for _x in range(len(matchlijst)):
-        match = re.findall('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', matchlijst[_x])
-        if match:
-            for char in matchlijst[_x]:
-                if char is '.':
-                    print 'char = ' + str(char)
-                    char = char.replace('.','[.]')
-                    temp.append(char)
-                else:
-                    temp.append(char)
-            char = ''.join(temp)
-            matchlijst [_x] = char
-        
-        regex = regex +"(?=.*"+ str(matchlijst[_x]) +')'
-    
-    return matchlijst, regex
-
-def match_with_log():
-    log = read_logfile()   
-    matchlijst, regex = build_regex()
-             
-    for line in log:
-        match = re.findall(regex, line)
-        if match:
-            print 'regex = ' + str(regex) + "  line = " + str(line)
-            pass 
-            #print match 
+    for _x in matchlijst:
+        regex = _x
+        for line in log:
+            match = re.findall('145.92.6.10|UDP', line)
+            if match: 
+                print match 
    
    
-match_with_log()
+match_log()
 
 
 
