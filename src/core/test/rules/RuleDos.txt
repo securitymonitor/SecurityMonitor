@@ -1,0 +1,10 @@
+{
+NAME = 'DoS UDP flood attack'
+DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 or more that are targeted at a specific target IP.'
+SOURCEIP = 145.92.6.10
+TARGETIP = *
+PROTOCOL = UDP
+COUNT > 5
+TIMER < 10
+ACTION = 'Email.py'
+}
