@@ -55,7 +55,6 @@ def asterisk_check():
 def build_regex():
     matchlijst = asterisk_check()
 
-    
     regex = ''
     temp = []
     for _x in range(len(matchlijst)):
@@ -78,15 +77,17 @@ def build_regex():
 def match_with_log():
     log = read_logfile()   
     matchlijst, regex = build_regex()
-             
+    
+    regex_count = 0         
     for line in log:
         match = re.findall(regex, line)
         if match:
             print 'regex = ' + str(regex) + "  line = " + str(line)
-            pass 
+
+            regex_count+=1
             #print match 
-   
-   
+    print regex_count
+
 match_with_log()
 
 
