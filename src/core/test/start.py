@@ -18,26 +18,25 @@ def get_rules():
     
     return rule_files
 
-def producer():
+def manager():
+    #Get the rule and logfiles
     log = read_logfile()
     rules = get_rules()
     
-    important = ['SOURCEIP = , TARGETIP = , PROTOCOL = ']
-    lijst = []
-    
+    matchlist = []
     for x in rules:
         for keys in x:
             print keys
             if keys == 'SOURCEIP =' or keys == 'TARGETIP =' or keys == 'PROTOCOL =' or keys == 'MESSAGE =':
-                lijst.append(x[keys])
+                matchlist.append(x[keys])
     
-    return lijst, x        
-        #for x in _x.values():
-            #print x
-    
-def asterisk_check():
+    matchlist = asterisk_check(matchlist, x)      
+    matchlist, regex = build_regex(matchlist)
+    regex_count = match_with_log(matchlist, regex, log)
+    check_count(regex_count, x)
 
-    matchlijst, dictionary = producer()
+def asterisk_check(matchlijst, dictionary):
+
 
     count = 0
     for _x in matchlijst:
@@ -52,8 +51,7 @@ def asterisk_check():
 
     return matchlijst   
    
-def build_regex():
-    matchlijst = asterisk_check()
+def build_regex(matchlijst):
 
     regex = ''
     temp = []
@@ -74,21 +72,30 @@ def build_regex():
     
     return matchlijst, regex
 
-def match_with_log():
-    log = read_logfile()   
-    matchlijst, regex = build_regex()
+def match_with_log(matchlijst, regex, log):
     
     regex_count = 0         
     for line in log:
         match = re.findall(regex, line)
         if match:
-            print 'regex = ' + str(regex) + "  line = " + str(line)
-
+            #print 'regex = ' + str(regex) + "  line = " + str(line)
             regex_count+=1
-            #print match 
-    print regex_count
+    return regex_count
 
-match_with_log()
+def check_count(regex_count, rule):
+    
+    print regex_count
+    print rule
+   
+    for x in rule:
+        match = re.findall('COUNT', x)
+        if match:
+            rule_count = x
+
+    
+    count_operator = rule_count[-1]
+        
+manager()
 
 
 
