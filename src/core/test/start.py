@@ -1,4 +1,4 @@
-import re
+import re, sys, subprocess, os
 
 def read_logfile():
     filename = 'log.txt'
@@ -35,7 +35,8 @@ def manager():
     regex_count = match_with_log(matchlist, regex, log)
     rule_count_value, count_operator = get_count_operator(regex_count, x)
     action = compare_count(rule_count_value, regex_count, count_operator)
-
+    do_action(action, x)
+    
 def asterisk_check(matchlijst, dictionary):
 
 
@@ -121,6 +122,30 @@ def compare_count(rule_count_value, regex_count, count_operator):
     
     return action
 
+def do_action(action, rule):
+    
+    if action == True:
+    
+        folder = 'actions\ '
+        
+        #get action from rule
+        for x in rule:
+            match = re.findall('ACTION', x)
+            if match:            
+                rule_action = rule.get(x)
+        
+        action_target = folder + rule_action
+        action_target = action_target.replace(" ", "").replace("'", '')
+                         
+        print 'het pad is ', os.path.exists(action_target)
+        print action_target
+        subprocess.call([sys.executable, action_target])
 
+    else:
+        pass
+    
+    
 manager()
+
+
 
