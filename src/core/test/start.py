@@ -33,7 +33,8 @@ def manager():
     matchlist = asterisk_check(matchlist, x)      
     matchlist, regex = build_regex(matchlist)
     regex_count = match_with_log(matchlist, regex, log)
-    check_count(regex_count, x)
+    rule_count_value, count_operator = get_count_operator(regex_count, x)
+    action = compare_count(rule_count_value, regex_count, count_operator)
 
 def asterisk_check(matchlijst, dictionary):
 
@@ -47,7 +48,7 @@ def asterisk_check(matchlijst, dictionary):
     for _x in matchlijst:
         if _x == '*':
             matchlijst.remove(_x)
-            print _x
+            
 
     return matchlijst   
    
@@ -60,7 +61,7 @@ def build_regex(matchlijst):
         if match:
             for char in matchlijst[_x]:
                 if char is '.':
-                    print 'char = ' + str(char)
+                    #print 'char = ' + str(char)
                     char = char.replace('.','[.]')
                     temp.append(char)
                 else:
@@ -82,20 +83,44 @@ def match_with_log(matchlijst, regex, log):
             regex_count+=1
     return regex_count
 
-def check_count(regex_count, rule):
-    
-    print regex_count
-    print rule
+def get_count_operator(regex_count, rule):
    
     for x in rule:
         match = re.findall('COUNT', x)
         if match:
+            rule_count_value = rule.get(x)
+            rule_count_value = rule_count_value.replace(" ", "")
+            rule_count_value = int (rule_count_value)
             rule_count = x
-
     
-    count_operator = rule_count[-1]
-        
+    count_operator = rule_count[-2:]
+    count_operator = count_operator.replace(" ", "")
+    
+    return rule_count_value, count_operator    
+
+def compare_count(rule_count_value, regex_count, count_operator):
+    
+    action = False
+    if count_operator == '=':
+        print regex_count, type(regex_count)
+        print rule_count_value , type (rule_count_value)
+        if regex_count == rule_count_value:
+            action = True
+    if count_operator == '<':
+        if regex_count < rule_count_value:
+            action = True
+    if count_operator == '>':
+        if regex_count > rule_count_value:
+            action = True
+    if count_operator == '<=':
+        if regex_count <= rule_count_value:
+            action = True
+    if count_operator == '>=':
+        if regex_count >= rule_count_value:
+            action = True 
+    
+    return action
+
+
 manager()
-
-
 
