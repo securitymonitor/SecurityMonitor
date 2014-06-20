@@ -23,13 +23,26 @@ def manager():
     log = read_logfile()
     rules = get_rules()
     
+    
     matchlist = []
     for x in rules:
+        #find the MATCH keyword in the rule file
         for keys in x:
-            print keys
-            if keys == 'SOURCEIP =' or keys == 'TARGETIP =' or keys == 'PROTOCOL =' or keys == 'MESSAGE =':
-                matchlist.append(x[keys])
-    
+            match = re.findall('MATCH', keys)
+            if match:
+                matches = x.get(keys)
+                matches = matches.replace(" ", "")
+                temp_matchlist = matches.split(",")
+        
+        # find the matching values of the match keyword with the keywords in the file    
+        for keys in x:
+            for line in range (len(temp_matchlist)):
+                regex = temp_matchlist[line]
+                match = re.findall(regex, keys)
+                if match:
+                    matches = x.get(keys)
+                    matchlist.append(matches)
+            
     matchlist = asterisk_check(matchlist, x)      
     matchlist, regex = build_regex(matchlist)
     regex_count = match_with_log(matchlist, regex, log)
@@ -38,7 +51,6 @@ def manager():
     do_action(action, x)
     
 def asterisk_check(matchlijst, dictionary):
-
 
     count = 0
     for _x in matchlijst:

@@ -4,7 +4,8 @@ DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 o
 SOURCEIP = 145.92.6.10
 TARGETIP = *
 PROTOCOL = UDP
-COUNT > 5
+COUNT < 400
 TIMER < 10
 ACTION = 'Email.py'
+MATCH = SOURCEIP, TARGETIP, PROTOCOL
 }
