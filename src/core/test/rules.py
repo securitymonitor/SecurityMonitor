@@ -16,7 +16,7 @@ class Rules:
         for line in DirFiles:
             fileDir = ruleDir + line
             print line
-            if line == 'RuleDefintionTable.txt':
+            if line == 'RuleDefinitionTable.txt':
                 pass
             else:
                 file = open(fileDir, 'r')   
@@ -38,35 +38,20 @@ class Rules:
     
     def get_ruledef(self):
         print "Searching for Rule Definition file"
-        DirFile = 'rules/RuleDefintionTable.txt'
+        DirFile = 'rules/RuleDefinitionTable.txt'
         
-        if path.isfile(DirFile) is True:
-            
-            file = open(DirFile, 'r')
-            rulelist = {}
-            #regex = '.+='
-            #contents = get_rules()
-            for _x in contents:
-                for key in _x:
-                    regex = key
-                    #print regex
-                    for _line in file:
-                        match = re.match(regex, _line)
-                        #print match
-                        print regex
-                        if match:
-                            print match
-                        else:
-                            pass
-                        #match = ''.join(match)
-                        #x,y = _line.split(match)
-                        #y = y.strip('\n')
-                        #y = y.strip('')
-                        #contents.append(match)
-                        #rulelist.update({match:y})
-                #print rulelist            
-
-    
+        file = open(DirFile, 'r')
+        rulelist = {}
+        regex = '.+ = .*?'
+        for line in file:
+            match = re.findall(regex, line)
+            if match:
+                match = ''.join(match)
+                x,y = line.split(match)
+                y = y.strip('\n')
+                y = y.strip(" ' ").strip('')           
+                rulelist.update({match:y})
+        return rulelist
             
             
         

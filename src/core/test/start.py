@@ -18,52 +18,93 @@ def get_rules():
     
     return rule_files
 
+def get_ruledef():
+    from rules import Rules
+    Rules = Rules()
+    ruledef = Rules.get_ruledef()
+    return ruledef
+
+
 def manager():
     #Get the rule and logfiles
     log = read_logfile()
     rules = get_rules()
+    ruledef = get_ruledef()
     
-    
-    matchlist = []
-    for x in rules:
+    temp_matchlist = []
+    matchlist_keys = {}
+    for rule in rules:
+        
         #find the MATCH keyword in the rule file
-        for keys in x:
+        for keys in rule:
             match = re.findall('MATCH', keys)
             if match:
-                matches = x.get(keys)
+                matches = rule.get(keys)
                 matches = matches.replace(" ", "")
                 temp_matchlist = matches.split(",")
-        
+                        
         # find the matching values of the match keyword with the keywords in the file    
-        for keys in x:
+        for keys in rule:
             for line in range (len(temp_matchlist)):
                 regex = temp_matchlist[line]
                 match = re.findall(regex, keys)
                 if match:
-                    matches = x.get(keys)
-                    matchlist.append(matches)
-            
-    matchlist = asterisk_check(matchlist, x)      
+                    matches = rule.get(keys)
+                    #matchlist.append(matches)
+                    #matchlist_keys.append(keys)
+                    matchlist_keys.update({keys:matches})            
+                       
+        matchlist_keys = asterisk_check(matchlist_keys)
+                        
+    # match the keywords key and value            
+    temp_list = []
+    for line in matchlist_keys:
+        for keys in ruledef:
+            if line == keys[:-1]:     #Get rid of the whitespace at the end :)
+                matchlist_value = matchlist_keys.get(line)
+                ruledef_value = ruledef.get(keys)
+                temp_list = (ruledef_value, matchlist_value)
+                string = ', '.join(temp_list)
+                string = string.replace (',', '').replace(" ", "")
+                matchlist_keys[line] = string         
+           
+                  
+    # Put the values of the dictionary in an list. The list is used to search the logfile
+    matchlist = []
+    for keys in matchlist_keys:
+        key = matchlist_keys.get(keys)
+        matchlist.append(key)  
+    
+    print 'matchlist: ', matchlist
+           
+    #matchlist = asterisk_check(matchlist, rule)  
     matchlist, regex = build_regex(matchlist)
     regex_count = match_with_log(matchlist, regex, log)
-    rule_count_value, count_operator = get_count_operator(regex_count, x)
+    rule_count_value, count_operator = get_count_operator(regex_count, rule)
     action = compare_count(rule_count_value, regex_count, count_operator)
-    do_action(action, x)
+    do_action(action, rule)
     
-def asterisk_check(matchlijst, dictionary):
-
+def asterisk_check(matchlijst):  
+    temp_matchlijst = {}
+       
     count = 0
     for _x in matchlijst:
-        y = _x.lstrip()
-        matchlijst[count] = y
+        y = matchlijst.get(_x).lstrip()
+        temp_matchlijst.update({_x:y})
         count+=1
     
+    matchlijst = temp_matchlijst
+    temp_matchlijst = {}
+     
     for _x in matchlijst:
-        if _x == '*':
-            matchlijst.remove(_x)
-            
+        if matchlijst.get(_x) == '*':
+            pass
+        else:
+            y = matchlijst.get(_x)
+            temp_matchlijst.update({_x:y})
+       
+    return temp_matchlijst
 
-    return matchlijst   
    
 def build_regex(matchlijst):
 
@@ -139,7 +180,6 @@ def do_action(action, rule):
     if action == True:
     
         folder = 'actions\ '
-        
         #get action from rule
         for x in rule:
             match = re.findall('ACTION', x)
@@ -155,7 +195,6 @@ def do_action(action, rule):
 
     else:
         pass
-    
     
 manager()
 
