@@ -52,9 +52,5 @@ class Rules:
                 y = y.strip(" ' ").strip('')           
                 rulelist.update({match:y})
         return rulelist
-            
-            
-        
-        
         
         
