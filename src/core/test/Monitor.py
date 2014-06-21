@@ -23,6 +23,11 @@ def Monitor():
     rules = FileManager.get_rules()
     ruledef = FileManager.get_ruledef()
 
+    from Configuration import Configuration
+    config = Configuration()
+    RuleDir = config.RuleDir
+    print "ruledir", RuleDir
+
     for rule in range (len(rules)):
         thread = Thread( target=manager, args=(rules[rule], ruledef))
         thread.start() 

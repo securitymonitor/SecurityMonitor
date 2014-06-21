@@ -1,0 +1,13 @@
+// directories  of the Files
+logDir = ../core/
+ruleDir =  ../custom/rules/
+actionDir = ../custom/actions/
+interval = 30
+
+fromaddr = spamchristiaan@gmail.com
+toaddr  =  spamchristiaan@gmail.com
+username = spamchristiaan@gmail.com
+password = [password]
+server   = smtp.gmail.com:587
+
+sleeptimer = 0.01
