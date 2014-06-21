@@ -1,35 +1,25 @@
 import re, sys, subprocess, os
 
-def read_logfile():
-    filename = 'log.txt'
-    loglines = []
-    read = open(filename, 'r')
-    for _line in read:
-        _line = _line.strip()
-        loglines.append(_line)
-    read.close()
-    return loglines
-
-def get_rules():
-    from rules import Rules
-    Rules = Rules()
-    rule_files = Rules.get_rules()
-    #ruledef = Rules.get_ruledef()
+def log_check(rule):
+    #Checks the passed rule for the LOG keyword for which logfile to use
+    for keys in rule:
+        match = re.findall('LOG', keys)
+        if match:
+            matches = rule.get(keys)
+            matches = matches.replace(" ", "")
     
-    return rule_files
-
-def get_ruledef():
-    from rules import Rules
-    Rules = Rules()
-    ruledef = Rules.get_ruledef()
-    return ruledef
-
+    return matches
 
 def manager():
     #Get the rule and logfiles
-    log = read_logfile()
-    rules = get_rules()
-    ruledef = get_ruledef()
+    
+    from FileManager import FileManager
+    FileManager = FileManager()
+    log = FileManager.read_logfile()
+        
+    rules = FileManager.get_rules()
+    ruledef = FileManager.get_ruledef()
+    
     
     temp_matchlist = []
     matchlist_keys = {}
@@ -53,7 +43,8 @@ def manager():
                     #matchlist.append(matches)
                     #matchlist_keys.append(keys)
                     matchlist_keys.update({keys:matches})            
-                       
+        
+        log_check(rule)               
         matchlist_keys = asterisk_check(matchlist_keys)
                         
     # match the keywords key and value            
@@ -189,11 +180,14 @@ def do_action(action, rule):
         action_target = folder + rule_action
         action_target = action_target.replace(" ", "").replace("'", '')
                          
-        print 'het pad is ', os.path.exists(action_target)
-        print action_target
-        subprocess.call([sys.executable, action_target])
-
+        if os.path.exists(action_target) is True:
+            print 'The action rule is : ', action_target
+            subprocess.call([sys.executable, action_target])
+        else:
+            print 'The action rule is not valid. Please use the correct path of the file.'
+        
     else:
+        # There is no action needed.
         pass
     
 manager()
