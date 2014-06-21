@@ -28,9 +28,7 @@ class Rules:
                         x,y = _line.split(match)
                         y = y.strip('\n')
                         y = y.strip('')
-                        #contents.append(match)
                         filelist.update({match:y})
-                        #print filelist
                 contents.append(filelist)
                 file.close()
         return contents
@@ -52,5 +50,4 @@ class Rules:
                 y = y.strip(" ' ").strip('')           
                 rulelist.update({match:y})
         return rulelist
-        
         
