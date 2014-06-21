@@ -15,7 +15,7 @@ def log_check(rule):
     if len(log_files) == 1:
         return log_files[0]
     else:
-        print ('Error with the logfile. Please check the value of the LOG keyword in the rule file')
+        print 'Error with the logfile. Please check the value of the LOG keyword in the rule file'
 
 def Monitor():
     from FileManager import FileManager
@@ -28,48 +28,12 @@ def Monitor():
         thread.start() 
 
 def manager(rule, ruledef):
-       
-    temp_matchlist = []
-    matchlist_keys = {}
-    #find the MATCH keyword in the rule file
-    for keys in rule:
-        match = re.findall('MATCH', keys)
-        if match:
-            matches = rule.get(keys)
-            matches = matches.replace(" ", "")
-            temp_matchlist = matches.split(",")
-                    
-    # find the matching values of the match keyword with the keywords in the file    
-    for keys in rule:
-        for line in range (len(temp_matchlist)):
-            regex = temp_matchlist[line]
-            match = re.findall(regex, keys)
-            if match:
-                matches = rule.get(keys)
-                matchlist_keys.update({keys:matches})            
+    from Matching import Matching
+    Matching = Matching()
     
-    log = log_check(rule)               
-    matchlist_keys = asterisk_check(matchlist_keys)
-                        
-    # match the keywords key and value            
-    temp_list = []
-    for line in matchlist_keys:
-        for keys in ruledef:
-            if line == keys[:-1]:     #Get rid of the whitespace at the end :)
-                matchlist_value = matchlist_keys.get(line)
-                ruledef_value = ruledef.get(keys)
-                temp_list = (ruledef_value, matchlist_value)
-                string = ', '.join(temp_list)
-                string = string.replace (',', '').replace(" ", "")
-                matchlist_keys[line] = string         
-                           
-    # Put the values of the dictionary in an list. The list is used to search the logfile
-    matchlist = []
-    for keys in matchlist_keys:
-        key = matchlist_keys.get(keys)
-        matchlist.append(key)  
-    
-    print 'matchlist: ', matchlist
+    log = log_check(rule)
+    temp_matchlist = Matching.get_matches(log, rule)
+    matchlist = Matching.get_matching_definitions(temp_matchlist, ruledef)
            
     #matchlist = asterisk_check(matchlist, rule)  
     matchlist, regex = build_regex(matchlist)
@@ -77,29 +41,7 @@ def manager(rule, ruledef):
     rule_count_value, count_operator = get_count_operator(regex_count, rule)
     action = compare_count(rule_count_value, regex_count, count_operator)
     perform_action(action, rule)
-    
-def asterisk_check(matchlijst):  
-    temp_matchlijst = {}
        
-    count = 0
-    for _x in matchlijst:
-        y = matchlijst.get(_x).lstrip()
-        temp_matchlijst.update({_x:y})
-        count+=1
-    
-    matchlijst = temp_matchlijst
-    temp_matchlijst = {}
-     
-    for _x in matchlijst:
-        if matchlijst.get(_x) == '*':
-            pass
-        else:
-            y = matchlijst.get(_x)
-            temp_matchlijst.update({_x:y})
-       
-    return temp_matchlijst
-
-   
 def build_regex(matchlijst):
 
     regex = ''
