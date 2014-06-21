@@ -2,6 +2,13 @@ import re
 
 class Matching:
     
+    def get_matchlist(self, log, rule, ruledef):
+        
+        temp_matchlist = self.get_matches(log, rule)
+        matchlist = self.get_matching_definitions(temp_matchlist, ruledef)
+    
+        return matchlist
+    
     def get_matches(self, log, rule):
         temp_matchlist = []
         matchlist_keys = {}
@@ -23,8 +30,8 @@ class Matching:
                     matches = rule.get(keys)
                     matchlist_keys.update({keys:matches})            
         
+        #Checks if the matchlist contains an *. If so, the key will be deleted.
         matchlist_keys = self.asterisk_check(matchlist_keys)
-        
         return matchlist_keys
                             
     def get_matching_definitions(self, matchlist_keys, ruledef):
@@ -49,7 +56,6 @@ class Matching:
         print 'matchlist: ', matchlist
         return matchlist
         
-        
     def asterisk_check(self, matchlist):  
         temp_matchlijst = {}
            
@@ -70,4 +76,3 @@ class Matching:
                 temp_matchlijst.update({_x:y})
            
         return temp_matchlijst    
-    
