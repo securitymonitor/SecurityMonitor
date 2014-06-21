@@ -3,9 +3,8 @@ LOG = log.txt
 DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 or more that are targeted at a specific target IP.'
 SOURCEIP = 145.92.6.10
 TARGETIP = 192.168.2.128
-PROTOCOL = UDP
-COUNT < 400
+PROTOCOL = TCP
+COUNT < 20
 TIMER < 10
 ACTION = 'Email.py'
 MATCH = SOURCEIP, TARGETIP, PROTOCOL
-

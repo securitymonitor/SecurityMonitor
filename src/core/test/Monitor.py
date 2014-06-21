@@ -1,51 +1,55 @@
 import re, sys, subprocess, os
+from threading import Thread
 
 def log_check(rule):
     #Checks the passed rule for the LOG keyword for which logfile to use
+    log_files = []
     for keys in rule:
         match = re.findall('LOG', keys)
         if match:
             matches = rule.get(keys)
             matches = matches.replace(" ", "")
+            log_files.append(matches)
     
-    return matches
+    # The list is used to use more than one log file per rule, however this is not yet implemented in the rest of the code.
+    if len(log_files) == 1:
+        return log_files[0]
+    else:
+        print ('Error with the logfile. Please check the value of the LOG keyword in the rule file')
 
-def manager():
-    #Get the rule and logfiles
-    
+def Monitor():
     from FileManager import FileManager
     FileManager = FileManager()
-    log = FileManager.read_logfile()
-        
     rules = FileManager.get_rules()
     ruledef = FileManager.get_ruledef()
-    
-    
+
+    for rule in range (len(rules)):
+        thread = Thread( target=manager, args=(rules[rule], ruledef))
+        thread.start() 
+
+def manager(rule, ruledef):
+       
     temp_matchlist = []
     matchlist_keys = {}
-    for rule in rules:
-        
-        #find the MATCH keyword in the rule file
-        for keys in rule:
-            match = re.findall('MATCH', keys)
+    #find the MATCH keyword in the rule file
+    for keys in rule:
+        match = re.findall('MATCH', keys)
+        if match:
+            matches = rule.get(keys)
+            matches = matches.replace(" ", "")
+            temp_matchlist = matches.split(",")
+                    
+    # find the matching values of the match keyword with the keywords in the file    
+    for keys in rule:
+        for line in range (len(temp_matchlist)):
+            regex = temp_matchlist[line]
+            match = re.findall(regex, keys)
             if match:
                 matches = rule.get(keys)
-                matches = matches.replace(" ", "")
-                temp_matchlist = matches.split(",")
-                        
-        # find the matching values of the match keyword with the keywords in the file    
-        for keys in rule:
-            for line in range (len(temp_matchlist)):
-                regex = temp_matchlist[line]
-                match = re.findall(regex, keys)
-                if match:
-                    matches = rule.get(keys)
-                    #matchlist.append(matches)
-                    #matchlist_keys.append(keys)
-                    matchlist_keys.update({keys:matches})            
-        
-        log_check(rule)               
-        matchlist_keys = asterisk_check(matchlist_keys)
+                matchlist_keys.update({keys:matches})            
+    
+    log = log_check(rule)               
+    matchlist_keys = asterisk_check(matchlist_keys)
                         
     # match the keywords key and value            
     temp_list = []
@@ -58,8 +62,7 @@ def manager():
                 string = ', '.join(temp_list)
                 string = string.replace (',', '').replace(" ", "")
                 matchlist_keys[line] = string         
-           
-                  
+                           
     # Put the values of the dictionary in an list. The list is used to search the logfile
     matchlist = []
     for keys in matchlist_keys:
@@ -73,7 +76,7 @@ def manager():
     regex_count = match_with_log(matchlist, regex, log)
     rule_count_value, count_operator = get_count_operator(regex_count, rule)
     action = compare_count(rule_count_value, regex_count, count_operator)
-    do_action(action, rule)
+    perform_action(action, rule)
     
 def asterisk_check(matchlijst):  
     temp_matchlijst = {}
@@ -166,8 +169,7 @@ def compare_count(rule_count_value, regex_count, count_operator):
     
     return action
 
-def do_action(action, rule):
-    
+def perform_action(action, rule):
     if action == True:
     
         folder = 'actions\ '
@@ -190,7 +192,4 @@ def do_action(action, rule):
         # There is no action needed.
         pass
     
-manager()
-
-
-
+Monitor()
