@@ -25,5 +25,5 @@ class Email:
     server = smtplib.SMTP(config.server)
     server.starttls()
     server.login(username,password)
-    server.sendmail(fromaddr,toaddr,headers+"\r\n\r\n")
+    server.sendmail(fromaddr,toaddr,headers+"\r\n\r\n"+sys.argv[2])
     server.quit()
