@@ -1,14 +1,17 @@
 from os import listdir, path
 import re
+from Configuration import Configuration
 
 class Rules:
     
     def get_rules(self):
+        config = Configuration()
+        ruleDir = config.ruleDir
+        
         regex = re.compile(".+=|.+<|.+>|.+<=|.+>=")
         #Rules worden uitgelezen
         print "Searching for rule files..."
-        ruleDir = 'rules/'
-            
+        #ruleDir = 'rules/'   
         if path.isdir(ruleDir) is True: # checks if the given path exists
             DirFiles = listdir(ruleDir)
         
@@ -35,10 +38,14 @@ class Rules:
     
     
     def get_ruledef(self):
-        print "Searching for Rule Definition file"
-        DirFile = 'rules/RuleDefinitionTable.txt'
+        config = Configuration()
+        ruleDir = config.ruleDir
         
-        file = open(DirFile, 'r')
+        print "Searching for Rule Definition file"
+        DefFile = ruleDir + 'RuleDefinitionTable.txt'
+        print DefFile, 'found!'
+        
+        file = open(DefFile, 'r')
         rulelist = {}
         regex = '.+ = .*?'
         for line in file:

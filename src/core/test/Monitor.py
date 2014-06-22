@@ -23,11 +23,6 @@ def Monitor():
     rules = FileManager.get_rules()
     ruledef = FileManager.get_ruledef()
 
-    from Configuration import Configuration
-    config = Configuration()
-    RuleDir = config.RuleDir
-    print "ruledir", RuleDir
-
     for rule in range (len(rules)):
         thread = Thread( target=manager, args=(rules[rule], ruledef))
         thread.start() 
@@ -36,15 +31,18 @@ def manager(rule, ruledef):
     from MatchManager import Matching
     from SearchManager import SearchManager
     from Trigger import Trigger
+    from FileManager import FileManager
+    
     Matching = Matching()
     SearchManager = SearchManager()
     Trigger = Trigger()
+    FileManager = FileManager()
     
-    log = log_check(rule)
-    matchlist = Matching.get_matchlist(log, rule, ruledef)
-           
-    action = SearchManager.searchmanager(matchlist, rule, log)
-        
+    log_file = log_check(rule)
+    log = FileManager.read_logfile(log_file)
+    
+    matchlist = Matching.get_matchlist(log, rule, ruledef)  
+    action = SearchManager.searchmanager(matchlist, rule, log)  
     Trigger.perform_action(action, rule)
     
 Monitor()

@@ -14,9 +14,9 @@ class FileManager:
         ruledef = Rules.get_ruledef()
         return ruledef
     
-    def read_logfile(self):
+    def read_logfile(self, log_file):
         # The filename needs to be changed. The logfile location will be in the Rule.
-        filename = 'log.txt'
+        filename = log_file
         loglines = []
         read = open(filename, 'r')
         for _line in read:
