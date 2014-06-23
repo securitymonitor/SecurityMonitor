@@ -2,6 +2,9 @@ import re
 
 class SearchManager():
     
+    def __init__(self):
+        self.logcounter()
+    
     def searchmanager(self, matchlist, rule, log):
         matchlist, regex = self.build_regex(matchlist)
         regex_count = self.match_with_log(regex, log)
@@ -75,4 +78,12 @@ class SearchManager():
             if regex_count >= rule_count_value:
                 action = True 
         
-        return action    
+        return action
+    
+    def logcounter(self):
+        self.endPoint = 0
+        self.startAt = 0
+        
+        
+    
+        

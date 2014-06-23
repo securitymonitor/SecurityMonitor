@@ -2,14 +2,14 @@ import re
 
 class Matching:
     
-    def get_matchlist(self, log, rule, ruledef):
+    def get_matchlist(self, rule, ruledef):
         
-        temp_matchlist = self.get_matches(log, rule)
+        temp_matchlist = self.get_matches(rule)
         matchlist = self.get_matching_definitions(temp_matchlist, ruledef)
     
         return matchlist
     
-    def get_matches(self, log, rule):
+    def get_matches(self, rule):
         temp_matchlist = []
         matchlist_keys = {}
         

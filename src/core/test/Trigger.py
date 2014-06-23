@@ -17,6 +17,8 @@ class Trigger():
                 match = re.findall('ACTION', x)
                 if match:            
                     rule_action = rule.get(x)
+                    
+            print 'Attack Detected!'
             
             actions = rule_action.split(',')
             for action in actions:
@@ -24,13 +26,14 @@ class Trigger():
                 
                 action_target = folder + action
                 action_target = action_target.replace(" ", "").replace("'", '')
+                
                      
                 if os.path.exists(action_target) is True:
-                    print 'The action rule is : ', action_target
+                    #print 'The action rule is : ', action_target
                     subprocess.call([sys.executable, action_target, rule['DESCRIPTION =']])
                 else:
                     print 'The action rule is not valid. Please use the correct path of the file.'
             
         else:
-            # There is no action needed.
-            pass
+            print 'No Attack detected...'
+            

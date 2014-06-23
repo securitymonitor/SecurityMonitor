@@ -30,7 +30,6 @@ def interval_check(rule):
             interval = interval.replace(" ", "")
     
     interval_time = interval.split(":")
-    print len(interval_time)
     
     if len(interval_time) == 3: # hours
         hour = int(interval_time[0])
@@ -65,21 +64,44 @@ def manager(rule, ruledef):
     from SearchManager import SearchManager
     from Trigger import Trigger
     from FileManager import FileManager
-    
+       
     Matching = Matching()
     SearchManager = SearchManager()
     Trigger = Trigger()
     FileManager = FileManager()
        
-    log_file = log_check(rule)
-    log = FileManager.read_logfile(log_file)
+    log_location = log_check(rule)
+    log = FileManager.read_logfile(log_location)
+    logfile = log
+    endPoint = len(logfile)
     
-    matchlist = Matching.get_matchlist(log, rule, ruledef)  
-    action = SearchManager.searchmanager(matchlist, rule, log)  
-    Trigger.perform_action(action, rule)
+    while True:
+        if endPoint > SearchManager.startAt:     
+            matchlist = Matching.get_matchlist(rule, ruledef)  
+            action = SearchManager.searchmanager(matchlist, rule, logfile)         
+            Trigger.perform_action(action, rule)
+        
+        print 'start at begin: ' ,  SearchManager.startAt
+        SearchManager.startAt = endPoint
+        print 'startat = ', SearchManager.startAt
+        print 'endpoint = ', endPoint
+        
+        interval = interval_check(rule)
+        print 'Sleeping for ' + str(interval) + ' seconds'
+        time.sleep(interval)
+        
+        print 'Searching in the new rule file'
+        
+        log_location = log_check(rule)
+        log = FileManager.read_logfile(log_location)
+        
+        del logfile[:]
+        
+        for line in range (SearchManager.startAt, len(log)):
+            logfile.append(log[line])
+        
+        endPoint = len(log)
     
-    interval = interval_check(rule)
-    #time.sleep(interval)
        
     
 Monitor()
