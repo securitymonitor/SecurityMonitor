@@ -40,6 +40,7 @@ class Rules:
     def get_ruledef(self):
         config = Configuration()
         ruleDir = config.ruleDir
+        print ruleDir 
         
         print "Searching for Rule Definition file"
         DefFile = ruleDir + 'RuleDefinitionTable.txt'
