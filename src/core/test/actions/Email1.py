@@ -21,7 +21,7 @@ class Email:
     
     username = config.username
     password = config.password
-        
+    
     server = smtplib.SMTP(config.server)
     server.starttls()
     server.login(username,password)
