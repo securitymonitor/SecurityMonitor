@@ -2,13 +2,16 @@ import subprocess
 import re
 import os
 import sys
+from Configuration import Configuration
 
 class Trigger():
     
     def perform_action(self,action, rule):
         if action == True:
-    
-            folder = 'actions\ '
+            
+            config = Configuration()
+        
+            folder = config.actionDir
             #get action from rule
             for x in rule:
                 match = re.findall('ACTION', x)
@@ -21,8 +24,7 @@ class Trigger():
                 
                 action_target = folder + action
                 action_target = action_target.replace(" ", "").replace("'", '')
-                
-                             
+                     
                 if os.path.exists(action_target) is True:
                     print 'The action rule is : ', action_target
                     subprocess.call([sys.executable, action_target, rule['DESCRIPTION =']])
