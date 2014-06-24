@@ -16,21 +16,26 @@ class SearchManager():
     def build_regex(self,matchlist):
         regex = ''
         temp = []
-        for _x in range(len(matchlist)):
-            match = re.findall('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', matchlist[_x])
-            if match:
-                for char in matchlist[_x]:
-                    if char is '.':
-                        #print 'char = ' + str(char)
-                        char = char.replace('.','[.]')
-                        temp.append(char)
-                    else:
-                        temp.append(char)
-                char = ''.join(temp)
-                matchlist [_x] = char
-                
-            regex = regex +"(?=.*"+ str(matchlist[_x]) +')'
-            
+        
+        if len(matchlist) == 1:
+            regex = matchlist[0]
+        else:
+            for _x in range(len(matchlist)):
+                match = re.match('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', matchlist[_x])
+                if match:
+                    for char in matchlist[_x]:
+                        if char is '.':
+                            #print 'char = ' + str(char)
+                            char = char.replace('.','[.]')
+                            temp.append(char)
+                        else:
+                            temp.append(char)
+                    char = ''.join(temp)
+                    matchlist [_x] = char
+                    
+                regex = regex +"(?=.*"+ str(matchlist[_x]) +')'
+        
+        print regex    
         return matchlist, regex
     
     def match_with_log(self,regex, log):
@@ -58,6 +63,8 @@ class SearchManager():
         return rule_count_value, count_operator    
     
     def compare_count(self, rule_count_value, regex_count, count_operator):
+
+        print 'regex count: ', regex_count 
 
         action = False
         if count_operator == '=':
