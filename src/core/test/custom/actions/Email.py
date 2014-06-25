@@ -1,5 +1,11 @@
 import os
 import sys
+
+os.getcwd()
+os.chdir('../core')
+
+sys.path.append(os.getcwd())
+
 from Configuration import Configuration
 import smtplib   
 
@@ -21,9 +27,16 @@ class Email:
     
     username = config.username
     password = config.password
-    
+        
     server = smtplib.SMTP(config.server)
-    server.starttls()
-    server.login(username,password)
-    server.sendmail(fromaddr,toaddr,headers+"\r\n\r\n"+sys.argv[2])
+    
+    if username != "" and password != "":
+        pass
+        server.starttls()
+        server.ehlo() 
+        server.login(username,password)     
+    else:
+        pass
+
+    server.sendmail(fromaddr,toaddr,headers+"\r\n\r\n"+sys.argv[1])
     server.quit()

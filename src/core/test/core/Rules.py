@@ -3,6 +3,7 @@ import re
 from Configuration import Configuration
 
 class Rules:
+    
     def get_rules(self):
         config = Configuration()
         ruleDir = config.ruleDir
