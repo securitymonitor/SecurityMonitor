@@ -30,6 +30,14 @@ class Matching:
                     matches = rule.get(keys)
                     matchlist_keys.update({keys:matches})            
         
+        # If a value in the rule has the same value as a name of a key.
+        for key in matchlist_keys:
+            for _x in rule:
+                _y = _x.replace(' =', "")
+                matchlist_keys[key] = matchlist_keys[key].replace(" ", "")
+                if matchlist_keys.get(key) == _y:
+                    matchlist_keys[key] = rule.get(_x)
+        
         #Checks if the matchlist contains an *. If so, the key will be deleted.
         matchlist_keys = self.asterisk_check(matchlist_keys)
         return matchlist_keys
