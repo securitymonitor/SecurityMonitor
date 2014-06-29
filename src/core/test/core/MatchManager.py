@@ -1,6 +1,14 @@
 import re
 
 class Matching:
+    
+    """
+    This class is used to create the matchlist and combine it with the matching keywords in the RuleDefinitionsFile.txt
+    
+    matchlist =        The matchlist that is used for the actual matching of the logfile
+    matchlist_keys=    An temporary dictionary that is used to get the value of the keys
+    """
+    
     matchlist = []
     matchlist_keys = {}
     
@@ -10,6 +18,10 @@ class Matching:
         self.get_matches()
         self.get_matching_definitions()
     
+    
+    """
+    This function is used to get all the keys matching the value of the MATCH key in the rule.
+    """
     def get_matches(self):
         temp_matchlist = []
 
@@ -43,6 +55,10 @@ class Matching:
         matchlist_keys = self.asterisk_check(matchlist_keys)
         self.matchlist_keys = matchlist_keys
                             
+    
+    """
+    This function is used to combine the values of the matchlist with the values in the ruledef.
+    """
     def get_matching_definitions(self):
         # match the keywords key and value            
         temp_list = []
@@ -64,7 +80,10 @@ class Matching:
         
         print 'matchlist: ', matchlist
         return matchlist
-        
+    
+    """
+    THis function checks if a value of the matchlist has an asterisk, it will be removed.
+    """
     def asterisk_check(self, matchlist):  
         temp_matchlijst = {}
            

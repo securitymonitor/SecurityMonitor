@@ -1,6 +1,14 @@
 import re
 
 class SearchManager():
+    
+    """
+    Class to build the regex from the matchlist and use it to search the logfile for matches
+    
+    action =     Variable used to trigger an action
+    regex =      Used to search the logfile 
+    """
+        
     action = False
     regex = ''
     
@@ -11,7 +19,10 @@ class SearchManager():
         
         self.build_regex()
         self.compare_count()
-                
+    
+    """
+    This function is used to build the regex from the matchlist
+    """          
     def build_regex(self):
         temp = []
         
@@ -34,7 +45,11 @@ class SearchManager():
                 self.regex = self.regex +"(?=.*"+ str(self.matchlist[_x]) +')'
         
         print self.regex    
-    
+
+
+    """
+    This function is used to match the regex with the logfile and match the corresponding values
+    """
     def match_with_log(self):
         regex_count = 0         
         for line in self.logfile:
@@ -43,6 +58,10 @@ class SearchManager():
                 regex_count+=1
         return regex_count
     
+    
+    """
+    This function is used to get the COUNT operator in the rule.
+    """
     def get_count_operator(self):
        
         for x in self.rule:
@@ -58,6 +77,9 @@ class SearchManager():
         
         return rule_count_value, count_operator    
     
+    """
+    This function is used to compare the count operator of the rule with the count operator of the regex.
+    """
     def compare_count(self):
         regex_count = self.match_with_log()        
         rule_count_value, count_operator = self.get_count_operator()

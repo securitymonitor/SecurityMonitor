@@ -4,10 +4,18 @@ from threading import Thread
 from Configuration import Configuration
 
 class Monitor():
+    
+    """
+    The monitor is used to execute the rule threads and monitor the logfiles
+    """
+        
     endPoint = 0
     startAt = 0
     interval = 0
-
+    
+    """
+    This function is used to check the rule file for the location of the logfile
+    """
     def log_check(self,rule):
         #Checks the passed rule for the LOG keyword for which logfile to use
         log_files = []
@@ -24,6 +32,9 @@ class Monitor():
         else:
             print 'Error with the logfile. Please check the value of the LOG keyword in the rule file'
     
+    """
+    This function is used to check the rule file for the interval and to calculate it.
+    """
     def interval_check(self,rule):
         config = Configuration()
         
@@ -54,6 +65,9 @@ class Monitor():
         else:
             print ('Interval is incorrect')
     
+    """
+    This function is used to start for every rule a thread.
+    """
     def Monitor(self):
         from FileManager import FileManager
         FileManager = FileManager()
@@ -65,6 +79,9 @@ class Monitor():
             thread = Thread( target=self.manager, args=(rules[rule], ruledef))
             thread.start() 
     
+    """
+    This function is a parser for each time a change in the log file occurs.
+    """
     def manager(self,rule, ruledef):
         from MatchManager import Matching
         from SearchManager import SearchManager

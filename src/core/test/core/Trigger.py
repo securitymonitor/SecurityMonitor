@@ -6,6 +6,11 @@ from Configuration import Configuration
 
 class Trigger():
     
+    """
+    This class is used to perform an action in case of a trigger.
+    """
+    
+    
     def perform_action(self,action, rule):
         if action == True:
             

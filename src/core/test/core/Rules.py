@@ -3,7 +3,13 @@ import re
 from Configuration import Configuration
 
 class Rules:
+    """
+    Class to read the rule fules in de ruleDir and the RuleDefinitionTable.txt
+    """
     
+    """
+    This function is used to put the rulefile in a dicionary.
+    """
     def get_rules(self):
         config = Configuration()
         ruleDir = config.ruleDir
@@ -36,7 +42,9 @@ class Rules:
                 file.close()
         return contents
     
-    
+    """
+    This function is used to put the ruledefinitions in a dictionary
+    """ 
     def get_ruledef(self):
         config = Configuration()
         ruleDir = config.ruleDir
