@@ -1,29 +1,27 @@
 import re
 
 class SearchManager():
+    action = False
+    regex = ''
     
-    def __init__(self):
-        self.logcounter()
-    
-    def searchmanager(self, matchlist, rule, log):
-        matchlist, regex = self.build_regex(matchlist)
-        regex_count = self.match_with_log(regex, log)
-        rule_count_value, count_operator = self.get_count_operator(regex_count, rule)
-        action = self.compare_count(rule_count_value, regex_count, count_operator)
+    def __init__(self, matchlist, rule, logfile):
+        self.matchlist = matchlist
+        self.rule = rule
+        self.logfile = logfile
         
-        return action
-        
-    def build_regex(self,matchlist):
-        regex = ''
+        self.build_regex()
+        self.compare_count()
+                
+    def build_regex(self):
         temp = []
         
-        if len(matchlist) == 1:
-            regex = matchlist[0]
+        if len(self.matchlist) == 1:
+            self.regex = self.matchlist[0]
         else:
-            for _x in range(len(matchlist)):
-                match = re.match('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', matchlist[_x])
+            for _x in range(len(self.matchlist)):
+                match = re.match('(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', self.matchlist[_x])
                 if match:
-                    for char in matchlist[_x]:
+                    for char in self.matchlist[_x]:
                         if char is '.':
                             #print 'char = ' + str(char)
                             char = char.replace('.','[.]')
@@ -31,28 +29,26 @@ class SearchManager():
                         else:
                             temp.append(char)
                     char = ''.join(temp)
-                    matchlist [_x] = char
+                    self.matchlist [_x] = char
                     
-                regex = regex +"(?=.*"+ str(matchlist[_x]) +')'
+                self.regex = self.regex +"(?=.*"+ str(self.matchlist[_x]) +')'
         
-        print regex    
-        return matchlist, regex
+        print self.regex    
     
-    def match_with_log(self,regex, log):
+    def match_with_log(self):
         regex_count = 0         
-        for line in log:
-            match = re.findall(regex, line)
+        for line in self.logfile:
+            match = re.findall(self.regex, line)
             if match:
-                #print 'regex = ' + str(regex) + "  line = " + str(line)
                 regex_count+=1
         return regex_count
     
-    def get_count_operator(self, regex_count, rule):
+    def get_count_operator(self):
        
-        for x in rule:
+        for x in self.rule:
             match = re.findall('COUNT', x)
             if match:
-                rule_count_value = rule.get(x)
+                rule_count_value = self.rule.get(x)
                 rule_count_value = rule_count_value.replace(" ", "")
                 rule_count_value = int (rule_count_value)
                 rule_count = x
@@ -62,35 +58,27 @@ class SearchManager():
         
         return rule_count_value, count_operator    
     
-    def compare_count(self, rule_count_value, regex_count, count_operator):
-
+    def compare_count(self):
+        regex_count = self.match_with_log()        
+        rule_count_value, count_operator = self.get_count_operator()
+        
         print 'regex count: ', regex_count 
 
-        action = False
         if count_operator == '=':
             print regex_count, type(regex_count)
             print rule_count_value , type (rule_count_value)
             if regex_count == rule_count_value:
-                action = True
+                self.action = True
         if count_operator == '<':
             if regex_count < rule_count_value:
-                action = True
+                self.action = True
         if count_operator == '>':
             if regex_count > rule_count_value:
-                action = True
+                self.action = True
         if count_operator == '<=':
             if regex_count <= rule_count_value:
-                action = True
+                self.action = True
         if count_operator == '>=':
             if regex_count >= rule_count_value:
-                action = True 
-        
-        return action
-    
-    def logcounter(self):
-        self.endPoint = 0
-        self.startAt = 0
-        
-        
-    
-        
+                self.action = True 
+               
