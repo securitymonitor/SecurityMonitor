@@ -44,7 +44,7 @@ class SearchManager():
                     
                 self.regex = self.regex +"(?=.*"+ str(self.matchlist[_x]) +')'
         
-        print self.regex    
+        print 'regex: ', self.regex    
 
 
     """

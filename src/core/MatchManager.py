@@ -78,8 +78,8 @@ class Matching:
             key = self.matchlist_keys.get(keys)
             matchlist.append(key)  
         
-        print 'matchlist: ', matchlist
-        return matchlist
+        self.matchlist = matchlist
+        print 'matchlist: ', self.matchlist
     
     """
     THis function checks if a value of the matchlist has an asterisk, it will be removed.

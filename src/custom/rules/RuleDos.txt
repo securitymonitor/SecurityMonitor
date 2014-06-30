@@ -2,10 +2,11 @@ NAME = 'DoS UDP flood attack'
 LOG = log.txt
 DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 or more that are targeted at a specific target IP.'
 SOURCEIP = 145.92.6.10
+SOURCEPT = 49428
 TARGETIP = 192.168.2.128
+TARGETPT = 22
 PROTOCOL = UDP
-COUNT > 100
-TIMER < 10
-MESSAGE = Apr 24 17:13:22
+COUNT > 5
+MESSAGE = ipv4
 ACTION = 'Email.py'
 MATCH = MESSAGE
