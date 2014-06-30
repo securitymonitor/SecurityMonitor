@@ -1,5 +1,5 @@
 NAME = 'DoS TCP flood attack'
-LOG = log.txt
+LOG = TestFirewall.log
 DESCRIPTION = 'Rule check for: (TCP flood)-TCP packets with a threshold of 400 or more that are targeted at a specific target IP.'
 SOURCEIP = *
 TARGETIP = 192.168.2.128

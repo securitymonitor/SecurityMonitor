@@ -1,5 +1,5 @@
 NAME = 'DoS UDP flood attack'
-LOG = log.txt
+LOG = TestFirewall.log
 DESCRIPTION = 'Rule check for: (UDP flood)-UDP packets with a threshold of 400 or more that are targeted at a specific target IP.'
 SOURCEIP = 145.92.6.10
 SOURCEPT = 49428
