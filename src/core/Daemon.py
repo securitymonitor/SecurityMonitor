@@ -9,7 +9,7 @@ class Daemon:
 	
 	Usage: subclass the Daemon class and override the run() method
 	"""
-	def __init__(self, pidfile, stdin='_ErrorInputLog.log', stdout='_ErrorOutputLog.log', stderr='_ErrorLog.log'):
+	def __init__(self, pidfile, stdin='log2.log', stdout='log2.log', stderr='log2.log'):
 		self.stdin = stdin
 		self.stdout = stdout
 		self.stderr = stderr
@@ -54,13 +54,14 @@ class Daemon:
 		atexit.register(self.delpid)
 		pid = str(os.getpid())
 		file(self.pidfile,'w+').write("%s\n" % pid)	
-		
-		from Main import Main
-		main = Main()
+		from Configuration import Configuration
+		from Main import main
+		main = main()
+		config = Configuration()
 		
 		while True:
 			main
-			time.sleep(main.sleeptimer.strip(""))	
+			time.sleep(float(config.sleeptimer))	
 			
 	def delpid(self):
 		os.remove(self.pidfile)

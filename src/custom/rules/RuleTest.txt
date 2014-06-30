@@ -1,10 +1,10 @@
 NAME = 'DoS TCP flood attack'
 LOG = log.txt
 DESCRIPTION = 'Rule check for: (TCP flood)-TCP packets with a threshold of 400 or more that are targeted at a specific target IP.'
-SOURCEIP = 145.92.6.10
+SOURCEIP = *
 TARGETIP = 192.168.2.128
 PROTOCOL = TCP
-COUNT > 20
-TIMER < 10
+COUNT > 400
+INTERVAL = 60
 ACTION = 'Email.py'
-MATCH = SOURCEIP, PROTOCOL
+MATCH = SOURCEIP, TARGETIP, PROTOCOL

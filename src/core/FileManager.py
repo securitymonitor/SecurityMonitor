@@ -1,44 +1,36 @@
-'''
-Created on Mar 6, 2013
-
-@author: Sujen
-'''
 class FileManager:
-    '''
-    FileManager:
-        This class defines basic file functions. 
-    '''
     
-    def __init__(self):
-        '''
-        Constructor
-        '''
-    def read(self, dirFile):
-        file = open(dirFile)
-        fileLines = file.readlines()
-        file.close()
-        return fileLines
+    """
+    This class is used to get the rules, get the rule definitions and to read the log files.
+    """
     
-    def write(self, dirFile, textData):
-        file = open(dirFile, "r+")
-        existingText = file.read()
-        #file.seek(0)
-        file.truncate()
-        file.write(existingText + "\n" + textData) 
+    """
+    This function is used to get all the available rules in the ruleDir.
+    """
+    def get_rules(self):
+        from Rules import Rules
+        Rules = Rules()
+        rule_files = Rules.get_rules()       
+        return rule_files
     
-    def overwrite(self, regexList, dirFile):
-        file = open(dirFile, "r+")
-        file.truncate()
-        for i in range(0, len(regexList)):
-            file.write(regexList[i])  
-        
-    def stripNewLine(self, List):
-        strippedList = []
-        
-        i=0
-        for i in range(0, len(List)):
-            strippedList.append(List[i].strip())
-        
-        return strippedList
-        
-        
+    """
+    This function is used to get the rule definitions.
+    """
+    def get_ruledef(self):
+        from Rules import Rules
+        Rules = Rules()
+        ruledef = Rules.get_ruledef()
+        return ruledef
+    
+    """
+    This function is used to read the logfile
+    """
+    def read_logfile(self, log_file):
+        filename = log_file
+        loglines = []
+        read = open(filename, 'r')
+        for _line in read:
+            _line = _line.strip()
+            loglines.append(_line)
+        read.close()
+        return loglines

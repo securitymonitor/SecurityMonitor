@@ -1,84 +1,119 @@
-'''
-Created on Mar 6, 2013
-
-@author: Sujen
-'''
-from FileManager import FileManager
-from Rule import Rule
-from mimify import File
-from QueryManager import QueryManager
-from core.Trigger import Trigger
-from threading import Thread
-import operator
-import time
 import re
-import sys
-from cgi import logfile
+import time
+from threading import Thread
 from Configuration import Configuration
-from core.Rule import Rule
-from robotparser import RuleLine
 
-class Monitor:
-    '''
-    Monitor:
-        The Monitor class performs the monitoring actions of log files.
-    '''
+class Monitor():
+    
+    """
+    The monitor is used to execute the rule threads and monitor the logfiles
+    """
+        
     endPoint = 0
+    startAt = 0
+    interval = 0
+    
+    """
+    This function is used to check the rule file for the location of the logfile
+    """
+    def log_check(self,rule):
+        #Checks the passed rule for the LOG keyword for which logfile to use
+        log_files = []
+        for keys in rule:
+            match = re.findall('LOG', keys)
+            if match:
+                matches = rule.get(keys)
+                matches = matches.replace(" ", "")
+                log_files.append(matches)
         
-    def __init__(self):
-        '''
-        Constructor
-        '''                   
-
-    '''
+        # The list is used to use more than one log file per rule, however this is not yet implemented in the rest of the code.
+        if len(log_files) == 1:
+            return log_files[0]
+        else:
+            print 'Error with the logfile. Please check the value of the LOG keyword in the rule file'
+    
+    """
+    This function is used to check the rule file for the interval and to calculate it.
+    """
+    def interval_check(self,rule):
+        config = Configuration()
+        
+        interval = config.interval
+        for keys in rule:
+            match = re.findall('INTERVAL', keys)
+            if match:
+                interval = rule.get(keys)
+                interval = interval.replace(" ", "")
+        
+        interval_time = interval.split(":")
+        
+        if len(interval_time) == 3: # hours
+            hour = int(interval_time[0])
+            minutes = int(interval_time[1])
+            seconds = int(interval_time[2])
+            interval = hour*3600 + minutes*60 + seconds
+            return interval
+        elif len(interval_time) == 2: # minutes
+            minutes = int(interval_time[0])
+            seconds = int(interval_time[1])
+            interval = minutes*60 + seconds    
+            return interval
+        elif len(interval_time) == 1:
+            seconds = int (interval_time[0])
+            interval = seconds
+            return interval
+        else:
+            print ('Interval is incorrect')
+    
+    """
+    This function is used to start for every rule a thread.
+    """
+    def Monitor(self):
+        from FileManager import FileManager
+        FileManager = FileManager()
+        rules = FileManager.get_rules()
+        ruledef = FileManager.get_ruledef()
+                
+        for rule in range (len(rules)):
+            print rules[rule]
+            thread = Thread( target=self.manager, args=(rules[rule], ruledef))
+            thread.start() 
+    
+    """
     This function is a parser for each time a change in the log file occurs.
-    '''
-    def monitor(self, rule, interval):
-        configuration = Configuration()
-        fm = FileManager()
-        queryManager = QueryManager()
-        triggerObj = Trigger()
-        logFile = fm.read(configuration.firewallLog)
-        queryManager.mainResult = logFile 
-        endPoint = len(logFile)
+    """
+    def manager(self,rule, ruledef):
+        from MatchManager import Matching
+        from SearchManager import SearchManager
+        from Trigger import Trigger
+        from FileManager import FileManager
+           
+        Matching = Matching(rule, ruledef)
+        Trigger = Trigger()
+        FileManager = FileManager()
+           
+        log_location = self.log_check(rule)
+        log = FileManager.read_logfile(log_location)
+        logfile = log
+        endPoint = len(logfile)
         
-        while (True):
-            configuration = Configuration()
-            print rule
-            if (endPoint > queryManager.startAt):
-                if(queryManager.execute(rule)):
-                    triggerObj.ExecuteTrigger(rule)
-                    print "Attack detected!"                  
-                else:
-                    print "No attack detected..."
-                  
-            queryManager.startAt = endPoint
+        while True:
+            if endPoint > self.startAt:     
+                Searching = SearchManager(Matching.matchlist, rule, logfile)
+                Trigger.perform_action(Searching.action, rule)
+            
+            print 'start at begin: ' ,  self.startAt
+            self.startAt = endPoint
+            print 'startat = ', self.startAt
+            print 'endpoint = ', endPoint
+            interval = self.interval_check(rule)
+            print 'Sleeping for ' + str(interval) + ' seconds'
             time.sleep(interval)
+            print 'Searching in the new rule file'
             
-            logFile = fm.read(configuration.firewallLog)
-            del queryManager.mainResult[:] 
-            
-            for i in range(queryManager.startAt, len(logFile)):
-                queryManager.mainResult.append(logFile[i])
-            
-            endPoint = len(logFile)
-    
-    
-    '''
-    This function starts the monitoring of the log file.
-    '''
-    def startMonitoring(self):
-        configuration = Configuration()
-        ruleManager = Rule()
-         
-        #Iterates through every rule file in the given directory.      
-        for rulefile in configuration.ruleFiles:
-            useRule = configuration.ruleDir + rulefile
-            ruleManager.query = ruleManager.readRules(useRule)
-            allRules = ruleManager.ruleList
-        
-        #Starts a monitoring thread for each defined rule. The parameters that are used to start a monitor are rule and interval.   
-        for i in range(0, len(ruleManager.ruleList)):
-            a = Thread(target=self.monitor, args=(allRules[i], ruleManager.interval))
-            a.start()
-            print str(a)
+            log_location = self.log_check(rule)
+            log = FileManager.read_logfile(log_location)
+            del logfile[:]
+            for line in range (self.startAt, len(log)):
+                logfile.append(log[line])
+            endPoint = len(log)

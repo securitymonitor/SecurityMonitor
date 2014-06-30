@@ -1,30 +1,15 @@
-'''
-Created on Mar 6, 2013
+import time
+from Configuration import Configuration
+from Monitor import Monitor
 
-@author: vinesh
-'''
-import sys
-import os
-
-os.getcwd()
-os.chdir('..')
-sys.path.append(os.getcwd())
-
-from core.Configuration import Configuration
-from core.Monitor import Monitor
-from core.Rule import Rule
-from threading import Thread
-
-def Main():
-    config = Configuration()
+def main():
+    config= Configuration()
     monitor = Monitor()
 
-    config.configure()
-    sleeptimer = config.sleeptimer
+    monitor.Monitor()
 
-    daemon = Thread(name='Main Daemon Thread', target=monitor.startMonitoring())
-    daemon.setDaemon(True)
-    daemon.start()
-
+    sleeptimer = float(config.sleeptimer)
+    time.sleep(sleeptimer)
+    
 if __name__ == '__main__':
-    Main()
+    main()

@@ -1,8 +1,0 @@
-{
-NAME = 'Land Attack'
-DESCRIPTION = 'Rule check for: If the source and target IP are the same.'
-SOURCEIP = *
-TARGETIP = SOURCEIP
-INTERVAL = 10
-ACTION = 'Email.py,Email.py, Email.py'
-}
