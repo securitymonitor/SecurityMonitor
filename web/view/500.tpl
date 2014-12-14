@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <meta charset="utf-8" />
-<title>SecMon | 404</title>
+<title>SecMon | 500</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta content="" name="description" />
 <meta content="" name="author" />
@@ -26,9 +26,9 @@
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-offset-1 col-xs-10">
    <div class="error-container" >
     <div class="error-main">
-      <div class="error-number"> 404 </div>
-      <div class="error-description" > Page not found. </div>
-      <div class="error-description-mini"> This page does not exists. </div>
+      <div class="error-number"> 500 </div>
+      <div class="error-description" > Server error. </div>
+      <div class="error-description-mini"> Something went wrong on the server. </div>
     </div>
     </div>
   
