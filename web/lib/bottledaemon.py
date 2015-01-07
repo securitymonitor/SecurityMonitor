@@ -4,11 +4,11 @@ import signal
 import daemon
 import lockfile
 import bottle
+import json
 from bottle import Bottle, get, run, ServerAdapter
 from contextlib import contextmanager
 
 # Custom SSL serversocket
-
 class SSLWSGIRefServer(ServerAdapter):
     def run(self, handler):
         from wsgiref.simple_server import make_server, WSGIRequestHandler
@@ -20,13 +20,12 @@ class SSLWSGIRefServer(ServerAdapter):
         srv = make_server(self.host, self.port, handler, **self.options)
         srv.socket = ssl.wrap_socket (
          srv.socket,
-         certfile='/var/secmon/lib/server.pem',  # path to certificate
+         certfile='/var/secmon/lib/server.pem',
          server_side=True)
         srv.serve_forever()
-
 # End custom SSL serversocket
 
-
+\
 
 
 @contextmanager

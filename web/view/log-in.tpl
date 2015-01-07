@@ -27,7 +27,7 @@
 <div class="container">
   <div class="row login-container column-seperation">  
 
-          <h2>Security Monitor Log-in</h2><br>
+          <h2>Security Monitor</h2><br>
 		 <form id="login-form" class="login-form" action="/" method="post">
 		 <div class="row">
 		 <div class="form-group col-md-10">

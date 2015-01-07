@@ -205,43 +205,13 @@ $(document).ready(function() {
 	//Form Wizard Validations
 	var $validator = $("#commentForm").validate({
 		  rules: {
-		    emailfield: {
+		    new_uname: {
 		      required: true,
-		      email: true,
-		      minlength: 3
+		      minlength: 4
 		    },
-		    txtFullName: {
+		    new_passwd: {
 		      required: true,
-		      minlength: 3
-		    },
-			txtFirstName: {
-		      required: true,
-		      minlength: 3
-		    },
-			txtLastName: {
-		      required: true,
-		      minlength: 3
-		    },
-			txtCountry: {
-		      required: true,
-		      minlength: 3
-		    },
-			txtPostalCode: {
-		      required: true,
-		      minlength: 3
-		    },
-			txtPhoneCode: {
-		      required: true,
-		      minlength: 3
-		    },
-			txtPhoneNumber: {
-		      required: true,
-		      minlength: 3
-		    },
-		    urlfield: {
-		      required: true,
-		      minlength: 3,
-		      url: true
+		      minlength: 4
 		    }
 		  },
 		  errorPlacement: function(label, element) {

@@ -21,20 +21,22 @@
 </head>
 
 <body class="error-body no-top">
-<div class="error-wrapper container">
-<div class="row">
-    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-offset-1 col-xs-10">
-   <div class="error-container" >
-    <div class="error-main">
-      <div class="error-number"> 404 </div>
-      <div class="error-description" > Page not found. </div>
-      <div class="error-description-mini"> This page does not exists. </div>
-    </div>
-    </div>
-  
-  </div>
-</div>
-</div>
+
+	<div class="error-wrapper container">
+	<div class="row">
+	    <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-offset-1 col-xs-10">
+	   <div class="error-container" >
+	    <div class="error-main">
+	      <div class="error-number"> 404 </div>
+	      <div class="error-description" > Page not found. </div>
+	      <div class="error-description-mini"> This page does not exists. </div>
+	    </div>
+	    </div>
+	  
+	  </div>
+	</div>
+	</div>
+
 
 <script src="{{ url('assets', filepath='plugins/jquery-1.8.3.min.js') }}" type="text/javascript"></script>
 <script src="{{ url('assets', filepath='plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
