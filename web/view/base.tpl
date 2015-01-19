@@ -104,6 +104,17 @@
 						</a>
 					</li>
 
+					%if title == 'Logs':
+					<li class="start active">
+					%else:
+					<li class="">
+					%end
+						<a href="{{ url('/logs') }}">
+							<i class="fa fa-bars"></i>
+							<span class="title">Logs</span>
+						</a>
+					</li>
+
 					%if title == 'Rules':
 					<li class="start active">
 					%else:
@@ -115,36 +126,15 @@
 						</a>
 					</li>
 
-					%if title == 'Log':
-					<li class="start active">
-					%else:
-					<li class="">
-					%end
-						<a href="javascript:;">
-							<i class="fa fa-bars"></i>
-							<span class="title">Logs</span>
-							<span class="arrow"></span>
-						</a>
-						<ul class="sub-menu">
-							<li><a href="{{ url('/users') }}">Webser</a></li>
-							<li><a href="{{ url('/create_user') }}">Security Monitor</a></li>
-						</ul>
-					</li>
-
 					%if title == 'Users':
 					<li class="start active">
 					%else:
 					<li class="">
 					%end
-						<a href="javascript:;">
+						<a href="{{ url('/users') }}">
 							<i class="fa fa-user"></i>
 							<span class="title">Users</span>
-							<span class="arrow"></span>
 						</a>
-						<ul class="sub-menu">
-							<li><a href="{{ url('/users') }}">List Users</a></li>
-							<li><a href="{{ url('/create_user') }}">Create User</a></li>
-						</ul>
 					</li>
 
 
@@ -202,7 +192,7 @@
 	<script src="{{ url('assets', filepath='secmon/js/mycustom.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/datatables-responsive/js/lodash.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/datatables-responsive/js/datatables.responsive.js') }}" type="text/javascript"></script>
-	<script src="{{ url('assets', filepath='js/datatables.js') }}" type="text/javascript"></script>
+	<script src="{{ url('assets', filepath='secmon/js/datatables.js') }}" type="text/javascript"></script>
 
 	<!-- Notification scripts -->
 	<script src="{{ url('assets', filepath='plugins/jquery-notifications/js/messenger.min.js') }}" type="text/javascript"></script>

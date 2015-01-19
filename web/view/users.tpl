@@ -9,37 +9,31 @@
           </div>
           <div class="grid-body ">
             <form action="" method="POST">
-              <a href="/create_user"><button type="button" class="btn btn-primary btn-cons"><i class="fa fa-plus"></i>&nbsp;New user</button></a>
-              <button type="submit" class="btn btn-danger btn-cons"><i class="fa fa-trash-o"></i>&nbsp;Delete</button>
-              <table class="table table-striped table-flip-scroll cf">
+              <table class="table table-hover table table-striped" id="example3">
                 <thead class="cf">
                   <tr>
-                    <th>
+                    <th style="width:1%">
                       <div class="checkbox check-default ">
                         <input id="checkbox1" type="checkbox" value="1" class="checkall">
                         <label for="checkbox1"></label>
                       </div>
                     </th>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Password</th>
+                    <th style="width:24%">Username</th>
                   </tr>
                 </thead>
                 <tbody>
                   % i = 2
                   %for row in rows:
                   <tr>
-                    <td>
+                    <td class="v-align-middle">
                       <div class="checkbox check-default">
                         <input type="checkbox" name="chkBox" id="checkbox{{i}}" value="{{row[0]}}">
                         <label for="checkbox{{i}}"></label>
                       </div>
                     </td>
-                    % i += 1
-                    %for col in row:
-                    <td>{{col}}</td>
-                    %end
+                    <td class="v-align-middle"><span style="color:#505458">{{row[1]}}</span></td>
                   </tr>
+                  % i += 1
                   %end
                 </tbody>
               </table>

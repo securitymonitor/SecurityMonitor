@@ -1,12 +1,10 @@
-import os
-import argparse
-import signal
-import daemon
-import lockfile
-import bottle
-import json
+import os, argparse, signal, daemon, lockfile, bottle, json
 from bottle import Bottle, get, run, ServerAdapter
 from contextlib import contextmanager
+
+config_file_dir = os.path.dirname(os.path.abspath(__file__)) + "/config.json"
+config = json.loads(open(config_file_dir).read())
+
 
 # Custom SSL serversocket
 class SSLWSGIRefServer(ServerAdapter):
@@ -20,12 +18,10 @@ class SSLWSGIRefServer(ServerAdapter):
         srv = make_server(self.host, self.port, handler, **self.options)
         srv.socket = ssl.wrap_socket (
          srv.socket,
-         certfile='/var/secmon/lib/server.pem',
+         certfile=config["paths"]["file_ssl_cert"],
          server_side=True)
         srv.serve_forever()
 # End custom SSL serversocket
-
-\
 
 
 @contextmanager
@@ -72,7 +68,7 @@ def daemon_run(host="0.0.0.0", port="80", pidfile=None, logfile=None):
     if logfile is None:
         logfile = os.path.join(
             os.getcwd(),
-            "log/bottle.log"
+            config["paths"]["dir_webserver_root"] + 'log/bottle.log'
         )
 
     if args.action == "start":
