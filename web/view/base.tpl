@@ -162,7 +162,7 @@
 		</div>
 
 		<a href="#" class="scrollup">Scroll</a>
-		<div class="footer-widget"><a href="https://github.com/zaanpenguin/SecurityMonitor" target="_blank"><sctrong>Development</strong> Version</a></div>
+		<div class="footer-widget"><a href="https://github.com/zaanpenguin/SecurityMonitor" target="_blank">Version<sctrong> 1.0 beta 1</strong></a></div>
 		
 		{{!base}}
 
@@ -188,8 +188,6 @@
 	<script src="{{ url('assets', filepath='plugins/bootstrap-select2/select2.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/jquery-datatable/js/jquery.dataTables.min.js') }}" type="text/javascript" ></script>
 	<script src="{{ url('assets', filepath='plugins/jquery-datatable/extra/js/dataTables.tableTools.min.js') }}" type="text/javascript" ></script>
-	<script src="{{ url('assets', filepath='secmon/js/bootstrap-datatable.js') }}" type="text/javascript"></script>
-	<script src="{{ url('assets', filepath='secmon/js/mycustom.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/datatables-responsive/js/lodash.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/datatables-responsive/js/datatables.responsive.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='secmon/js/datatables.js') }}" type="text/javascript"></script>
@@ -203,16 +201,6 @@
 	<script src="{{ url('assets', filepath='plugins/boostrap-form-wizard/js/jquery.bootstrap.wizard.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='js/form_validations.js') }}" type="text/javascript"></script>
-
-	<!-- This script will show the results on user creation -->
-	<script>
-		$('#new_uname').change(function(){
-		    $('#ShowUsername').text($(this).val());
-		});
-		$('#new_passwd').change(function(){
-		    $('#ShowPassword').text($(this).val());
-		});
-	</script>
 
 	<!-- This is for the "select all" checkbox -->
 	<script type="text/javascript" >

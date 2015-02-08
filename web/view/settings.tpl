@@ -1,5 +1,4 @@
 % rebase('base.tpl', title='Settings', url=url)
-% import asdkflgjhj
 <div class="page-content"> 
 	<div class="content">
 		<div class="row">

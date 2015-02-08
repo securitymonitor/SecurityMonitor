@@ -1,4 +1,17 @@
 % rebase('base.tpl', title='Users', url=url)
+% import sqlite3
+
+% # For this page we need to request all current users from the database.
+% conn = sqlite3.connect(config["paths"]["file_auth_database"])
+% c = conn.cursor()
+
+% # Select all users from the database
+% c.execute("SELECT ID, Username from secure_login")
+    
+% # List all users in the variable result
+% rows = c.fetchall()
+% c.close()
+
 <div class="page-content"> 
   <div class="content">
     <div class="row-fluid">

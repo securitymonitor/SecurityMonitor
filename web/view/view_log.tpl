@@ -30,14 +30,14 @@
 % end
 
 % with open(path + log) as f:
-<h1>{{log}}</h1>
+<h1>{{log[:-4]}}</h1>
 <textarea id="text-editor" placeholder="empty" class="form-control" rows="30">
 % for line in f:
 {{line}}
 % end
 </textarea><br />
 % end
-<button class="btn btn-info btn-cons btn-cancel" type="button" onclick="goBack()">Back</button>
+<button class="btn btn-white btn-cons btn-cancel" type="button" onclick="goBack()">Back</button>
 % end
 
 % # This code block will process the multi view of a selected log file	
@@ -52,7 +52,7 @@
 % end
 
 % for item in form_data:
-<h1>{{item}}</h1>
+<h1>{{item[:-4]}}</h1>
 <textarea id="text-editor" placeholder="empty" class="form-control" rows="10">
 
 % if item != 'bottle.log':
@@ -75,7 +75,7 @@
 
 % end
 % end
-<button class="btn btn-info btn-cons btn-cancel" type="button" onclick="goBack()">Back</button>
+<button class="btn btn-white btn-cons btn-cancel" type="button" onclick="goBack()">Back</button>
 % end
 
 

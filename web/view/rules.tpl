@@ -12,7 +12,7 @@
               <h4><span class="semi-bold">Rules</span></h4>
             </div>
             <div class="grid-body">
-              <form action="" method="POST">
+              <form action="/rules" method="POST">
                 <table class="table table-hover table table-striped" id="example2">
                   <thead>
                     <tr>
@@ -31,11 +31,11 @@
                       <tr >
                         <td class="v-align-middle">
                          <div class="checkbox check-default">
-                          <input type="checkbox" value="3" id="checkbox{{i}}">
+                          <input type="checkbox" name="chkBox" id="checkbox{{i}}" value="{{item}}">
                           <label for="checkbox{{i}}"></label>
                         </div>
                         </td>
-                        <td class="v-align-middle"><a href="rules/{{item}}"><span style="color:#505458">{{item}}</span></a></td>
+                        <td class="v-align-middle"><a href="rules/{{item}}"><span style="color:#505458">{{item[:-4]}}</span></a></td>
                       </tr>
                       % i += 1
                       % end
