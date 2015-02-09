@@ -110,7 +110,7 @@
 					<li class="">
 					%end
 						<a href="{{ url('/logs') }}">
-							<i class="fa fa-bars"></i>
+							<i class="fa fa-clock-o"></i>
 							<span class="title">Logs</span>
 						</a>
 					</li>
@@ -121,7 +121,7 @@
 					<li class="">
 					%end
 						<a href="{{ url('/rules') }}">
-							<i class="icon-custom-ui"></i>
+							<i class="fa fa-shield"></i>
 							<span class="title">Rules</span>
 						</a>
 					</li>
@@ -132,13 +132,14 @@
 					<li class="">
 					%end
 						<a href="{{ url('/users') }}">
-							<i class="fa fa-user"></i>
+							<i class="fa fa-users"></i>
 							<span class="title">Users</span>
 						</a>
 					</li>
 
-
-					%if title == 'Settings':
+					% show_settings = False
+					% if show_settings == True:
+					% if title == 'Settings':
 					<li class="start active">
 					%else:
 					<li class="">
@@ -148,6 +149,7 @@
 							<span class="title">Settings</span>
 						</a>
 					</li>
+					%end
 
 
 					<li class="">
@@ -162,7 +164,7 @@
 		</div>
 
 		<a href="#" class="scrollup">Scroll</a>
-		<div class="footer-widget"><a href="https://github.com/zaanpenguin/SecurityMonitor" target="_blank">Version<sctrong> 1.0 beta 1</strong></a></div>
+		<div class="footer-widget"><a href="https://github.com/zaanpenguin/SecurityMonitor" target="_blank">Version<sctrong> 1.0 beta 2</strong></a></div>
 		
 		{{!base}}
 
@@ -191,6 +193,7 @@
 	<script src="{{ url('assets', filepath='plugins/datatables-responsive/js/lodash.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/datatables-responsive/js/datatables.responsive.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='secmon/js/datatables.js') }}" type="text/javascript"></script>
+	<script src="{{ url('assets', filepath='secmon/js/select-all-checkbox-fix.js') }}" type="text/javascript"></script>
 
 	<!-- Notification scripts -->
 	<script src="{{ url('assets', filepath='plugins/jquery-notifications/js/messenger.min.js') }}" type="text/javascript"></script>
@@ -201,18 +204,6 @@
 	<script src="{{ url('assets', filepath='plugins/boostrap-form-wizard/js/jquery.bootstrap.wizard.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url('assets', filepath='js/form_validations.js') }}" type="text/javascript"></script>
-
-	<!-- This is for the "select all" checkbox -->
-	<script type="text/javascript" >
-		$('table .checkbox input').click( function() {            
-		    if($(this).is(':checked')){            
-		        $(this).parent().parent().parent().toggleClass('row_selected');                    
-		        }
-		    else{    
-		        $(this).parent().parent().parent().toggleClass('row_selected');        
-		        }
-		    });
-	</script>
 
 	<!-- Notification JS -->
 	% if defined('notification'):

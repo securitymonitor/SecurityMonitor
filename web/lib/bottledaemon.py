@@ -82,7 +82,7 @@ def daemon_run(host="0.0.0.0", port="80", pidfile=None, logfile=None):
         with context:
             # If you don't want SSL, please enable the following line and disable the next 2 lines.
             # bottle.run(host=host, port=port)
-            srv = SSLWSGIRefServer(host="0.0.0.0", port=443)
+            srv = SSLWSGIRefServer(host="0.0.0.0", port=config["paths"]["server_port"])
             run(server=srv)
     if args.action == "stop":
         with open(pidfile,"r") as p:

@@ -33,7 +33,7 @@ The page is devided in the following sections:
 
 # This function checks if the client is authenticated to view the requested page.
 def restricted(fn):
-    def check_credentials(**kwargs):   
+    def check_credentials(**kwargs):
         cookie_check = request.get_cookie("account", secret='54C5F98V4006B3j31sjf9733Q4jXu253g')
         if cookie_check:
             return fn(**kwargs)
@@ -54,7 +54,30 @@ def restricted(fn):
 @route('/')
 @view('log-in')
 def show_page_index():
-    pass
+
+    # Security Protection:
+    # Check for user database file.
+    if os.path.isfile(config["paths"]["file_auth_database"]):
+        # Userdatabase is found, show log-in page.
+        pass
+    else:
+        # User database not found.
+        # Start registration script.
+        response.status = 303
+        response.set_header('Location', '/install')
+
+@route('/install')
+def show__page_install():
+
+    # Security Protection:
+    # This page should only be viewed if there is no user database.
+    if os.path.isfile(config["paths"]["file_auth_database"]):
+        # Userdatabase is found!
+        # Kick user away from page.
+        response.status = 303
+        response.set_header('Location', '/logout')
+    else:
+        return template('install')
 
 @route('/dashboard')
 @restricted
@@ -184,7 +207,7 @@ def do_login():
 
     # This post function will check if the user log-in credentials are correct.
 
-    # First let's get the user details from the login form.
+    # Get the user details from the login form.
     username = request.forms.get('username')
     password = request.forms.get('password')
 
@@ -204,7 +227,7 @@ def do_login():
     if len(rows) == 0:
         abort(403, "Authentication failed, please try again.") 
         
-    # Now let's check if the password from the user matches the passwored stored in the database.
+    # Check if the password from the user matches the passwored stored in the database.
     for row in rows:
         for col in row:
             check = sha512_crypt.verify(password, col)
@@ -213,6 +236,39 @@ def do_login():
                 return template('dashboard', url=url, config=config, notification= 'User ' + username + ' login successful.')
             else:
                 abort(403, "Authentication failed, please try again.")
+
+@post('/install')
+def do_login():
+
+    # This post function will create the first administrator if there is no user database.
+
+    # As a safety measure check if the auth.db file exists
+
+    if os.path.isfile(os.path.dirname(os.path.abspath(__file__)) + "/lib/auth.db"):
+        # Userdatabase is found!
+        # Kick user away from page.
+        response.status = 303
+        response.set_header('Location', '/logout')
+    else:
+        # Get the user details from the registration form.
+        username = request.forms.get('username')
+        password = request.forms.get('password')
+
+        # Hash the password.
+        hash = sha512_crypt.encrypt(password)
+
+        # Create the sqlite database with the right path.
+        con = sqlite3.connect(config["paths"]["file_auth_database"])
+
+        # Save the administrator in the database.
+        with con:
+            cur = con.cursor()    
+            cur.execute("CREATE TABLE secure_login(ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Username TEXT NOT NULL UNIQUE, Password BLOB NOT NULL)")
+            cur.execute("INSERT INTO secure_login(ID,Username,Password) VALUES (?,?,?)", (1,username,hash))
+
+        # Now redirect the user back to the correct page.
+        response.status = 303
+        response.set_header('Location', '/')
 
 @post('/dashboard')
 @restricted
@@ -317,9 +373,9 @@ def post_page_create_rule():
     
     # If the user is performing an rule modification, there should be an existing rule that may or may not have changed by name.
     # If the rule name has changed, the rule will be recreated with the new name. This code will delete the old one.
-    if request.forms.get('current_rulename') != request.forms.get('rule_name'):
-        remove_dir = config["paths"]["dir_secmon_rules"] + request.forms.get('current_rulename') + '.txt'
-        os.remove(remove_dir)
+    #if request.forms.get('current_rulename') != request.forms.get('rule_name'):
+    #    remove_dir = config["paths"]["dir_secmon_rules"] + request.forms.get('current_rulename') + '.txt'
+    #    os.remove(remove_dir)
 
 
 

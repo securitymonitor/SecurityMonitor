@@ -80,7 +80,7 @@
 			</div>
 			<div class="grid-body">
 				<div class="row-fluid ">
-					% if rule_count >= 1:
+					% if log_count >= 1:
 					<h1><span class="bold text-success">{{log_count}}</span></h1>	
 					% else:
 					<h1><span class="bold text-error">{{log_count}}</span></h1>	

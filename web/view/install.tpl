@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <meta charset="utf-8" />
-<title>SecMon | Sign in</title>
+<title>SecMon | Install</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta content="" name="description" />
 <meta content="" name="author" />
@@ -27,11 +27,11 @@
 <div class="container">
   <div class="row login-container column-seperation">  
 
-          <h2>Security Monitor| Sign in.</h2><br>
-		 <form id="login-form" class="login-form" action="/" method="post">
+          <h2>Security Monitor | Administrator not found.</h2><br>
+		 <form id="install-form" class="install-form" action="/install" method="post">
 		 <div class="row">
 		 <div class="form-group col-md-10">
-            <label class="form-label">Username</label>
+            <label class="form-label">Choose username:</label>
             <div class="controls">
 				<div class="input-with-icon  right">                                       
 					<i class=""></i>
@@ -42,7 +42,7 @@
           </div>
 		  <div class="row">
           <div class="form-group col-md-10">
-            <label class="form-label">Password</label>
+            <label class="form-label">Choose password</label>
             <span class="help"></span>
             <div class="controls">
 				<div class="input-with-icon  right">                                       
@@ -56,7 +56,7 @@
           </div>
           <div class="row">
             <div class="col-md-10">
-              <button class="btn btn-info btn-cons pull-right" type="submit">Login</button>
+              <button class="btn btn-info btn-cons pull-right" type="submit">Register</button>
             </div>
           </div>
 		  </form>   

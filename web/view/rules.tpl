@@ -22,7 +22,7 @@
                           <label for="checkbox1"></label>
                         </div>
                       </th>
-                      <th style="width:24%">Name</th>
+                      <th style="width:24%">Rule</th>
                     </tr>
                   </thead>
                   <tbody>
