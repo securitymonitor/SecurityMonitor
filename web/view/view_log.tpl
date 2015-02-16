@@ -1,11 +1,5 @@
 % rebase('base.tpl', title='Logs', url=url)
 
-<script>
-	function goBack() {
-		window.history.back()
-	}
-</script>
-
 <div class="page-content"> 
 	<div class="content">
 		<div class="row-fluid">

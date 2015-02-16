@@ -143,9 +143,6 @@
 								</form>
 							</div> <!-- /form-froup -->
 						</div> <!-- /col-md-6 -->
-						<div class="col-md-12">
-						Click here for the explenation.
-						</div> <!-- /col-md-12 -->
 					</div>
 				</div>
 			</div>

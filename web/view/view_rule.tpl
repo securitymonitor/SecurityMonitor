@@ -2,13 +2,6 @@
 % import os
 % values = configlist.values()
 
-<script>
-	function goBack() {
-		window.history.back()
-	}
-</script>
-
-
 
 <div class="page-content"> 
 	<div class="content">
@@ -33,7 +26,11 @@
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="rule_name" id="rule_name" class="form-control" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="rule_name" id="rule_name" class="form-control" value="{{value}}">
+										% else:
+										<input type="text" name="rule_name" id="rule_name" class="form-control">
+										% end                                 
 									</div><br />
 
 								% value = configlist.get('DESCRIPTION=')
@@ -41,42 +38,67 @@
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="rule_description" id="rule_description" class="form-control" placeholder="This rule is for..." value="{{value}}">                                 
+										% if value:
+										<input type="text" name="rule_description" id="rule_description" class="form-control" value="{{value}}">
+										% else:
+										<input type="text" name="rule_description" id="rule_description" class="form-control">
+										% end
 									</div><br />
 
 								% value = configlist.get('SOURCEIP=')
 								<label class="form-label">Source IP-address</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="source-ip-address" id="source-ip-address" class="form-control" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="source-ip-address" id="source-ip-address" class="form-control" value="{{value}}">
+										% else:
+										<input type="text" name="source-ip-address" id="source-ip-address" class="form-control">
+										% end
 									</div><br />
 							
 								% value = configlist.get('SOURCEPT=')
 								<label class="form-label">Source IP-port</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="source-ip-port" id="source-ip-port" class="form-control" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="source-ip-port" id="source-ip-port" class="form-control" value="{{value}}">
+										% else:
+										<input type="text" name="source-ip-port" id="source-ip-port" class="form-control">
+										% end
+
 									</div><br />
 
 								% value = configlist.get('TARGETIP=')
 								<label class="form-label">Target IP-address</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="target-ip-address" id="target-ip-address" class="form-control" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="target-ip-address" id="target-ip-address" class="form-control" value="{{value}}">
+										% else:
+										<input type="text" name="target-ip-address" id="target-ip-address" class="form-control">
+										% end
 									</div><br />
 
 								% value = configlist.get('TARGETPT=')
 								<label class="form-label">Target IP-port</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="target-ip-port" id="target-ip-port" class="form-control" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="target-ip-port" id="target-ip-port" class="form-control" value="{{value}}">
+										% else:
+										<input type="text" name="target-ip-port" id="target-ip-port" class="form-control">
+										% end
 									</div><br />
 
 								% value = configlist.get('PROTOCOL=')
 								<label class="form-label">Protocol</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
+										% if value:
 										<select name="protocol" id="protocol" class="select2 form-control" value="{{value}}">
+										% else:
+										<select name="protocol" id="protocol" class="select2 form-control">
+										% end
 											<option value="UDP">UDP</option>
 											<option value="TCP">TCP</option>
 										</select>                              
@@ -92,14 +114,22 @@
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="count" id="count" class="form-control" placeholder="Package count" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="count" id="count" class="form-control" placeholder="Package count" value="{{value}}">
+										% else:
+										<input type="text" name="count" id="count" class="form-control" placeholder="Package count">
+										% end
 									</div><br />
 
 								% value = configlist.get('INTERVAL=')
 								<label class="form-label">Interval</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="interval" id="interval" class="form-control" placeholder="hh:mm:ss" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="interval" id="interval" class="form-control" value="{{value}}">
+										% else:
+										<input type="text" name="interval" id="interval" class="form-control">
+										% end
 									</div><br />
 
 								% value = configlist.get('ACTION=')
@@ -107,7 +137,12 @@
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
+										% if value:
 										<select name="action" id="action" class="select2 form-control" value="{{value}}">
+										% else:
+										<select name="action" id="action" class="select2 form-control">
+										% end
+
 
 										% # This code will read all "action files" from the action directory.
 										% action_dir_path = config["paths"]["dir_secmon_root"] + 'custom/actions/'
@@ -118,7 +153,6 @@
 											<option value="{{item}}">{{item[:-3]}}</option>
 											% end
 										% end
-
 										</select>                                  
 									</div><br />
 
@@ -127,7 +161,11 @@
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
+										% if value:
 										<select name="log" id="log" class="select2 form-control" value="{{value}}">
+										% else:
+										<select name="log" id="log" class="select2 form-control">
+										% end
 
 										% # This code will read all "log files" from the log directory.
 										% log_dir_path = config["paths"]["dir_secmon_core"]
@@ -138,7 +176,6 @@
 											<option value="{{item}}">{{item[:-4]}}</option>
 											% end
 										% end
-
 										</select>
 									</div><br />
 
@@ -146,7 +183,11 @@
 								<label class="form-label">Message</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="message" id="message" class="form-control" placeholder="ipv4" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="message" id="message" class="form-control" placeholder="ipv4" value="{{value}}">
+										% else:
+										<input type="text" name="message" id="message" class="form-control" placeholder="ipv4">
+										% end
 									</div><br />
 
 								% value = configlist.get('MATCH=')
@@ -154,7 +195,11 @@
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
-										<input type="text" name="match" id="match" class="form-control" placeholder="SOURCEIP, TARGETIP, PROTOCOL" value="{{value}}">                                 
+										% if value:
+										<input type="text" name="match" id="match" class="form-control" placeholder="SOURCEIP, TARGETIP, PROTOCOL" value="{{value}}">
+										% else:
+										<input type="text" name="match" id="match" class="form-control" placeholder="SOURCEIP, TARGETIP, PROTOCOL">
+										% end
 									</div><br />
 
 									<button class="btn btn-info btn-cons btn-cancel" type="submit">Modify</button>
@@ -164,9 +209,6 @@
 								</form>
 							</div> <!-- /form-froup -->
 						</div> <!-- /col-md-6 -->
-						<div class="col-md-12">
-						Click here for the explenation.
-						</div> <!-- /col-md-12 -->
 					</div>
 				</div>
 			</div>

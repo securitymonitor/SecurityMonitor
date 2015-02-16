@@ -78,6 +78,9 @@ def daemon_run(host="0.0.0.0", port="80", pidfile=None, logfile=None):
             stdout=log,
             stderr=log
         )
+        print
+        print ">>>> Security Monitor web started on 0.0.0.0:" + config["paths"]["server_port"] + "."
+        print
         
         with context:
             # If you don't want SSL, please enable the following line and disable the next 2 lines.
@@ -88,6 +91,9 @@ def daemon_run(host="0.0.0.0", port="80", pidfile=None, logfile=None):
         with open(pidfile,"r") as p:
             pid = int(p.read())
             os.kill(pid, signal.SIGTERM)
+        print
+        print ">>>> Security Monitor web stopped."
+        print
 
 if __name__ == "__main__":
     daemon_run()

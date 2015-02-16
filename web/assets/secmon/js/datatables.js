@@ -217,7 +217,7 @@ $(document).ready(function() {
 			"aButtons": [
 				{
 					"sExtends":    "text",
-					"sButtonText": "<button type='submit' class='btn btn-white' name='submit_btn' value='create'><i class='fa fa-plus'></i></button><button type='submit' class='btn btn-white' name='submit_btn' value='modify'><i class='fa fa-pencil'></i></button><button type='submit' class='btn btn-white' name='submit_btn' value='remove'><i class='fa fa-minus'></i></button>",
+					"sButtonText": "<button type='submit' class='btn btn-white' name='submit_btn' value='create'><i class='fa fa-plus'></i></button><button type='submit' class='btn btn-white' name='submit_btn' value='remove'><i class='fa fa-minus'></i></button>",
 				}
 			]
 		},
@@ -237,7 +237,7 @@ $(document).ready(function() {
 			"aButtons": [
 				{
 					"sExtends":    "text",
-					"sButtonText": "<a href='/create_user'><button type='button' class='btn btn-white'><i class='fa fa-plus'></i></button></a><button type='submit' class='btn btn-white'><i class='fa fa-pencil'></i></button><button type='submit' class='btn btn-white'><i class='fa fa-minus'></i></button>",
+					"sButtonText": "<button type='submit' class='btn btn-white' name='submit_btn' value='create'><i class='fa fa-plus'></i></button><button type='submit' class='btn btn-white' name='submit_btn' value='remove'><i class='fa fa-minus'></i></button>",
 				}
 			]
 		},

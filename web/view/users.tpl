@@ -31,12 +31,12 @@
                         <label for="checkbox1"></label>
                       </div>
                     </th>
-                    <th style="width:24%">Username</th>
+                    <th style="width:24%">Users</th>
                   </tr>
                 </thead>
                 <tbody>
                   % i = 2
-                  %for row in rows:
+                  % for row in rows:
                   <tr>
                     <td class="v-align-middle">
                       <div class="checkbox check-default">
@@ -44,10 +44,10 @@
                         <label for="checkbox{{i}}"></label>
                       </div>
                     </td>
-                    <td class="v-align-middle"><span style="color:#505458">{{row[1]}}</span></td>
+                    <td class="v-align-middle"><a href="users/{{row[1]}}"><span style="color:#505458">{{row[1]}}</span></a></td>
                   </tr>
                   % i += 1
-                  %end
+                  % end
                 </tbody>
               </table>
             </form>

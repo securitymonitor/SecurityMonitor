@@ -79,7 +79,7 @@
 						<li class="quicklinks"><a href="#" onclick="goReaload()" class=""><div class="iconset top-reload"></div></a></li>
 					</ul>			
 				</div>
-			</div> 
+			</div>
 		</div>
 	</div>
 	
@@ -164,7 +164,7 @@
 		</div>
 
 		<a href="#" class="scrollup">Scroll</a>
-		<div class="footer-widget"><a href="https://github.com/zaanpenguin/SecurityMonitor" target="_blank">Version<sctrong> 1.0 beta 2</strong></a></div>
+		<div class="footer-widget"><a href="https://github.com/zaanpenguin/SecurityMonitor" target="_blank">Version<sctrong> 1.0 beta 3</strong></a></div>
 		
 		{{!base}}
 
