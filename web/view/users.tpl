@@ -44,7 +44,7 @@
                         <label for="checkbox{{i}}"></label>
                       </div>
                     </td>
-                    <td class="v-align-middle"><a href="users/{{row[1]}}"><span style="color:#505458">{{row[1]}}</span></a></td>
+                    <td class="v-align-middle"><span style="color:#505458">{{row[1]}}</span></td>
                   </tr>
                   % i += 1
                   % end

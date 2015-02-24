@@ -1,3 +1,4 @@
+#!/usr/bin/env python2.7
 
 """
 lockfile.py - Platform-independent advisory file locks.

@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
+
 import json, os
 
 """
@@ -6,10 +7,6 @@ Part 1: Start-up checks
 """
 
 def CreateConfigFile():
-    print
-    print ">>>> CONFIG FILE NOT FOUND."
-
-    # Collect all the config values.
     dir_webserver_root = os.path.dirname(os.path.abspath(__file__)) + "/"
     dir_webserver_log = dir_webserver_root + "log/"
     dir_assets = dir_webserver_root + "assets/"
@@ -18,24 +15,16 @@ def CreateConfigFile():
     dir_secmon_rules = dir_secmon_root + "custom/rules/"
     file_auth_database = dir_webserver_root + "lib/auth.db"
     file_ssl_cert = dir_webserver_root + "lib/server.pem"
-    print ">>>> Please specify the port you want to use for the application:"
-    print
     server_port = raw_input("Port number:")
-    print
 
     # Write the values to a new config file.
     data = {"paths"  :{"dir_webserver_root" : dir_webserver_root, "dir_webserver_log" : dir_webserver_log, "dir_assets" : dir_assets, "dir_secmon_root" : dir_secmon_root, "dir_secmon_core" : dir_secmon_core, "dir_secmon_rules" : dir_secmon_rules, "file_auth_database" : file_auth_database, "file_ssl_cert" : file_ssl_cert, "server_port" : server_port}}
     with open(dir_webserver_root + 'lib/config.json', 'w') as outfile:
         json.dump(data, outfile)
-    print ">>>> CONFIG FILE CREATED."
 
 def CreateSSLCertificate():
-    print
-    print ">>>> SSL CERTIFICATE NOT FOUND."
     key_file = os.path.dirname(os.path.abspath(__file__)) + "/lib/server.pem"
     os.system('openssl req -new -x509 -keyout ' + key_file + ' -out ' + key_file + ' -days 365 -nodes')
-    print ">>>> SSL FILE CREATED."
-    print
 
 # Now loop trough the checks
 if os.path.isfile(os.path.dirname(os.path.abspath(__file__)) + "/lib/config.json") != True:
@@ -43,13 +32,9 @@ if os.path.isfile(os.path.dirname(os.path.abspath(__file__)) + "/lib/config.json
 if os.path.isfile(os.path.dirname(os.path.abspath(__file__)) + "/lib/server.pem") != True:
     CreateSSLCertificate()
 if os.path.isdir(os.path.dirname(os.path.abspath(__file__)) + "/log") != True:
-    print ">>>> LOG DIRECTORY NOT FOUND." 
     os.system('mkdir log')
-    print ">>>> LOG DIRECTORY CREATED."
 if os.path.isdir(os.path.dirname(os.path.abspath(__file__)) + "/pid") != True:
-    print ">>>> PID DIRECTORY NOT FOUND." 
     os.system('mkdir pid')
-    print ">>>> PID DIRECTORY CREATED."
 
 # Import config file.
 config_file_dir = os.path.dirname(os.path.abspath(__file__)) + "/lib/config.json"
@@ -75,12 +60,12 @@ def restricted(fn):
         for row in rows:
             for col in row:
                 username = request.get_cookie("username", secret=col)
-                if username:
+                if username != None:
                     return fn(**kwargs)
                     break
                 else:
                     pass
-            abort(401)
+        abort(401)
     return check_credentials
 
 """
@@ -171,12 +156,6 @@ def show_page_rules():
 def show_page_users():
     return dict(url=url, config=config)
 
-@route('/users/<user>')
-@restricted
-@view('view_user')
-def show_page_users_user(user):
-    return dict(url=url, user=user, config=config)
-
 @route('/settings')
 @restricted
 @view('settings')
@@ -190,7 +169,6 @@ def show_page_create_user():
     return dict(url=url)
 
 @route('/logout')
-@restricted
 @view('log-in')
 def show__page_about():
 
@@ -203,7 +181,7 @@ def show__page_about():
     for row in rows:
         for col in row:
             username = request.get_cookie("username", secret=col)
-            if username:
+            if username != None:
                 # Delete cookie
                 response.delete_cookie("username", secret=col)
                 c.execute("UPDATE secure_login SET SessionID = (?) WHERE Username = (?)", (None, str(username),))
@@ -212,8 +190,11 @@ def show__page_about():
                 break
             else:
                 pass
-        c.close()
-        abort(403)
+    c.close()
+
+    # Now redirect the user back to the correct page.
+    response.status = 303
+    response.set_header('Location', '/')
 
 @error(400)
 @error(401)
@@ -280,10 +261,10 @@ def do_login():
         c.close()
     except OperationalError:
         # If the user is not found in the database and we don't know the password, exit authentication.
-        abort(403, "Authentication failed, please try again.")
+        abort(403, "Authentication failed.")
 
     if len(rows) == 0:
-        abort(403, "Authentication failed, please try again.") 
+        abort(403, "Authentication failed.") 
         
     # Check if the password from the user matches the passwored stored in the database.
     for row in rows:
@@ -304,19 +285,10 @@ def do_login():
                 conn.commit()
                 c.close()
 
-                # Log this user event.
-                ip = request.environ.get('REMOTE_ADDR')
-                log_template = ip + " - - [" + session_start_time + "] USER " + username + " logged in." 
-
-                log_file = config["paths"]["dir_webserver_root"] + 'log/bottle.log'
-
-                with open(log_file, "a+") as f:
-                    f.write(log_template)
-
                 response.set_cookie("username", username, secret=secret)
                 return template('dashboard', url=url, config=config, notification= 'User ' + username + ' login successful.')
             else:
-                abort(403, "Authentication failed, please try again.")
+                abort(403, "Authentication failed.")
 
 @post('/install')
 def do_login():
@@ -362,12 +334,12 @@ def post_dashboard():
 
     if daemon_running:
         os.chdir(config["paths"]["dir_secmon_core"])
-        os.system('python securitymonitor.py stop')
+        os.system('python2.7 securitymonitor.py stop')
         time.sleep(1)
         msg = "Daemon stopped."
     else:
         os.chdir(config["paths"]["dir_secmon_core"])
-        os.system('python securitymonitor.py start')
+        os.system('python2.7 securitymonitor.py start')
         time.sleep(1)
         msg = "Daemon started."
 
@@ -512,8 +484,8 @@ def post_page_create_rule():
     # Restart the security monitor daemon so it will use the new rule.
     daemon_running = os.path.isfile('/tmp/secmon.pid')
     if daemon_running:
-        os.system('python ' + config["paths"]["dir_secmon_core"] + 'securitymonitor.py stop')
-        os.system('python ' + config["paths"]["dir_secmon_core"] + 'securitymonitor.py start')
+        os.system('python2.7 ' + config["paths"]["dir_secmon_core"] + 'securitymonitor.py stop')
+        os.system('python2.7 ' + config["paths"]["dir_secmon_core"] + 'securitymonitor.py start')
 
     # Redirect the user back to the rules page.
     response.status = 303
@@ -534,15 +506,6 @@ def post_page_users():
     if 'create' in submit_action:
         response.status = 303
         response.set_header('Location', '/create_user')
-
-    # Check if the user has clicked the 'modify' button. If so, show view_rule template where the user van modify rules.
-    elif 'modify' in submit_action:
-        # If the checkboxes are empty (no user input), do nothing.
-        if len(form_data) == 0:
-            response.status = 303
-            response.set_header('Location', '/users')
-        else:
-            return template('view_user', url=url, config=config, form_data=form_data)
 
     # If none of the above, the user wants to delete the selected rules.
     elif 'remove' in submit_action:
@@ -592,6 +555,10 @@ def post_create_user():
         # Hash the password.
         hash = sha512_crypt.encrypt(new_password)
 
+        # Generate unique session ID.
+        session_start_time = str(datetime.datetime.now())
+        secret = sha512_crypt.encrypt(session_start_time)
+
         # Connect to the database.
         conn = sqlite3.connect(config["paths"]["file_auth_database"])
         c = conn.cursor()
@@ -605,45 +572,10 @@ def post_create_user():
         response.status = 303
         response.set_header('Location', '/users')
 
-    elif 'modify' in submit_action:
-        # Get the user details from the registration form.
-        username = request.forms.getall('username')
-        updated_passwd = request.forms.getall('updated_passwd')
-        updated_passwd_check = request.forms.getall('updated_passwd_check')
-
-        # Some serverside checks on the user input for the required fields to protect the server from invalid input.
-        if len(username) == 0:
-            return template('view_user', url=url, config=config, user=username ,notification='The username field is required.')
-        if len(updated_passwd) == 0:
-            return template('view_user', url=url, config=config, user=username, notification='The password field is required.')
-        if updated_passwd != updated_passwd_check:
-            return template('view_user', url=url, config=config, user=username, notification='Password mismatch.')
-
-        for item in username:
-            # Hash the password.
-            hash = sha512_crypt.encrypt(updated_passwd)
-
-            # Connect to the database.
-            conn = sqlite3.connect(config["paths"]["file_auth_database"])
-            c = conn.cursor()
-
-            # Save new user in the database.
-            c.execute("UPDATE secure_login SET Password = ? WHERE Username = ?", (hash, str(item)))
-            conn.commit()
-            c.close()
-
-            # Redirect.
-            return template('users', url=url, config=config, notification='Password update succesful.')
-
     else:
         # Redirect.
         response.status = 303
         response.set_header('Location', '/users')
-
-
-"""
-# Part 4: Remainder
-"""
 
 # This is a fix for the view directory.
 TEMPLATE_PATH.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "view")))

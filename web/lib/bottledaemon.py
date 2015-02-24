@@ -1,10 +1,18 @@
-import os, argparse, signal, daemon, lockfile, bottle, json
-from bottle import Bottle, get, run, ServerAdapter
-from contextlib import contextmanager
+#!/usr/bin/env python2.7
+import json, os
 
+# Import config file.
 config_file_dir = os.path.dirname(os.path.abspath(__file__)) + "/config.json"
 config = json.loads(open(config_file_dir).read())
 
+dname = config["paths"]["dir_webserver_root"]
+os.chdir(dname)
+
+import argparse, lib.bottle, signal
+import lib.daemon as daemon
+import lib.lockfile as lockfile
+from lib.bottle import Bottle, get, run, ServerAdapter
+from contextlib import contextmanager
 
 # Custom SSL serversocket
 class SSLWSGIRefServer(ServerAdapter):
@@ -78,22 +86,14 @@ def daemon_run(host="0.0.0.0", port="80", pidfile=None, logfile=None):
             stdout=log,
             stderr=log
         )
-        print
-        print ">>>> Security Monitor web started on 0.0.0.0:" + config["paths"]["server_port"] + "."
-        print
-        
+
         with context:
-            # If you don't want SSL, please enable the following line and disable the next 2 lines.
-            # bottle.run(host=host, port=port)
             srv = SSLWSGIRefServer(host="0.0.0.0", port=config["paths"]["server_port"])
             run(server=srv)
     if args.action == "stop":
         with open(pidfile,"r") as p:
             pid = int(p.read())
             os.kill(pid, signal.SIGTERM)
-        print
-        print ">>>> Security Monitor web stopped."
-        print
 
 if __name__ == "__main__":
     daemon_run()

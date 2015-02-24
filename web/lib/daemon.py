@@ -1,14 +1,9 @@
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
 # daemon/daemon.py
 # Part of python-daemon, an implementation of PEP 3143.
 #
-# Copyright © 2008–2010 Ben Finney <ben+python@benfinney.id.au>
-# Copyright © 2007–2008 Robert Niederreiter, Jens Klein
-# Copyright © 2004–2005 Chad J. Schroeder
-# Copyright © 2003 Clark Evans
-# Copyright © 2002 Noah Spurrier
-# Copyright © 2001 Jürgen Hermann
 #
 # This is free software: you may copy, modify, and/or distribute this work
 # under the terms of the Python Software Foundation License, version 2 or
@@ -468,9 +463,9 @@ def change_working_directory(directory):
         """
     try:
         os.chdir(directory)
-    except Exception, exc:
+    except:
         error = DaemonOSEnvironmentError(
-            "Unable to change working directory (%(exc)s)"
+            "Unable to change working directory"
             % vars())
         raise error
 
@@ -486,9 +481,9 @@ def change_root_directory(directory):
     try:
         os.chdir(directory)
         os.chroot(directory)
-    except Exception, exc:
+    except:
         error = DaemonOSEnvironmentError(
-            "Unable to change root directory (%(exc)s)"
+            "Unable to change root directory"
             % vars())
         raise error
 
@@ -498,9 +493,9 @@ def change_file_creation_mask(mask):
         """
     try:
         os.umask(mask)
-    except Exception, exc:
+    except:
         error = DaemonOSEnvironmentError(
-            "Unable to change file creation mask (%(exc)s)"
+            "Unable to change file creation mask"
             % vars())
         raise error
 
@@ -516,9 +511,9 @@ def change_process_owner(uid, gid):
     try:
         os.setgid(gid)
         os.setuid(uid)
-    except Exception, exc:
+    except:
         error = DaemonOSEnvironmentError(
-            "Unable to change file creation mask (%(exc)s)"
+            "Unable to change file creation mask"
             % vars())
         raise error
 
@@ -537,9 +532,9 @@ def prevent_core_dump():
         # Ensure the resource limit exists on this platform, by requesting
         # its current value
         core_limit_prev = resource.getrlimit(core_resource)
-    except ValueError, exc:
+    except:
         error = DaemonOSEnvironmentError(
-            "System does not support RLIMIT_CORE resource limit (%(exc)s)"
+            "System does not support RLIMIT_CORE resource limit"
             % vars())
         raise error
 
@@ -571,11 +566,8 @@ def detach_process_context():
             pid = os.fork()
             if pid > 0:
                 os._exit(0)
-        except OSError, exc:
-            exc_errno = exc.errno
-            exc_strerror = exc.strerror
-            error = DaemonProcessDetachError(
-                "%(error_message)s: [%(exc_errno)d] %(exc_strerror)s" % vars())
+        except:
+            error = "error"
             raise error
 
     fork_then_exit_parent(error_message="Failed first fork")
@@ -613,19 +605,8 @@ def is_socket(fd):
     try:
         socket_type = file_socket.getsockopt(
             socket.SOL_SOCKET, socket.SO_TYPE)
-    except socket.error, exc:
-        exc_errno = exc.args[0]
-        if exc_errno == errno.ENOTSOCK:
-            # Socket operation on non-socket
-            pass
-        else:
-            # Some other socket error
-            result = True
-    else:
-        # No error getting socket type
-        result = True
-
-    return result
+    except:
+        pass
 
 
 def is_process_started_by_superserver():
@@ -673,17 +654,8 @@ def close_file_descriptor_if_open(fd):
         """
     try:
         os.close(fd)
-    except OSError, exc:
-        if exc.errno == errno.EBADF:
-            # File descriptor was not open
-            pass
-        else:
-            error = DaemonOSEnvironmentError(
-                "Failed to close file descriptor %(fd)d"
-                " (%(exc)s)"
-                % vars())
-            raise error
-
+    except:
+        pass
 
 MAXFD = 2048
 
