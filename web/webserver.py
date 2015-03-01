@@ -69,7 +69,7 @@ def restricted(fn):
     return check_credentials
 
 """
-# Part 2: Routing table
+Part 2: Routing table
     - Documentation: http://bottlepy.org/docs/0.12/
 """
 
@@ -128,20 +128,27 @@ def show_page_rules():
 @view('view_rule')
 def show_page_rules_rule(rule):
 
-    # Read the config file
-    file = open(config["paths"]["dir_secmon_rules"] + rule, 'r')
+    # This code will read the rule file.
+    # This script will extract the rulename from the URL.
+    regex = re.compile(".+=|.+<|.+>|.+<=|.+>=")
+    ruleDir = config["paths"]["dir_secmon_rules"] + rule
     configlist = {}
-    regex = '.+ = .*?'
-    for line in file:
-        match = re.findall(regex, line)
+
+    file = open(ruleDir, 'r')
+    filelist = {}
+    for _line in file:
+        match = re.findall(regex, _line)
         if match:
             match = ''.join(match)
-            x,y = line.split(match)
-            y = y.strip('\n')
-            y = y.strip(" ' ").strip('')
-            match = match.replace(" ", '')           
+            x,y = _line.split(match)
+            y = y.strip(' \t\n\r')
+            y = y.strip('')
             configlist.update({match:y})
-            
+    # configlist.append(filelist)
+    file.close()
+
+    # Debug line
+    # return {"These are the values in the list:" : configlist}
     return dict(url=url, config=config, rule=rule, configlist=configlist)
 
 @route('/create_rule')
@@ -230,7 +237,8 @@ def show__page_about():
 @error(511)
 @view('error')
 def error404(e):
-    return dict(url=url, e=e, debug=True)
+    return dict(url=url, e=e)
+    # return dict(url=url, e=e, debug=True)
 
 # This router will make the whole /assets/ folder publicly accessable.
 # Only static content (like HTML/CSS) should be placed in this directory for security reasons.
@@ -264,8 +272,8 @@ def do_login():
         abort(403, "Authentication failed.")
 
     if len(rows) == 0:
-        abort(403, "Authentication failed.") 
-        
+        abort(403, "Authentication failed.")
+
     # Check if the password from the user matches the passwored stored in the database.
     for row in rows:
         for col in row:
@@ -315,7 +323,7 @@ def do_login():
 
         # Save the administrator in the database.
         with con:
-            cur = con.cursor()    
+            cur = con.cursor()
             cur.execute("CREATE TABLE secure_login(ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Username TEXT NOT NULL UNIQUE, Password BLOB NOT NULL, SessionID BLOB UNIQUE, SessionStartTime BLOB)")
             cur.execute("INSERT INTO secure_login(ID,Username,Password) VALUES (?,?,?)", (1,username,hash))
 
@@ -363,6 +371,19 @@ def post_page_logs():
     # Pass results back to the view
     return template('view_log', url=url, form_data=form_data, config=config)
 
+@post('/truncate_log')
+@restricted
+def post_truncate_log():
+
+    # This post function will truncate the selected log file.
+    if len(request.forms.get('log')) == 0:
+        response.status = 303
+        response.set_header('Location', '/logs')
+    else:
+        full_path = config["paths"]["dir_secmon_core"] + request.forms.get('log')
+        open(full_path,"w").close()
+        response.status = 303
+        response.set_header('Location', '/logs')
 
 @post('/rules')
 @restricted
@@ -374,9 +395,6 @@ def post_page_rules():
     form_data = request.forms.getall('chkBox')
     submit_action = request.forms.getall('submit_btn')
 
-    # This line is for debug purposes
-    # return { "You pressed this button: " : submit_action, "Selected checkboxes are:" : form_data}
-        
     # Check if the user has clicked the 'create' button. If so, show create_rule template where the user can create new rules.
     if 'create' in submit_action:
         response.status = 303
@@ -401,7 +419,7 @@ def post_page_rules():
             for item in form_data:
                 os.remove(config["paths"]["dir_secmon_rules"] + item)
             return template('rules', url=url, config=config, notification='Remove succesfull.')
-   
+
     # If none of the above, do nothing.
     else:
         response.status = 303
@@ -421,22 +439,21 @@ def post_page_create_rule():
         return template('create_rule', url=url, config=config, notification='The rule description field is empty, this field is required.')
     if len(request.forms.get('count')) == 0:
         return template('create_rule', url=url, config=config, notification='The count field is empty, this field is required.')
+    if len(request.forms.get('count_operator')) == 0:
+        return template('create_rule', url=url, config=config, notification='The count operator field is empty, this field is required.')
     if len(request.forms.get('action')) == 0:
         return template('create_rule', url=url, config=config, notification='The action field is empty, this field is required.')
     if len(request.forms.get('log')) == 0:
         return template('create_rule', url=url, config=config, notification='The log field is empty, this field is required.')
     if len(request.forms.get('match')) == 0:
-        return template('create_rule', url=url, config=config, notification='The match field is empty, this field is required.')
-    
+        return template('create_rule', url=url, config=config, notification='The match field is empty, this field is required.') 
+
     # If the user is performing an rule modification, there should be an existing rule that may or may not have changed by name.
     # If the rule name has changed, the rule will be recreated with the new name. This code will delete the old one.
     if request.forms.get('current_rulename') == None:
         pass
     elif request.forms.get('current_rulename') != request.forms.get('rule_name'): 
         os.remove(config["paths"]["dir_secmon_rules"] + request.forms.get('current_rulename') + '.txt')
-    else:
-        pass
-
 
     # Create new .txt rule file based on user input in the rule directory.
     new_rule_name = request.forms.get('rule_name')
@@ -452,6 +469,7 @@ def post_page_create_rule():
     # target-ip-port
     # protocol
     # count
+    # count_operator
     # interval
     # action
     # log
@@ -469,9 +487,9 @@ def post_page_create_rule():
         f.write("TARGETIP = " + request.forms.get('target-ip-address') + "\n")
     if len(request.forms.get('target-ip-port')) != 0:
         f.write("TARGETPT = " + request.forms.get('target-ip-port') + "\n")
-    if len(request.forms.get('target-ip-port')) != 0:
+    if len(request.forms.get('protocol')) != 0:
         f.write("PROTOCOL = " + request.forms.get('protocol') + "\n")
-    f.write("COUNT >" + request.forms.get('count') + "\n")
+    f.write("COUNT " + request.forms.get('count_operator') + " " + request.forms.get('count') + "\n")
     if len(request.forms.get('interval')) != 0:
         f.write("INTERVAL = " + request.forms.get('interval') + "\n")
     f.write("ACTION = '" + request.forms.get('action') + "'\n")
@@ -484,8 +502,7 @@ def post_page_create_rule():
     # Restart the security monitor daemon so it will use the new rule.
     daemon_running = os.path.isfile('/tmp/secmon.pid')
     if daemon_running:
-        os.system('python2.7 ' + config["paths"]["dir_secmon_core"] + 'securitymonitor.py stop')
-        os.system('python2.7 ' + config["paths"]["dir_secmon_core"] + 'securitymonitor.py start')
+        os.system('python2.7 ' + config["paths"]["dir_secmon_core"] + 'securitymonitor.py restart')
 
     # Redirect the user back to the rules page.
     response.status = 303

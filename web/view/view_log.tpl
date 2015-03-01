@@ -15,7 +15,8 @@
 % # This code block will process single view of a log file							
 
 % if defined('log'):
-
+<form action="/truncate_log" method="POST">
+<input type="hidden" name="log" value="{{log}}">
 % # Beceause the webserver logfile (bottle.log) is located in a diffirent dir we've to create this little loop as a fix for that.
 % if log == 'bottle.log':
 % path = config["paths"]["dir_webserver_log"]
@@ -31,7 +32,9 @@
 % end
 </textarea><br />
 % end
+<button type="submit" class="btn btn-info btn-cons btn-cancel" type="button">Truncate</button>
 <button class="btn btn-white btn-cons btn-cancel" type="button" onclick="goBack()">Back</button>
+</form>
 % end
 
 % # This code block will process the multi view of a selected log file	

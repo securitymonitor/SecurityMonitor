@@ -1,7 +1,5 @@
 % rebase('base.tpl', title='Rules', url=url)
 % import os
-% values = configlist.values()
-
 
 <div class="page-content"> 
 	<div class="content">
@@ -9,19 +7,15 @@
 			<div class="col-md-12">
 				<div class="grid simple ">
 					<div class="grid-body ">
-					% value = configlist.get('NAME=')
+					% value = configlist.get('NAME =').strip("'")
 					<h1>{{value}}</h1>
 
 						<div class="col-md-6">
 							<div class="form-group">
 								<form action="/create_rule" method="POST">
 
-								% # current_rulename is the name of the rule .txt (example.txt)
-								% # If this is edited, the server needs to know this to make sure the modification is done corerctly.
-								% current_rulename = configlist.get('NAME=')
-								<input type="hidden" name="current_rulename" value="{{current_rulename}}"> 
+								<input type="hidden" name="current_rulename" value="{{value}}"> 
 
-								% value = configlist.get('NAME=')
 								<label class="form-label">Rule name</label>
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
@@ -33,8 +27,8 @@
 										% end                                 
 									</div><br />
 
-								% value = configlist.get('DESCRIPTION=')
-								<label class="form-label">Rule Description</label>
+								% value = configlist.get('DESCRIPTION =').strip("'")
+								<label class="form-label">Rule description</label>
 								<span class="help">Required</span>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
@@ -45,7 +39,7 @@
 										% end
 									</div><br />
 
-								% value = configlist.get('SOURCEIP=')
+								% value = configlist.get('SOURCEIP =')
 								<label class="form-label">Source IP-address</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
@@ -56,7 +50,7 @@
 										% end
 									</div><br />
 							
-								% value = configlist.get('SOURCEPT=')
+								% value = configlist.get('SOURCEPT =')
 								<label class="form-label">Source IP-port</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
@@ -68,7 +62,7 @@
 
 									</div><br />
 
-								% value = configlist.get('TARGETIP=')
+								% value = configlist.get('TARGETIP =')
 								<label class="form-label">Target IP-address</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
@@ -79,7 +73,7 @@
 										% end
 									</div><br />
 
-								% value = configlist.get('TARGETPT=')
+								% value = configlist.get('TARGETPT =')
 								<label class="form-label">Target IP-port</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
@@ -90,117 +84,141 @@
 										% end
 									</div><br />
 
-								% value = configlist.get('PROTOCOL=')
-								<label class="form-label">Protocol</label>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										% if value:
-										<select name="protocol" id="protocol" class="select2 form-control" value="{{value}}">
-										% else:
-										<select name="protocol" id="protocol" class="select2 form-control">
-										% end
-											<option value="UDP">UDP</option>
-											<option value="TCP">TCP</option>
-										</select>                              
-									</div><br />
+                                % value = configlist.get('PROTOCOL =')
+                                % options = ['UDP','TCP']
+                                <label class="form-label">Protocol</label>
+                                    <div class="input-with-icon  right">                                       
+                                        <i class=""></i>
+                                        <select name="protocol" id="protocol" class="select2 form-control">
+                                        % for option in options:
+                                            % if option == value:
+                                            <option value="{{option}}" selected>{{option}}</option>
+                                            % else:
+                                            <option value="{{option}}">{{option}}</option>
+                                            % end
+                                        % end
+                                        % if value == None:
+                                        <option value=""  selected>&#32;</option>
+                                        % else:
+                                        <option value="">&#32;</option>
+                                        % end
+                                        </select>                              
+                                    </div><br />
 
 							</div> <!-- /form-froup -->
 						</div> <!-- /col-md-6 -->
 						<div class="col-md-6">
 								<div class="form-group">
 
-								% value = configlist.get('COUNT=')
-								<label class="form-label">Count</label>
-								<span class="help">Required</span>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										% if value:
-										<input type="text" name="count" id="count" class="form-control" placeholder="Package count" value="{{value}}">
-										% else:
-										<input type="text" name="count" id="count" class="form-control" placeholder="Package count">
-										% end
-									</div><br />
+                                % value = configlist.get('LOG =')
+                                <label class="form-label">Search in this logfile (LOG)</label>
+                                <span class="help">Required</span>
+                                    <div class="input-with-icon  right">
+                                        <i class=""></i>
+                                        % if value:
+                                        <input type="text" name="log" id="log" class="form-control" placeholder="full logfile directory path here." value="{{value}}"></input>
+                                        % else:
+                                        <input type="text" name="log" id="log" class="form-control" placeholder="full log file directory path here."
+                                        % end
+                                    </div><br />
 
-								% value = configlist.get('INTERVAL=')
+                                % value = configlist.get('MATCH =')
+                                <label class="form-label">Match against these keywords (MATCH)</label>
+                                <span class="help">Required</span>
+                                    <div class="input-with-icon  right">                                       
+                                        <i class=""></i>
+                                        % if value:
+                                        <input type="text" name="match" id="match" class="form-control" placeholder="example: SOURCEIP, TARGETIP, PROTOCOL" value="{{value}}">
+                                        % else:
+                                        <input type="text" name="match" id="match" class="form-control" placeholder="example: SOURCEIP, TARGETIP, PROTOCOL">
+                                        % end
+                                    </div><br />
+
+                                % value = configlist.get('MESSAGE =')
+                                <label class="form-label">Search for this error message in logfile (MESSAGE)</label>
+                                    <div class="input-with-icon  right">                                       
+                                        <i class=""></i>
+                                        % if value:
+                                        <input type="text" name="message" id="message" class="form-control" value="{{value}}">
+                                        % else:
+                                        <input type="text" name="message" id="message" class="form-control">
+                                        % end
+                                    </div><br />
+
+                                % operators = ['COUNT <' , 'COUNT <=' , 'COUNT >' , 'COUNT >=' , 'COUNT =']
+                                <label class="form-label">Package count operator (COUNT)</label>
+                                <span class="help">Required</span>
+                                    <div class="input-with-icon  right">
+                                        <div class="radio">
+                                            % for operator in operators:
+                                                % if configlist.get(operator) != None:
+                                                % operator = operator.replace('COUNT ', '')
+                                                <input type="radio" name="count_operator" id="{{operator}}" value="{{operator}}" checked="checked">
+                                                <label for="{{operator}}">{{operator}}</label>
+                                                % else:
+                                                % operator = operator.replace('COUNT ', '')
+                                                <input type="radio" name="count_operator" id="{{operator}}" value="{{operator}}">
+                                                <label for="{{operator}}">{{operator}}</label>
+                                                % end
+                                            % end
+                                        </div>
+                                    </div><br />
+
+                                <label class="form-label">Package count (COUNT)</label>
+                                <span class="help">Required</span>
+                                    <div class="input-with-icon  right">
+                                        <i class=""></i>
+                                            % if configlist.get('COUNT <'):
+                                            % value = configlist.get('COUNT <')
+                                            <input type="text" name="count" id="count" class="form-control" value="{{value}}">
+                                            % elif configlist.get('COUNT <='):
+                                            % value = configlist.get('COUNT <=')
+                                            <input type="text" name="count" id="count" class="form-control" value="{{value}}">
+                                            % elif configlist.get('COUNT >'):
+                                            % value = configlist.get('COUNT >')
+                                            <input type="text" name="count" id="count" class="form-control" value="{{value}}">
+                                            % elif configlist.get('COUNT >='):
+                                            % value = configlist.get('COUNT >=')
+                                            <input type="text" name="count" id="count" class="form-control" value="{{value}}">
+                                            % elif configlist.get('COUNT ='):
+                                            % value = configlist.get('COUNT =')
+                                            <input type="text" name="count" id="count" class="form-control" value="{{value}}">
+                                            % else:
+                                            <input type="text" name="count" id="count" class="form-control" value="">
+                                            % end
+                                    </div><br />
+
+								% value = configlist.get('INTERVAL =')
 								<label class="form-label">Interval</label>
 									<div class="input-with-icon  right">                                       
 										<i class=""></i>
 										% if value:
-										<input type="text" name="interval" id="interval" class="form-control" value="{{value}}">
+										<input type="text" name="interval" id="interval" class="form-control" placeholder="hh:mm:ss" value="{{value}}">
 										% else:
-										<input type="text" name="interval" id="interval" class="form-control">
+										<input type="text" name="interval" id="interval" class="form-control" placeholder="hh:mm:ss">
 										% end
 									</div><br />
 
-								% value = configlist.get('ACTION=')
-								<label class="form-label">Action</label>
-								<span class="help">Required</span>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										% if value:
-										<select name="action" id="action" class="select2 form-control" value="{{value}}">
-										% else:
-										<select name="action" id="action" class="select2 form-control">
-										% end
+								% value = configlist.get('ACTION =').strip("'")
+                                <label class="form-label">Execute script on match (ACTION)</label>
+                                <span class="help">Required</span>
+                                    <div class="input-with-icon  right">                                       
+                                        <i class=""></i>
+                                        <select name="action" id="action" class="select2 form-control">
 
+                                        % # This code will read all "action files" from the action directory.
+                                        % action_dir_path = config["paths"]["dir_secmon_root"] + 'custom/actions/'
+                                        % action_files_array = os.listdir( action_dir_path )
 
-										% # This code will read all "action files" from the action directory.
-										% action_dir_path = config["paths"]["dir_secmon_root"] + 'custom/actions/'
-										% action_files_array = os.listdir( action_dir_path )
-
-										% for item in action_files_array:
-											% if (item.endswith('.py')) and (item != '__init__.py'):
-											<option value="{{item}}">{{item[:-3]}}</option>
-											% end
-										% end
-										</select>                                  
-									</div><br />
-
-								% value = configlist.get('LOG=')
-								<label class="form-label">Log</label>
-								<span class="help">Required</span>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										% if value:
-										<select name="log" id="log" class="select2 form-control" value="{{value}}">
-										% else:
-										<select name="log" id="log" class="select2 form-control">
-										% end
-
-										% # This code will read all "log files" from the log directory.
-										% log_dir_path = config["paths"]["dir_secmon_core"]
-										% log_files_array = os.listdir( log_dir_path )
-
-										% for item in log_files_array:
-											% if item.endswith('.log'):
-											<option value="{{item}}">{{item[:-4]}}</option>
-											% end
-										% end
-										</select>
-									</div><br />
-
-								% value = configlist.get('MESSAGE=')
-								<label class="form-label">Message</label>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										% if value:
-										<input type="text" name="message" id="message" class="form-control" placeholder="ipv4" value="{{value}}">
-										% else:
-										<input type="text" name="message" id="message" class="form-control" placeholder="ipv4">
-										% end
-									</div><br />
-
-								% value = configlist.get('MATCH=')
-								<label class="form-label">Match</label>
-								<span class="help">Required</span>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										% if value:
-										<input type="text" name="match" id="match" class="form-control" placeholder="SOURCEIP, TARGETIP, PROTOCOL" value="{{value}}">
-										% else:
-										<input type="text" name="match" id="match" class="form-control" placeholder="SOURCEIP, TARGETIP, PROTOCOL">
-										% end
-									</div><br />
+                                        % for item in action_files_array:
+                                            % if (item.endswith('.py')) and (item != '__init__.py') and item == value:
+                                                <option value="{{item}}" selected>{{item[:-3]}}</option>
+                                            % elif (item.endswith('.py')) and (item != '__init__.py'):
+                                                <option value="{{item}}">{{item[:-3]}}</option>
+                                            % end
+                                        % end
+                                        </select>                                  
+                                    </div><br />
 
 									<button class="btn btn-info btn-cons btn-cancel" type="submit">Modify</button>
 									<button class="btn btn-white btn-cons btn-cancel" type="button" onclick="goBack()">Back</button>

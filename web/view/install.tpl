@@ -72,8 +72,8 @@
 <script src="assets/plugins/breakpoints.js" type="text/javascript"></script> 
 <script src="assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script> 
 <script src="assets/plugins/jquery-block-ui/jqueryblockui.js" type="text/javascript"></script> 
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.3/underscore-min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"></script>
+<script type="text/javascript" src="assets/js/underscore-min.js"></script>
+<script type="text/javascript" src="assets/js/backbone-min.js"></script>
  
 <script src="assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js" type="text/javascript"></script>
 <script src="assets/plugins/pace/pace.min.js" type="text/javascript"></script>  
