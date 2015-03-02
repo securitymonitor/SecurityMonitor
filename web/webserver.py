@@ -193,7 +193,8 @@ def show__page_about():
                 response.delete_cookie("username", secret=col)
                 c.execute("UPDATE secure_login SET SessionID = (?) WHERE Username = (?)", (None, str(username),))
                 c.close()
-                return dict(notification='User ' + str(username) + ' logout successful.')
+                response.status = 303
+                response.set_header('Location', '/')
                 break
             else:
                 pass
@@ -237,7 +238,7 @@ def show__page_about():
 @error(511)
 @view('error')
 def error404(e):
-    return dict(url=url, e=e)
+    return dict(url=url, e=e, debug=True)
     # return dict(url=url, e=e, debug=True)
 
 # This router will make the whole /assets/ folder publicly accessable.
@@ -248,7 +249,7 @@ def server_static(filepath):
 
 """
 # Part 3: Post actions
-    - The code below will specify the behavior of the webserver on a HTML form submit.
+    - The scripts below will controll the actions on html form posts by the semon application.
 """
 
 @post('/')
@@ -294,7 +295,8 @@ def do_login():
                 c.close()
 
                 response.set_cookie("username", username, secret=secret)
-                return template('dashboard', url=url, config=config, notification= 'User ' + username + ' login successful.')
+                response.status = 303
+                response.set_header('Location', '/dashboard')
             else:
                 abort(403, "Authentication failed.")
 
@@ -375,15 +377,22 @@ def post_page_logs():
 @restricted
 def post_truncate_log():
 
+    value = request.forms.get('log')
+
     # This post function will truncate the selected log file.
-    if len(request.forms.get('log')) == 0:
+    if len(value) == 0:
         response.status = 303
         response.set_header('Location', '/logs')
-    else:
-        full_path = config["paths"]["dir_secmon_core"] + request.forms.get('log')
+    elif value == "bottle.log":
+        full_path = config["paths"]["dir_webserver_log"] + value
         open(full_path,"w").close()
         response.status = 303
         response.set_header('Location', '/logs')
+    else:
+        full_path = config["paths"]["dir_secmon_core"] + value
+        open(full_path,"w").close()
+        response.status = 303
+        response.set_header('Location', 'logs')
 
 @post('/rules')
 @restricted
@@ -593,6 +602,11 @@ def post_create_user():
         # Redirect.
         response.status = 303
         response.set_header('Location', '/users')
+
+"""
+# Part 4: Send to daemon
+    - No the above code will be launched in the daemon script located in the /lib directory.
+"""
 
 # This is a fix for the view directory.
 TEMPLATE_PATH.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "view")))

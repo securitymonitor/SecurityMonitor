@@ -128,14 +128,14 @@
                                     <div class="input-with-icon  right">                                       
                                         <i class=""></i>
                                         % if value:
-                                        <input type="text" name="match" id="match" class="form-control" placeholder="example: SOURCEIP, TARGETIP, PROTOCOL" value="{{value}}">
+                                        <input type="text" name="match" id="match" class="form-control" placeholder="example: SOURCEPT, TARGETIP, PROTOCOL" value="{{value}}">
                                         % else:
                                         <input type="text" name="match" id="match" class="form-control" placeholder="example: SOURCEIP, TARGETIP, PROTOCOL">
                                         % end
                                     </div><br />
 
                                 % value = configlist.get('MESSAGE =')
-                                <label class="form-label">Search for this error message in logfile (MESSAGE)</label>
+                                <label class="form-label">Search for this error message (MESSAGE)</label>
                                     <div class="input-with-icon  right">                                       
                                         <i class=""></i>
                                         % if value:
@@ -146,7 +146,7 @@
                                     </div><br />
 
                                 % operators = ['COUNT <' , 'COUNT <=' , 'COUNT >' , 'COUNT >=' , 'COUNT =']
-                                <label class="form-label">Package count operator (COUNT)</label>
+                                <label class="form-label">Packet count operator (COUNT)</label>
                                 <span class="help">Required</span>
                                     <div class="input-with-icon  right">
                                         <div class="radio">
@@ -164,7 +164,7 @@
                                         </div>
                                     </div><br />
 
-                                <label class="form-label">Package count (COUNT)</label>
+                                <label class="form-label">Packet count (COUNT)</label>
                                 <span class="help">Required</span>
                                     <div class="input-with-icon  right">
                                         <i class=""></i>
